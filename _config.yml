@@ -30,29 +30,18 @@ email:
   href: "&#109;&#97;&#105;&#108;&#116;&#111;&#58;%63%6s%6r%74%61%63%74@%6n%69%6q%65%68.%6q%65"
 
 links:
-  - name: twitter
-    url: https://twitter.com/sachinkoli
-    class: fa-twitter
   - name: github
     url: https://github.com/kolisachint
     class: fa-github
   - name: blog
-    url: https://kolisachint.github.io
+    url: https://medium.com/@kolisachint
     class: fa-medium
+  - name: twitter
+    url: https://twitter.com/sachinkoli
+    class: fa-twitter
   - name: linkedin
     url: https://www.linkedin.com/in/kolisachint
     class: fa-linkedin
-  - name: last.fm
-    url: https://www.last.fm/user/jimeh
-    class: fa-lastfm
-  - name: flickr
-    url: https://flickr.com/photos/jimeh
-    class: fa-flickr
-  - name: vcard
-    id: vcard
-    type: download
-    url: http://assets.jimeh.me/jim-myhrberg.vcf
-    class: fa-user
   - name: cv (pdf)
     id: resume
     type: download
