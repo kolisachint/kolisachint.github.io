@@ -1,28 +1,28 @@
-title: Jim Myhrberg (jimeh)
-description: Crazy-Ass Software Engineering Mercenary
+title: Sachin Koli
+description: •	Data Warehouse Specialist with over 10 years’ of experience in Data Warehousing and Business Intelligence. 
 author:
-  name: Jim Myhrberg
-  nickname: jimeh
-  twitter: jimeh
-hostname: jimeh.me # used to determine if google analytics should be triggered
-url: https://jimeh.me # the base hostname & protocol for your site
+  name: Sachin Koli
+  nickname: Sachin
+  twitter: sachinkoli
+hostname: kolisachint.github.io # used to determine if google analytics should be triggered
+url: https://kolisachint.github.io # the base hostname & protocol for your site
 baseurl: "" # the subpath of your site, e.g. /blog/
 permalink: /:title/
 
 # stuff for jekyll-seo-tag
 social:
-  name: Jim Myhrberg
+  name: Sachin Koli
   links:
-    - https://twitter.com/jimeh
-    - https://github.com/jimeh
-    - https://jimeh.io/
-    - http://www.linkedin.com/in/jimeh
-    - http://www.last.fm/user/jimeh
+    - https://twitter.com/sachinkoli
+    - https://github.com/kolisachint
+    - https://kolisachint.github.io
+    - http://www.linkedin.com/in/kolisachint
+    - http://www.last.fm/user/kolisachint
     - https://flickr.com/photos/jimeh/
     - https://keybase.io/jimeh
 
 twitter:
-  username: jimeh
+  username: sachinkoli
 
 # main page content
 email:
@@ -31,16 +31,16 @@ email:
 
 links:
   - name: twitter
-    url: https://twitter.com/jimeh
+    url: https://twitter.com/sachinkoli
     class: fa-twitter
   - name: github
-    url: https://github.com/jimeh
+    url: https://github.com/kolisachint
     class: fa-github
   - name: blog
-    url: https://jimeh.io/
+    url: https://kolisachint.github.io
     class: fa-medium
   - name: linkedin
-    url: https://www.linkedin.com/in/jimeh
+    url: https://www.linkedin.com/in/kolisachint
     class: fa-linkedin
   - name: last.fm
     url: https://www.last.fm/user/jimeh
