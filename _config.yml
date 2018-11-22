@@ -45,7 +45,7 @@ links:
   - name: cv (pdf)
     id: resume
     type: download
-    url: http://assets.jimeh.me/jim-myhrberg-cv.pdf
+    url: https://github.com/kolisachint/kolisachint.github.io/blob/master/Assets/Sachin_Koli_Resume.docx
     class: fa-file-text-o
 
 # additional stuff
