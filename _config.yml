@@ -45,7 +45,7 @@ links:
   - name: cv (pdf)
     id: resume
     type: download
-    url: https://github.com/kolisachint/kolisachint.github.io/blob/master/Assets/Sachin_Koli_Resume.docx
+    url: https://github.com/kolisachint/kolisachint.github.io/blob/master/Assets/Sachin_Koli_Resume.pdf
     class: fa-file-text-o
 
 # additional stuff
