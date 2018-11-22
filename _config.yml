@@ -27,7 +27,7 @@ twitter:
 # main page content
 email:
   title: "mailto:kolisachint@gmail.com"
-  href: "mailto:kolisachint@gmail.com"
+  href: <a href="mailto:kolisachint@gmail.com">mailto:kolisachint@gmail.com</a>
 
 links:
   - name: github
