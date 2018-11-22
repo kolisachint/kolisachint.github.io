@@ -24,10 +24,10 @@ social:
 twitter:
   username: sachinkoli
 
-# main page content
+# main page content - kolisachint@gmail.com
 email:
-  title: "mailto:kolisachint@gmail.com"
-  href: "&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#97;&#97;&#97;&#97;&#97;&#97;&#97;"
+  title: "&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#107;&#111;&#108;&#105;&#115;&#97;&#99;&#104;&#105;&#110;&#116;"
+  href: "&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#107;&#111;&#108;&#105;&#115;&#97;&#99;&#104;&#105;&#110;&#116;"
 
 links:
   - name: github
