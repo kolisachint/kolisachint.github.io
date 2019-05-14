@@ -20,6 +20,7 @@ social:
     - http://www.last.fm/user/kolisachint
     - https://flickr.com/photos/jimeh/
     - https://keybase.io/jimeh
+    - https://facebook.com/kolisachint
 
 twitter:
   username: sachinkoli
@@ -42,6 +43,9 @@ links:
   - name: linkedin
     url: https://www.linkedin.com/in/kolisachint
     class: fa-linkedin
+  - name: messenger
+    url: https://www.messenger.com/t/kolisachint
+    class: fa-messenger
   - name: cv (pdf)
     id: resume
     type: download
