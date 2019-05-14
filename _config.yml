@@ -45,7 +45,7 @@ links:
     class: fa-linkedin
   - name: messenger
     url: https://www.messenger.com/t/kolisachint
-    class: fa-messenger
+    class: fa-facebook-messenger
   - name: cv (pdf)
     id: resume
     type: download
