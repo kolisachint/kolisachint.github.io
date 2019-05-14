@@ -46,9 +46,6 @@ links:
     class: fa-linkedin
   - name: messenger
     url: https://www.messenger.com/t/kolisachint
-    class: fa-messenger
-  - name: facebook
-    url: https://facebook.com/kolisachint
     class: fa-facebook
   - name: cv (pdf)
     id: resume
