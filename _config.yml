@@ -21,6 +21,7 @@ social:
     - https://flickr.com/photos/jimeh/
     - https://keybase.io/jimeh
     - https://facebook.com/kolisachint
+    - https://www.messenger.com/t/kolisachint
 
 twitter:
   username: sachinkoli
@@ -46,6 +47,9 @@ links:
   - name: messenger
     url: https://www.messenger.com/t/kolisachint
     class: fa-facebook-messenger
+  - name: facebook
+    url: https://facebook.com/kolisachint
+    class: fa-facebook
   - name: cv (pdf)
     id: resume
     type: download
