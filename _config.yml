@@ -47,11 +47,11 @@ links:
   - name: messenger
     url: https://www.messenger.com/t/kolisachint
     class: fa-facebook
-  - name: cv (pdf)
-    id: resume
-    type: download
-    url: https://github.com/kolisachint/kolisachint.github.io/raw/master/Assets/Sachin_Koli_Resume.pdf
-    class: fa-file-text-o
+#  - name: cv (pdf)
+#    id: resume
+#    type: download
+#    url: https://github.com/kolisachint/kolisachint.github.io/raw/master/Assets/Sachin_Koli_Resume.pdf
+#    class: fa-file-text-o
 
 # additional stuff
 exclude:
