@@ -24,52 +24,57 @@ const modes = [
 >
   <section class="hero">
     <div class="shell">
-      {/* Not <picture> with prefers-color-scheme: the toggle sets data-theme,
-          so the media query would disagree with it the moment anyone switches
-          against their OS. Both marks ship; CSS picks. They are ~4 KB each. */}
-      <div class="lockup">
-        <img class="on-dark" src="/brand/hoo/hoocode.svg" alt="HooCode" width="274" height="80" />
-        <img class="on-light" src="/brand/hoo/hoocode-light.svg" alt="" aria-hidden="true" width="274" height="80" />
+      <div class="hero-grid">
+        <div class="hero-text">
+          {/* Not <picture> with prefers-color-scheme: the toggle sets data-theme,
+              so the media query would disagree with it the moment anyone switches
+              against their OS. Both marks ship; CSS picks. They are ~4 KB each. */}
+          <div class="lockup">
+            <img class="on-dark" src="/brand/hoo/hoocode.svg" alt="HooCode" width="274" height="80" />
+            <img class="on-light" src="/brand/hoo/hoocode-light.svg" alt="" aria-hidden="true" width="274" height="80" />
+          </div>
+
+          <h1>Deterministic terminal coding agent.</h1>
+
+          <p class="sub">
+            Four scoped modes, 25+ providers, hybrid search, and one-click
+            plugins in a single binary. Nothing applies without your approval.
+          </p>
+
+          <div class="install">
+            <p class="label">Install</p>
+            <pre class="cmd"><code>npm install -g @kolisachint/hoocode-agent</code></pre>
+            <p class="cmd-note mono">then run <code>hoocode</code> in a project directory</p>
+          </div>
+
+          <p class="links mono">
+            <a class="link" href="/hoocode/quickstart">Quickstart</a>
+            <span aria-hidden="true">·</span>
+            <a class="link" href="https://github.com/kolisachint/hoocode">GitHub</a>
+            <span aria-hidden="true">·</span>
+            <a class="link" href="https://www.npmjs.com/package/@kolisachint/hoocode-agent">npm</a>
+          </p>
+        </div>
+
+        {/* Click-to-play, never autoplay: 9 MB is not a background texture,
+            and preload="none" means it costs the poster until asked for. */}
+        <figure class="demo">
+          <video
+            src="/hoocode/demo.mp4"
+            poster="/hoocode/demo-poster.webp"
+            controls
+            preload="none"
+            playsinline
+            aria-label="HooCode demo recording"
+            aria-describedby="demo-caption"
+          />
+          <figcaption id="demo-caption" class="mono">
+            HooCode in Ask mode, mapping API routes with a subagent. 102
+            seconds, no audio.
+          </figcaption>
+        </figure>
       </div>
-
-      <h1>Deterministic terminal coding agent.</h1>
-
-      <p class="sub">
-        Four scoped modes, 25+ providers, hybrid search, and one-click
-        plugins in a single binary. Nothing applies without your approval.
-      </p>
-
-      <div class="install">
-        <p class="label">Install</p>
-        <pre class="cmd"><code>npm install -g @kolisachint/hoocode-agent</code></pre>
-        <p class="cmd-note mono">then run <code>hoocode</code> in a project directory</p>
-      </div>
-
-      <p class="links mono">
-        <a class="link" href="/hoocode/quickstart">Quickstart</a>
-        <span aria-hidden="true">·</span>
-        <a class="link" href="https://github.com/kolisachint/hoocode">GitHub</a>
-        <span aria-hidden="true">·</span>
-        <a class="link" href="https://www.npmjs.com/package/@kolisachint/hoocode-agent">npm</a>
-      </p>
     </div>
-  </section>
-
-  <section class="shell demo-wrap">
-    <p class="label">Demo</p>
-    <figure class="demo">
-      <video
-        src="/hoocode/demo.mp4"
-        poster="/hoocode/demo-poster.webp"
-        controls
-        preload="none"
-        playsinline
-      />
-      <figcaption class="mono">
-        HooCode in Ask mode, mapping API routes with a subagent. 102 seconds,
-        no audio.
-      </figcaption>
-    </figure>
   </section>
 
   <section class="shell band">
@@ -114,6 +119,25 @@ const modes = [
 <style>
   .hero {
     padding-block: var(--space-16) var(--space-12);
+  }
+
+  /* One column until there is room for two. The media column is the wider of
+     the pair: the text sets to a narrow measure and stops, the recording is
+     the thing people came to look at. */
+  .hero-grid {
+    display: grid;
+    /* Explicit track with a 0 floor. The recording is intrinsically 1598px
+       wide; a 0-floor track means that number can never reach track sizing. */
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-12);
+    align-items: center;
+  }
+
+  @media (min-width: 60rem) {
+    .hero-grid {
+      grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
+      gap: var(--space-16);
+    }
   }
 
   .lockup {
@@ -186,14 +210,6 @@ const modes = [
 
   /* -- Demo --------------------------------------------------------------- */
 
-  .demo-wrap {
-    padding-block: var(--space-4) var(--space-8);
-  }
-
-  .demo-wrap .label {
-    margin-bottom: var(--space-4);
-  }
-
   .demo {
     margin: 0;
     overflow: hidden;
@@ -202,10 +218,12 @@ const modes = [
     background: var(--surface);
   }
 
+  /* The recording's own ratio, so the poster fills the frame with no bars and
+     the space is reserved before it loads. */
   .demo video {
     width: 100%;
     height: auto;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 1598 / 1080;
   }
 
   .demo figcaption {
