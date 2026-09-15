@@ -26,6 +26,14 @@ const projects = defineCollection({
     featured: z.boolean().default(false),
     /** Lower sorts first within the featured set. */
     order: z.number().default(99),
+    /** Optional screen recording. Paths are site-relative, under public/. */
+    demo: z
+      .object({
+        src: z.string(),
+        poster: z.string().optional(),
+        caption: z.string().optional(),
+      })
+      .optional(),
   }),
 });
 

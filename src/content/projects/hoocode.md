@@ -8,6 +8,10 @@ status: shipped
 tags: ["agents", "cli", "tui", "llm"]
 featured: true
 order: 1
+demo:
+  src: /hoocode/demo.mp4
+  poster: /hoocode/demo-poster.webp
+  caption: HooCode in Ask mode, mapping API routes with a subagent. 102 seconds, no audio.
 ---
 
 Most coding agents ask for trust. HooCode asks for approval. It works in
