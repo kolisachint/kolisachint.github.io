@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
   # Weekly refresh of the two vendored datasets: the HooCode documentation and
   # the GitHub repository snapshot. Both are committed, so the site keeps
