@@ -52,11 +52,21 @@ const { title, tagline, lang, repo, npm, site, status, tags } = project.data;
       box-shadow var(--dur) var(--ease);
   }
 
-  .card:hover {
+  .card:hover,
+  .card:focus-within {
     border-color: var(--border-strong);
     background: var(--surface-raised);
     transform: translateY(-3px);
-    box-shadow: 0 12px 32px -16px rgba(0, 0, 0, 0.6);
+    box-shadow: var(--shadow-2);
+  }
+
+  /* The lift is decoration. Under reduced motion the card still responds,
+     it just does not move. */
+  @media (prefers-reduced-motion: reduce) {
+    .card:hover,
+    .card:focus-within {
+      transform: none;
+    }
   }
 
   /* Whole-card target, but real links inside still win. */
