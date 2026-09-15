@@ -8,6 +8,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "verify": "bin/site verify",
+    "audit": "bin/site audit",
+    "shots": "bin/site shots",
     "repos": "node scripts/refresh-repos.mjs",
     "og": "bash scripts/make-og.sh",
     "docs": "node scripts/sync-docs.mjs"

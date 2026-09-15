@@ -2,6 +2,9 @@
 dist/
 .astro/
 
+# bin/site shots — review artefacts, regenerate rather than commit
+.shots/
+
 # dependencies
 node_modules/
 

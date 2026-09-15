@@ -1,0 +1,254 @@
+#!/usr/bin/env bash
+#
+# site — the repo's own tool belt.
+#
+# Everything a design or content pass on this site needs, so the next one does
+# not start by rediscovering how to screenshot a page or which claims AGENTS.md
+# forbids. No dependencies beyond what the repo already assumes: node, python3,
+# and a Chromium binary that make-og.sh already required.
+#
+#   bin/site verify            check + build + audit          (run before commit)
+#   bin/site audit             the AGENTS.md rules, as greps
+#   bin/site shots [path...]   screenshot pages, dark + light, 3 widths
+#   bin/site poster [mp4]      re-cut a video poster from its own first frame
+#   bin/site design <query>    ui-ux-pro-max search, correct path baked in
+#   bin/site dev               astro dev
+#
+set -uo pipefail
+cd "$(dirname "$0")/.."
+
+BOLD=$'\033[1m'; RED=$'\033[31m'; GRN=$'\033[32m'; YEL=$'\033[33m'; DIM=$'\033[2m'; OFF=$'\033[0m'
+say()  { printf '%s\n' "${BOLD}$*${OFF}"; }
+ok()   { printf '  %s\n' "${GRN}ok${OFF}  $*"; }
+warn() { printf '  %s\n' "${YEL}warn${OFF} $*"; }
+bad()  { printf '  %s\n' "${RED}FAIL${OFF} $*"; FAILED=1; }
+
+SHOT_DIR="${SHOT_DIR:-.shots}"
+PORT="${PORT:-4399}"
+UI_SKILL="${UI_SKILL:-$HOME/.agents/plugins/ui-ux-pro-max/.claude/skills/ui-ux-pro-max}"
+CHROME="${CHROME:-$HOME/Library/Caches/ms-playwright/chromium-1228/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing}"
+
+# The pages worth looking at after any visual change. Ordered by how much a
+# regression on them would cost.
+DEFAULT_PATHS=(/ /work/ /about/ /hoocode/ /hoocode/quickstart/ /404.html)
+
+# ---------------------------------------------------------------------------
+# audit — AGENTS.md, expressed as things that must not appear in the tree.
+#
+# Every rule here traces to a line in AGENTS.md. A rule with no rule in that
+# file does not belong in this function.
+# ---------------------------------------------------------------------------
+cmd_audit() {
+  FAILED=0
+  say "audit"
+
+  # "Claims this site does not make" — inflated descriptions of the work.
+  local claims='LLM engineering|GenAI|Gen-AI|MLOps|model training|model deployment|fine-tun'
+  if grep -rniE "$claims" src/ --include='*.astro' --include='*.ts' --include='*.md' \
+       --exclude-dir=docs -l >/dev/null 2>&1; then
+    grep -rniE "$claims" src/ --include='*.astro' --include='*.ts' --include='*.md' \
+      --exclude-dir=docs -n | sed 's/^/       /'
+    bad "forbidden claim (AGENTS.md § Claims this site does not make)"
+  else
+    ok "no inflated AI claims"
+  fi
+
+  # "Client anonymisation — never name a client."
+  local clients='Lloyds|Sears Holdings|Saudi Telecom|Barclays|Telstra'
+  if grep -rniE "$clients" src/ public/ --include='*.astro' --include='*.ts' \
+       --include='*.md' --include='*.json' --exclude-dir=docs -n 2>/dev/null | grep -q .; then
+    grep -rniE "$clients" src/ public/ --include='*.astro' --include='*.ts' \
+      --include='*.md' --include='*.json' --exclude-dir=docs -n | sed 's/^/       /'
+    bad "named client (AGENTS.md § Client anonymisation)"
+  else
+    ok "no client named"
+  fi
+
+  # "Never hardcode kolisachint.github.io in a page, component, or content
+  # file." Scoped to exactly those: lib/, data/ and scripts/ legitimately carry
+  # the repository's own name and a User-Agent string, which are not the domain.
+  # A github.com/<owner>/ prefix is a repo URL and is allowed anywhere.
+  local dom
+  dom=$(grep -rn "kolisachint\.github\.io" src/pages src/components src/layouts 2>/dev/null \
+        | grep -v "github\.com/kolisachint/kolisachint\.github\.io")
+  if [ -n "$dom" ]; then
+    printf '%s\n' "$dom" | sed 's/^/       /'
+    bad "hardcoded domain — read it from \`site\` in astro.config.mjs"
+  else
+    ok "domain not hardcoded"
+  fi
+
+  # "Design tokens are canonical — do not invent colour."
+  # theme-color is a <meta> attribute; it cannot take a var() and is exempt.
+  local hex
+  hex=$(grep -rnE '#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?\b' src/ --include='*.astro' \
+          --include='*.css' 2>/dev/null \
+        | grep -v 'src/styles/tokens.css' | grep -v 'href=' \
+        | grep -v 'theme-color' | grep -v 'setAttribute("content"')
+  if [ -n "$hex" ]; then
+    printf '%s\n' "$hex" | sed 's/^/       /'
+    warn "raw hex outside tokens.css — should be a semantic token"
+  else
+    ok "colour only from tokens"
+  fi
+
+  # "src/content/docs/hoocode/ is generated. Never edit a file in it."
+  # public/hoocode/images/ only — the demo video and its poster live beside it
+  # in public/hoocode/ and are hand-placed assets, not sync output.
+  local touched
+  touched=$(git status --porcelain -- src/content/docs/ src/data/hoocode-nav.json \
+              public/hoocode/images/ 2>/dev/null)
+  if [ -n "$touched" ]; then
+    printf '%s\n' "$touched" | sed 's/^/       /'
+    warn "generated files modified — fix upstream and run \`npm run docs\`"
+  else
+    ok "generated docs untouched"
+  fi
+
+  # Token gaps hidden behind inline fallbacks. var(--space-4, 1rem) means the
+  # token is missing from tokens.css and nobody noticed. Only token families
+  # count — a per-element custom property such as --reveal-delay is not one.
+  local fallbacks
+  fallbacks=$(grep -rnE 'var\(--(space|text|leading|tracking|measure|shell|gutter|spine|hoo|dur|ease|control|bg|surface|border|accent|shadow)[a-z0-9-]*, *[0-9]' src/ 2>/dev/null)
+  if [ -n "$fallbacks" ]; then
+    printf '%s\n' "$fallbacks" | sed 's/^/       /'
+    warn "CSS var with a literal fallback — add the token instead"
+  else
+    ok "no token fallbacks"
+  fi
+
+  # One <h1> per page.
+  local f n
+  for f in $(find src/pages -name '*.astro' 2>/dev/null); do
+    n=$(grep -c '<h1' "$f")
+    [ "$n" -gt 1 ] && bad "$f has $n <h1> elements"
+  done
+  ok "heading check done"
+
+  # "Every image has real alt text." Whole-tag match, because every <img> on
+  # this site is written across several lines and a line-wise grep would call
+  # all of them broken.
+  local noalt
+  noalt=$(python3 - <<'PY'
+import pathlib, re
+
+for f in sorted(pathlib.Path("src").rglob("*.astro")):
+    text = f.read_text(encoding="utf-8")
+    for m in re.finditer(r"<img\b[^>]*>", text, re.S):
+        if "alt=" not in m.group(0):
+            line = text.count("\n", 0, m.start()) + 1
+            print(f"{f}:{line}: <img> with no alt attribute")
+PY
+)
+  if [ -n "$noalt" ]; then
+    printf '%s\n' "$noalt" | sed 's/^/       /'
+    bad "<img> without alt"
+  else
+    ok "every img has alt"
+  fi
+
+  # "No emoji as icons" — ui-ux-pro-max pre-delivery checklist.
+  if LC_ALL=C grep -rnP '[\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}]' src/ --include='*.astro' \
+       --include='*.ts' 2>/dev/null | grep -q .; then
+    LC_ALL=C grep -rnP '[\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}]' src/ --include='*.astro' \
+      --include='*.ts' | sed 's/^/       /'
+    warn "emoji in source — use an SVG or a token shape"
+  else
+    ok "no emoji"
+  fi
+
+  # "Dependencies are a cost." The list in AGENTS.md is the allowed set.
+  local deps extra
+  deps=$(node -e 'const p=require("./package.json");console.log(Object.keys({...p.dependencies,...p.devDependencies}).join("\n"))')
+  extra=$(printf '%s\n' "$deps" | grep -vxE 'astro|@astrojs/markdown-satteri|@astrojs/check|@fontsource-variable/inter|@fontsource-variable/jetbrains-mono|typescript|@types/node')
+  if [ -n "$extra" ]; then
+    printf '%s\n' "$extra" | sed 's/^/       /'
+    warn "dependency not listed in AGENTS.md — that is a decision to raise"
+  else
+    ok "dependency list unchanged"
+  fi
+
+  [ "$FAILED" -eq 0 ] && say "audit clean" || { say "${RED}audit failed${OFF}"; return 1; }
+}
+
+# ---------------------------------------------------------------------------
+# shots — every page, both themes, three widths, into .shots/
+#
+# The work is in scripts/shot.mjs, which drives Chrome over the DevTools
+# protocol; the header of that file explains why the obvious --window-size
+# approach silently lies about narrow viewports.
+# ---------------------------------------------------------------------------
+cmd_shots() {
+  local paths=("$@")
+  [ ${#paths[@]} -eq 0 ] && paths=("${DEFAULT_PATHS[@]}")
+
+  [ -x "$CHROME" ] || { echo "no chromium at: $CHROME (set CHROME=)"; return 1; }
+
+  say "build"
+  npm run build >/dev/null || return 1
+
+  python3 -m http.server "$PORT" --directory dist >/dev/null 2>&1 &
+  local server=$!
+  trap 'kill $server 2>/dev/null || true' RETURN
+  sleep 1
+
+  say "shots → $SHOT_DIR/"
+  CHROME="$CHROME" node scripts/shot.mjs \
+    --base "http://127.0.0.1:$PORT" --out "$SHOT_DIR" -- "${paths[@]}"
+  local rc=$?
+  [ $rc -eq 0 ] && say "done — open $SHOT_DIR/" || say "${YEL}done, with findings${OFF}"
+  return $rc
+}
+
+# ---------------------------------------------------------------------------
+# poster — a video's poster, cut from the video's own first frame
+#
+# A poster grabbed from the middle of a recording shows a busy screen before
+# anyone has pressed play, and promises a state the video does not open in.
+# Frame 0 is the honest still and, being mostly empty, also the smaller file.
+# ---------------------------------------------------------------------------
+cmd_poster() {
+  local src="${1:-public/hoocode/demo.mp4}"
+  local out="${2:-${src%.*}-poster.webp}"
+
+  command -v ffmpeg >/dev/null || { echo "ffmpeg not found (brew install ffmpeg)"; return 1; }
+  [ -f "$src" ] || { echo "no such video: $src"; return 1; }
+
+  # 1280 wide: the demo renders at most 34rem × 2 DPR ≈ 1088px, so anything
+  # larger is bytes nobody sees.
+  ffmpeg -v error -y -i "$src" \
+    -vf "select=eq(n\,0),scale=1280:-2:flags=lanczos" -vframes 1 \
+    -c:v libwebp -quality 82 -compression_level 6 -preset picture "$out" || return 1
+
+  say "poster"
+  ok "$out  $(ffprobe -v error -show_entries stream=width,height -of csv=p=0 "$out")  $(wc -c <"$out" | tr -d ' ') bytes"
+  warn "check the caption still describes the recording"
+}
+
+# ---------------------------------------------------------------------------
+# design — ui-ux-pro-max, without remembering where it lives
+# ---------------------------------------------------------------------------
+cmd_design() {
+  local script="$UI_SKILL/scripts/search.py"
+  [ -f "$script" ] || { echo "ui-ux-pro-max not found at $UI_SKILL (set UI_SKILL=)"; return 1; }
+  [ $# -eq 0 ] && { echo "usage: bin/site design <query> [--domain ux|style|color|typography|landing|icons|gsap|chart] [--stack astro]"; return 1; }
+  python3 "$script" "$@"
+}
+
+cmd_verify() {
+  say "check"; npm run check || return 1
+  say "build"; npm run build >/dev/null || return 1; ok "40-ish pages built"
+  cmd_audit
+}
+
+case "${1:-}" in
+  audit)  shift; cmd_audit "$@" ;;
+  shots)  shift; cmd_shots "$@" ;;
+  poster) shift; cmd_poster "$@" ;;
+  design) shift; cmd_design "$@" ;;
+  verify) shift; cmd_verify "$@" ;;
+  dev)    shift; npm run dev "$@" ;;
+  *)
+    sed -n '3,16p' "$0" | sed 's/^# \{0,1\}//'
+    ;;
+esac
