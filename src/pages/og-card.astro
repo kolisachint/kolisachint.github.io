@@ -10,6 +10,10 @@ import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
 import "../styles/global.css";
 import { site, headlines } from "../site";
+
+// Read, never typed: the domain lives in `site` in astro.config.mjs so that
+// moving to a custom domain is a one-line change. See AGENTS.md.
+const host = Astro.site?.host ?? "";
 ---
 
 <!doctype html>
@@ -30,7 +34,6 @@ import { site, headlines } from "../site";
           <svg class="mark" viewBox="30 38 138 128" width="34" height="32" fill="none">
             <path
               d="M80.5,94.5 A20.5,20.5 0 1 0 60,115 A20.5,20.5 0 1 1 39.5,135.5"
-              stroke="#FAFAFA"
               stroke-width="14"
               stroke-linecap="round"></path>
             <line
@@ -38,19 +41,17 @@ import { site, headlines } from "../site";
               y1="48"
               x2="118"
               y2="156"
-              stroke="#FAFAFA"
               stroke-width="14"
               stroke-linecap="round"></line>
             <path
               d="M158,94 L118,130 L158,156"
-              stroke="#FAFAFA"
               stroke-width="14"
               stroke-linecap="round"
               stroke-linejoin="round"></path>
-            <circle cx="118" cy="130" r="12" fill="#00F0FF"></circle>
+            <circle class="mark-node" cx="118" cy="130" r="12"></circle>
           </svg>
           <span>{site.name}</span>
-          <span class="dim">kolisachint.github.io</span>
+          <span class="dim">{host}</span>
         </p>
       </div>
     </div>
@@ -58,9 +59,13 @@ import { site, headlines } from "../site";
 </html>
 
 <style is:global>
+  /* Locked to the dark theme by the data-theme attribute above, so these are
+     the semantic tokens and not an approximation of them. The card is rendered
+     once and committed; keeping it on tokens means a palette change shows up
+     here the next time `npm run og` runs. */
   .og-body {
     margin: 0;
-    background: #09090b;
+    background: var(--bg);
   }
 
   .card {
@@ -69,14 +74,14 @@ import { site, headlines } from "../site";
     display: flex;
     gap: 56px;
     padding: 78px 84px;
-    background: #09090b;
+    background: var(--bg);
     box-sizing: border-box;
   }
 
   .rail {
     position: relative;
     flex: 0 0 1px;
-    background: #27272a;
+    background: var(--border);
   }
 
   .node {
@@ -87,8 +92,10 @@ import { site, headlines } from "../site";
     height: 11px;
     margin-left: -5.5px;
     border-radius: 50%;
-    background: #00f0ff;
-    box-shadow: 0 0 0 6px #09090b, 0 0 26px rgba(0, 240, 255, 0.5);
+    background: var(--accent);
+    /* 0.5, not the 0.4 of --accent-glow: at 1200×630 on a social timeline the
+       node has to survive the platform's own recompression. */
+    box-shadow: 0 0 0 6px var(--bg), 0 0 26px rgba(0, 240, 255, 0.5);
   }
 
   .card .content {
@@ -108,7 +115,7 @@ import { site, headlines } from "../site";
     font-size: 72px;
     line-height: 1.08;
     letter-spacing: -0.028em;
-    color: #fafafa;
+    color: var(--text);
     max-width: 17ch;
   }
 
@@ -118,10 +125,22 @@ import { site, headlines } from "../site";
     gap: 16px;
     margin: 56px 0 0;
     font-size: 19px;
-    color: #e4e4e7;
+    color: var(--text-2);
   }
 
   .card .dim {
-    color: #71717a;
+    color: var(--muted);
+  }
+
+  /* Stroke and fill are set here rather than as presentation attributes:
+     var() in an attribute is legal CSS but a silent black-on-black mark if a
+     renderer disagrees, and this file's output is committed. */
+  .mark path,
+  .mark line {
+    stroke: var(--text);
+  }
+
+  .mark .mark-node {
+    fill: var(--accent);
   }
 </style>
