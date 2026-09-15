@@ -1,0 +1,293 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/Section.astro";
+import { headlines } from "../../site";
+import { getRepos, tail } from "../../lib/github";
+
+const entries = (await getCollection("projects")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const projects = await Promise.all(
+  entries.map(async (entry) => ({
+    entry,
+    Content: (await render(entry)).Content,
+  })),
+);
+
+const { repos, live } = await getRepos();
+const more = tail(repos);
+---
+
+<BaseLayout
+  title="Work"
+  description="Open-source tooling for coding agents — terminal agents, deterministic browser automation, embedding search, offline speech recognition. Rust and TypeScript."
+>
+  <header class="page-head">
+    <div class="shell">
+      <p class="label">Work</p>
+      <h1>{headlines.work}</h1>
+    </div>
+  </header>
+
+  <Section eyebrow={`Selected · ${projects.length}`}>
+    <ol class="projects">
+      {
+        projects.map(({ entry, Content }) => (
+          <li class="project" id={entry.id}>
+            <div class="project-head">
+              <h2>
+                <a class="title-link" href={entry.data.repo}>
+                  {entry.data.title}
+                </a>
+              </h2>
+              <span class="node" aria-hidden="true" />
+            </div>
+
+            <p class="tagline">{entry.data.tagline}</p>
+
+            <div class="prose body">
+              <Content />
+            </div>
+
+            <p class="meta mono">
+              <span class="lang">{entry.data.lang}</span>
+              <span class="sep" aria-hidden="true">
+                ·
+              </span>
+              <span>{entry.data.status}</span>
+              <span class="sep" aria-hidden="true">
+                ·
+              </span>
+              <a class="out" href={entry.data.repo}>
+                source
+              </a>
+              {entry.data.npm && (
+                <>
+                  <span class="sep" aria-hidden="true">
+                    ·
+                  </span>
+                  <a class="out" href={entry.data.npm}>
+                    npm
+                  </a>
+                </>
+              )}
+              {entry.data.site && (
+                <>
+                  <span class="sep" aria-hidden="true">
+                    ·
+                  </span>
+                  <a class="out" href={entry.data.site}>
+                    site
+                  </a>
+                </>
+              )}
+            </p>
+          </li>
+        ))
+      }
+    </ol>
+  </Section>
+
+  <Section eyebrow="Also on GitHub">
+    <div class="tail-head">
+      <h2>Everything else with a description</h2>
+      <p class="lede">
+        Smaller repositories, experiments and ports. If a repository has no
+        description it is not listed here — that rule is the filter.
+      </p>
+    </div>
+
+    <ul class="tail">
+      {
+        more.map((r) => (
+          <li>
+            <a class="tail-row" href={r.url}>
+              <span class="tail-name mono">{r.name}</span>
+              <span class="tail-desc">{r.description}</span>
+              <span class="tail-lang mono">{r.lang ?? "—"}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="source-note mono">
+      {more.length} repositories ·{" "}
+      {live ? "read from the GitHub API at build time" : "from the last snapshot"}
+    </p>
+  </Section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding-block: var(--space-16) var(--space-8);
+  }
+
+  .page-head .label {
+    margin-bottom: var(--space-6);
+  }
+
+  .page-head h1 {
+    max-width: 20ch;
+  }
+
+  .projects {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project + .project {
+    margin-top: var(--space-12);
+    padding-top: var(--space-12);
+    border-top: 1px solid var(--border);
+  }
+
+  .project-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .project h2 {
+    font-size: var(--text-xl);
+  }
+
+  .title-link:hover {
+    color: var(--accent-ink);
+  }
+
+  .node {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--border-strong);
+    transition: background var(--dur) var(--ease);
+  }
+
+  .project:hover .node {
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
+  }
+
+  .tagline {
+    margin-top: var(--space-2);
+    color: var(--text-2);
+    max-width: var(--measure);
+  }
+
+  .body {
+    margin-top: var(--space-6);
+    color: var(--text-3);
+  }
+
+  .body :global(p + p) {
+    margin-top: var(--space-4);
+  }
+
+  .body :global(a) {
+    color: var(--text-2);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+    text-underline-offset: 0.22em;
+  }
+
+  .body :global(a:hover) {
+    color: var(--accent-ink);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
+    font-size: var(--text-xs);
+    color: var(--muted);
+  }
+
+  .lang {
+    color: var(--text-3);
+  }
+
+  .sep {
+    opacity: 0.5;
+  }
+
+  .out {
+    color: var(--text-3);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+    text-underline-offset: 0.25em;
+  }
+
+  .out:hover {
+    color: var(--accent-ink);
+  }
+
+  .tail-head {
+    max-width: var(--measure);
+    margin-bottom: var(--space-8);
+  }
+
+  .lede {
+    margin-top: var(--space-4);
+    color: var(--text-3);
+  }
+
+  .tail {
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .tail-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-1) var(--space-6);
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-3);
+    transition: background var(--dur) var(--ease);
+  }
+
+  .tail-row:hover {
+    background: var(--surface);
+    color: var(--text-2);
+  }
+
+  .tail-name {
+    color: var(--text);
+    font-size: var(--text-sm);
+  }
+
+  .tail-desc {
+    font-size: var(--text-sm);
+  }
+
+  .tail-lang {
+    font-size: var(--text-xs);
+    color: var(--muted);
+  }
+
+  @media (min-width: 46rem) {
+    .tail-row {
+      grid-template-columns: 13rem 1fr 7rem;
+      align-items: baseline;
+      padding-inline: var(--space-3);
+      margin-inline: calc(-1 * var(--space-3));
+      border-radius: var(--hoo-r-badge);
+    }
+    .tail-lang {
+      text-align: right;
+    }
+  }
+
+  .source-note {
+    margin-top: var(--space-6);
+    font-size: var(--text-xs);
+    color: var(--muted);
+  }
+</style>

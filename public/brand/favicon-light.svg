@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-labelledby="sk-favicon-light-title">
+  <title id="sk-favicon-light-title">Sachin Koli favicon — light</title>
+  <rect width="32" height="32" rx="6" fill="#FAFAFA"/>
+  <path d="M12.9,15.1 A3.3,3.3 0 1 0 9.6,18.4 A3.3,3.3 0 1 1 6.3,21.7" fill="none" stroke="#09090B" stroke-width="2.3" stroke-linecap="round"/>
+  <line x1="18.9" y1="7.7" x2="18.9" y2="25" stroke="#09090B" stroke-width="2.3" stroke-linecap="round"/>
+  <path d="M25.3,15 L18.9,20.8 L25.3,25" fill="none" stroke="#09090B" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="18.9" cy="20.8" r="1.95" fill="#00F0FF"/>
+</svg>

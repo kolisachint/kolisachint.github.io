@@ -1,0 +1,222 @@
+---
+import "@fontsource-variable/inter";
+import "@fontsource-variable/jetbrains-mono";
+import "../styles/global.css";
+import { site, nav } from "../site";
+import ThemeToggle from "../components/ThemeToggle.astro";
+import Mark from "../components/Mark.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Adds `· Sachin Koli` after the title. Off for the homepage. */
+  suffix?: boolean;
+}
+
+const {
+  title = site.name,
+  description = site.description,
+  suffix = true,
+} = Astro.props;
+
+const pageTitle = suffix ? `${title} · ${site.name}` : title;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL("/brand/og.png", Astro.site);
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/brand/favicon.svg"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/brand/favicon-light.svg"
+      media="(prefers-color-scheme: light)"
+    />
+    <link rel="apple-touch-icon" href="/brand/sk.svg" />
+    <meta name="theme-color" content="#09090B" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={site.locale} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@sachinkoli" />
+
+    <link rel="sitemap" href="/sitemap.xml" />
+
+    <!-- Set the theme before first paint. Inline and blocking on purpose:
+         a flash of the wrong theme is worse than 300 bytes. -->
+    <script is:inline>
+      (function () {
+        try {
+          var stored = localStorage.getItem("theme");
+          var theme =
+            stored === "light" || stored === "dark"
+              ? stored
+              : window.matchMedia("(prefers-color-scheme: light)").matches
+                ? "light"
+                : "dark";
+          document.documentElement.dataset.theme = theme;
+        } catch (_) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+
+    <slot name="head" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="masthead">
+      <div class="shell masthead-inner">
+        <a class="brand" href="/" aria-label={`${site.name} — home`}>
+          <Mark size={30} />
+          <span class="brand-name">{site.name}</span>
+        </a>
+
+        <nav aria-label="Primary">
+          <ul class="nav">
+            {
+              nav.map((item) => (
+                <li>
+                  <a
+                    href={item.href}
+                    aria-current={path.startsWith(item.href) ? "page" : undefined}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+
+        <ThemeToggle />
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .masthead {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: saturate(160%) blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--dur) var(--ease);
+  }
+
+  /* The rule only appears once the page has moved, so the hero opens clean. */
+  :global(body:not([data-at-top])) .masthead {
+    border-bottom-color: var(--border);
+  }
+
+  .masthead-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    height: 62px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-right: auto;
+    min-width: 0;
+  }
+
+  .brand-name {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    letter-spacing: var(--tracking-normal);
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    list-style: none;
+    padding: 0;
+  }
+
+  .nav a {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-3);
+    padding-block: var(--space-2);
+    position: relative;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .nav a:hover {
+    color: var(--text);
+  }
+
+  .nav a[aria-current="page"] {
+    color: var(--text);
+  }
+
+  /* The one cyan moment in the masthead: a node under the current section. */
+  .nav a[aria-current="page"]::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 4px;
+    height: 4px;
+    margin-left: -2px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+  }
+
+  @media (max-width: 30rem) {
+    .brand-name {
+      display: none;
+    }
+    .masthead-inner {
+      gap: var(--space-4);
+    }
+  }
+</style>
+
+<script>
+  // Toggle the masthead rule only once the page has scrolled.
+  const setAtTop = () => {
+    document.body.toggleAttribute("data-at-top", window.scrollY < 8);
+  };
+  setAtTop();
+  addEventListener("scroll", setAtTop, { passive: true });
+</script>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-labelledby="sk-mono-title">
+  <title id="sk-mono-title">Sachin Koli monogram</title>
+  <rect width="200" height="200" rx="40" fill="#09090B"/>
+  <path d="M80.5,94.5 A20.5,20.5 0 1 0 60,115 A20.5,20.5 0 1 1 39.5,135.5" fill="none" stroke="#FAFAFA" stroke-width="14" stroke-linecap="round"/>
+  <line x1="118" y1="48" x2="118" y2="156" stroke="#FAFAFA" stroke-width="14" stroke-linecap="round"/>
+  <path d="M158,94 L118,130 L158,156" fill="none" stroke="#FAFAFA" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="118" cy="130" r="12" fill="#00F0FF"/>
+</svg>

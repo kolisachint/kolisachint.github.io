@@ -1,0 +1,82 @@
+---
+/**
+ * Dark is the default. First visit follows prefers-color-scheme; after that
+ * the choice is remembered. The pre-paint script lives in BaseLayout.
+ */
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  class="toggle"
+  aria-label="Switch colour theme"
+  title="Switch colour theme"
+>
+  <svg class="icon sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+    <circle cx="12" cy="12" r="4.2" fill="currentColor"></circle>
+    <g stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+      <line x1="12" y1="2.4" x2="12" y2="5"></line>
+      <line x1="12" y1="19" x2="12" y2="21.6"></line>
+      <line x1="2.4" y1="12" x2="5" y2="12"></line>
+      <line x1="19" y1="12" x2="21.6" y2="12"></line>
+      <line x1="5.2" y1="5.2" x2="7" y2="7"></line>
+      <line x1="17" y1="17" x2="18.8" y2="18.8"></line>
+      <line x1="5.2" y1="18.8" x2="7" y2="17"></line>
+      <line x1="17" y1="7" x2="18.8" y2="5.2"></line>
+    </g>
+  </svg>
+  <svg class="icon moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+    <path
+      d="M20 14.4A8.6 8.6 0 0 1 9.6 4a8.7 8.7 0 1 0 10.4 10.4Z"
+      fill="currentColor"></path>
+  </svg>
+</button>
+
+<style>
+  .toggle {
+    display: inline-grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-3);
+    cursor: pointer;
+    transition:
+      color var(--dur) var(--ease),
+      border-color var(--dur) var(--ease);
+  }
+
+  .toggle:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+  }
+
+  .icon {
+    grid-area: 1 / 1;
+  }
+
+  :global([data-theme="dark"]) .sun,
+  :global([data-theme="light"]) .moon {
+    display: none;
+  }
+</style>
+
+<script>
+  const button = document.getElementById("theme-toggle");
+  button?.addEventListener("click", () => {
+    const root = document.documentElement;
+    const next = root.dataset.theme === "light" ? "dark" : "light";
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem("theme", next);
+    } catch {
+      /* private mode — the choice just won't persist */
+    }
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", next === "light" ? "#FFFFFF" : "#09090B");
+  });
+</script>

@@ -1,0 +1,149 @@
+/* ---------------------------------------------------------------------------
+   Design tokens.
+
+   The raw palette is the Hoo Brand System, reproduced verbatim from
+   github.com/kolisachint/hoo-brand. Do not add a hue. Do not invent a grey.
+
+   Two layers:
+     1. --hoo-*     raw brand constants. Identical in every theme. Never
+                    referenced directly by a component.
+     2. semantic    --bg, --text, --accent … theme-dependent. Components use
+                    these and only these.
+   --------------------------------------------------------------------------- */
+
+:root {
+  /* -- 1. Raw brand palette ------------------------------------------------ */
+
+  /* Signal */
+  --hoo-cyan: #00f0ff;
+  --hoo-cyan-dim: rgba(0, 240, 255, 0.15);
+  --hoo-cyan-glow: rgba(0, 240, 255, 0.4);
+
+  /* Zinc, dark → light */
+  --hoo-base: #09090b;
+  --hoo-card: #18181b;
+  --hoo-border: #27272a;
+  --hoo-white: #fafafa;
+  --hoo-text-2: #e4e4e7;
+  --hoo-text-3: #a1a1aa;
+  --hoo-muted: #71717a;
+
+  /* Zinc extensions, required for a light theme. Same family, same ramp. */
+  --hoo-zinc-100: #f4f4f5;
+  --hoo-zinc-200: #e4e4e7;
+  --hoo-zinc-300: #d4d4d8;
+  --hoo-zinc-600: #52525b;
+  --hoo-zinc-800: #27272a;
+
+  /* Cyan darkened for use as ink on light surfaces. #00F0FF against white is
+     ~1.3:1 — unreadable. This is the same hue held to AA. */
+  --hoo-cyan-ink: #0e7490;
+
+  /* Radius */
+  --hoo-r-card: 20px;
+  --hoo-r-badge: 12px;
+
+  /* -- 2. Type ------------------------------------------------------------- */
+
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular,
+    "SF Mono", Menlo, monospace;
+
+  /* Fluid scale. Display lands 32 → 56px, per the brand doc. */
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --text-lg: clamp(1.125rem, 1.06rem + 0.3vw, 1.25rem);
+  --text-xl: clamp(1.375rem, 1.25rem + 0.6vw, 1.75rem);
+  --text-2xl: clamp(1.75rem, 1.5rem + 1.2vw, 2.5rem);
+  --text-display: clamp(2rem, 1.4rem + 3vw, 3.5rem);
+
+  --leading-tight: 1.15;
+  --leading-snug: 1.35;
+  --leading-normal: 1.65;
+
+  --tracking-tight: -0.022em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.08em;
+  --tracking-label: 0.14em;
+
+  /* Editorial measure. Body prose does not run the width of a wide screen. */
+  --measure: 68ch;
+  --measure-narrow: 56ch;
+
+  /* -- 3. Space & layout --------------------------------------------------- */
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  --shell: 74rem;
+  --gutter: clamp(1.25rem, 5vw, 3rem);
+
+  /* The spine. A hairline running the page, picking up cyan at section nodes. */
+  --spine-w: 1px;
+  --spine-node: 7px;
+
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur: 180ms;
+}
+
+/* ---------------------------------------------------------------------------
+   Semantic layer — dark is the default.
+   --------------------------------------------------------------------------- */
+
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: var(--hoo-base);
+  --surface: var(--hoo-card);
+  --surface-raised: #1f1f23;
+  --border: var(--hoo-border);
+  --border-strong: #3f3f46;
+
+  --text: var(--hoo-white);
+  --text-2: var(--hoo-text-2);
+  --text-3: var(--hoo-text-3);
+  --muted: var(--hoo-muted);
+
+  --accent: var(--hoo-cyan);
+  --accent-dim: var(--hoo-cyan-dim);
+  --accent-glow: var(--hoo-cyan-glow);
+  --accent-ink: var(--hoo-cyan);
+
+  --selection-bg: var(--hoo-cyan-dim);
+  --selection-fg: var(--hoo-white);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #ffffff;
+  --surface: var(--hoo-zinc-100);
+  --surface-raised: #ffffff;
+  --border: var(--hoo-zinc-200);
+  --border-strong: var(--hoo-zinc-300);
+
+  --text: var(--hoo-base);
+  --text-2: var(--hoo-zinc-800);
+  --text-3: var(--hoo-zinc-600);
+  --muted: var(--hoo-muted);
+
+  --accent: var(--hoo-cyan-ink);
+  --accent-dim: rgba(14, 116, 144, 0.1);
+  --accent-glow: rgba(14, 116, 144, 0.25);
+  --accent-ink: var(--hoo-cyan-ink);
+
+  --selection-bg: rgba(14, 116, 144, 0.16);
+  --selection-fg: var(--hoo-base);
+}

@@ -1,0 +1,263 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/Section.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { site, headlines, profiles, email, now } from "../site";
+
+const projects = (await getCollection("projects"))
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const featured = projects.slice(0, 6);
+const rest = projects.length - featured.length;
+---
+
+<BaseLayout title={`${site.name} — ${site.role}`} suffix={false}>
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div class="hero-text">
+        <p class="label">{site.role}</p>
+        <h1>{headlines.home}</h1>
+        <p class="sub">{headlines.homeSub}</p>
+
+        <div class="actions">
+          <a class="btn primary" href="/work">See the work</a>
+          <a class="btn" href="/about">About</a>
+        </div>
+      </div>
+
+      <div class="hero-portrait">
+        <img
+          src="/img/kolisachint.jpg"
+          alt={`${site.name}`}
+          width="220"
+          height="220"
+          loading="eager"
+          decoding="async"
+        />
+        <span class="portrait-node" aria-hidden="true"></span>
+      </div>
+    </div>
+  </section>
+
+  <Section eyebrow="Now" tight>
+    <p class="now">{now.text}</p>
+    <p class="now-stamp mono">Updated {now.updated}</p>
+  </Section>
+
+  <Section eyebrow="Selected work">
+    <div class="sec-head">
+      <h2>Things I build in the open</h2>
+      <p class="lede">
+        Tooling for coding agents, mostly in Rust and TypeScript. Small binaries
+        that do one thing, and the runtimes that stitch them together.
+      </p>
+    </div>
+
+    <div class="cards">
+      {featured.map((project) => <ProjectCard project={project} />)}
+    </div>
+
+    <p class="more">
+      <a class="link" href="/work"
+        >All work{rest > 0 && <span>, including {rest} more</span>} &rarr;</a
+      >
+    </p>
+  </Section>
+
+  <Section eyebrow="Contact" tight>
+    <div class="sec-head">
+      <h2>Reachable</h2>
+      <p class="lede">
+        Email is best. I read everything, and reply to anything that is not a
+        template.
+      </p>
+    </div>
+
+    <ul class="contact">
+      <li>
+        <a class="link" id="hero-mail" href="#" data-u={email.user} data-d={email.domain}>
+          <span class="mono">{email.user}<span aria-hidden="true">&#64;</span>{email.domain}</span>
+        </a>
+      </li>
+      {
+        profiles.map((p) => (
+          <li>
+            <a class="link" href={p.url} rel="me">
+              <span class="mono">{p.name} <span class="dim">{p.handle}</span></span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: clamp(var(--space-16), 12vh, var(--space-32))
+      var(--space-16);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+    align-items: center;
+  }
+
+  .hero-text > .label {
+    margin-bottom: var(--space-6);
+  }
+
+  .hero h1 {
+    max-width: 18ch;
+  }
+
+  .sub {
+    margin-top: var(--space-6);
+    font-size: var(--text-lg);
+    color: var(--text-3);
+    max-width: var(--measure-narrow);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    padding-inline: var(--space-6);
+    border: 1px solid var(--border);
+    border-radius: var(--hoo-r-badge);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-2);
+    transition:
+      border-color var(--dur) var(--ease),
+      color var(--dur) var(--ease),
+      background var(--dur) var(--ease);
+  }
+
+  .btn:hover {
+    border-color: var(--border-strong);
+    color: var(--text);
+    background: var(--surface);
+  }
+
+  .btn.primary {
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    color: var(--text);
+  }
+
+  .btn.primary:hover {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  /* Portrait. Present, not dominant — the work is the headline. */
+  .hero-portrait {
+    position: relative;
+    width: fit-content;
+    justify-self: start;
+  }
+
+  .hero-portrait img {
+    width: clamp(140px, 22vw, 220px);
+    height: clamp(140px, 22vw, 220px);
+    object-fit: cover;
+    border-radius: var(--hoo-r-card);
+    border: 1px solid var(--border);
+    filter: grayscale(1) contrast(1.02);
+    transition: filter 420ms var(--ease);
+  }
+
+  .hero-portrait:hover img {
+    filter: grayscale(0) contrast(1);
+  }
+
+  /* One node, bottom-left of the frame — the mark's signal, echoed. */
+  .portrait-node {
+    position: absolute;
+    left: -4px;
+    bottom: 22px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--bg), 0 0 16px var(--accent-glow);
+  }
+
+  @media (min-width: 52rem) {
+    .hero-grid {
+      grid-template-columns: 1fr auto;
+      gap: var(--space-16);
+    }
+    .hero-portrait {
+      justify-self: end;
+    }
+  }
+
+  .now {
+    font-size: var(--text-lg);
+    color: var(--text-2);
+    max-width: var(--measure);
+  }
+
+  .now-stamp {
+    margin-top: var(--space-3);
+    font-size: var(--text-xs);
+    color: var(--muted);
+  }
+
+  .sec-head {
+    max-width: var(--measure);
+    margin-bottom: var(--space-8);
+  }
+
+  .lede {
+    margin-top: var(--space-4);
+    color: var(--text-3);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+    gap: var(--space-4);
+  }
+
+  .more {
+    margin-top: var(--space-8);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+  }
+
+  .contact {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    gap: var(--space-3) var(--space-8);
+  }
+
+  .contact a {
+    color: var(--text-2);
+  }
+
+  .dim {
+    color: var(--muted);
+  }
+</style>
+
+<script>
+  const a = document.getElementById("hero-mail") as HTMLAnchorElement | null;
+  if (a?.dataset.u && a.dataset.d) {
+    a.href = `mailto:${a.dataset.u}@${a.dataset.d}`;
+  }
+</script>

@@ -1,0 +1,107 @@
+---
+import { site, profiles, email } from "../site";
+const year = new Date().getFullYear();
+---
+
+<footer class="foot">
+  <div class="shell foot-inner">
+    <div class="col">
+      <p class="label">Elsewhere</p>
+      <ul class="links">
+        {
+          profiles.map((p) => (
+            <li>
+              <a class="link" href={p.url} rel="me">
+                {p.name}
+                <span class="handle">{p.handle}</span>
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a class="link" id="foot-mail" href="#" data-u={email.user} data-d={email.domain}>
+            Email<span class="handle">{email.user}<span aria-hidden="true">&#64;</span>{email.domain}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <p class="colophon mono">
+      <span>&copy; {year} {site.name}</span>
+      <span class="sep" aria-hidden="true">·</span>
+      <span>Built with Astro, no trackers</span>
+      <span class="sep" aria-hidden="true">·</span>
+      <a class="link" href="https://github.com/kolisachint/kolisachint.github.io">Source</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .foot {
+    margin-top: auto;
+    padding-block: var(--space-16) var(--space-12);
+    border-top: 1px solid var(--border);
+  }
+
+  .foot-inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .col p.label {
+    margin-bottom: var(--space-4);
+  }
+
+  .links {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-8);
+  }
+
+  .links a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    color: var(--text-2);
+    text-decoration: none;
+  }
+
+  .links a:hover {
+    color: var(--accent-ink);
+  }
+
+  .handle {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--muted);
+  }
+
+  .colophon {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    color: var(--muted);
+    font-size: var(--text-xs);
+  }
+
+  .colophon a {
+    color: var(--muted);
+    text-decoration-color: var(--border-strong);
+  }
+
+  .sep {
+    opacity: 0.5;
+  }
+</style>
+
+<script>
+  // The address is split across elements in the markup, so it never appears as
+  // a contiguous string for naive scrapers. The mailto: is assembled here.
+  const a = document.getElementById("foot-mail") as HTMLAnchorElement | null;
+  if (a?.dataset.u && a.dataset.d) {
+    a.href = `mailto:${a.dataset.u}@${a.dataset.d}`;
+  }
+</script>

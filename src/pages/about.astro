@@ -1,0 +1,274 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/Section.astro";
+import {
+  site,
+  headlines,
+  track,
+  recognition,
+  profiles,
+  email,
+} from "../site";
+
+const canonical = new URL("/about", Astro.site).href;
+
+/**
+ * Structured data is how a recruiter's tooling — and Google — reads this page.
+ * It is the reason the visible copy can stay short: the machine-readable part
+ * carries the identifiers, the human part carries the voice.
+ */
+const personLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  url: new URL("/", Astro.site).href,
+  mainEntityOfPage: canonical,
+  jobTitle: "Solution Architect",
+  description: site.description,
+  worksFor: {
+    "@type": "Organization",
+    name: "Tata Consultancy Services",
+  },
+  knowsAbout: [
+    "Google Cloud Platform",
+    "BigQuery",
+    "Apache Kafka",
+    "Data platform architecture",
+    "Data warehouse migration",
+    "Apigee",
+    "Rust",
+    "TypeScript",
+    "LLM agent tooling",
+  ],
+  sameAs: profiles.map((p) => p.url),
+};
+---
+
+<BaseLayout
+  title="About"
+  description="Solution architect working on cloud data platforms in large regulated enterprises, and the author of open-source tooling for coding agents."
+>
+  <script
+    slot="head"
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(personLd)}
+  />
+
+  <header class="page-head">
+    <div class="shell">
+      <p class="label">About</p>
+      <h1>{headlines.about}</h1>
+    </div>
+  </header>
+
+  <Section eyebrow="In short">
+    <div class="prose lede-prose">
+      <p>
+        I'm a solution architect working on cloud data platforms. Most of that
+        time has been inside large regulated enterprises — banking, retail,
+        telecoms — where the interesting problem is rarely the algorithm and
+        almost always the migration: moving something that cannot stop, without
+        stopping it.
+      </p>
+      <p>
+        Right now that means Google Cloud — BigQuery, Kafka, Composer, Apigee.
+        Before that, a long run through Teradata, Informatica, Ab Initio and the
+        rest of the on-premise warehouse world, which is why I'm relaxed about
+        legacy systems and suspicious of rewrites.
+      </p>
+      <p>
+        The open-source work comes from the same place. Nearly everything on the{" "}
+        <a class="link" href="/work">work page</a> exists because a tool I needed
+        was either missing, too slow, or too eager to guess. They are small on
+        purpose.
+      </p>
+    </div>
+  </Section>
+
+  <Section eyebrow="Track">
+    <ol class="track">
+      {
+        track.map((t) => (
+          <li class="row">
+            <span class="period mono">{t.period}</span>
+            <span class="detail">
+              <span class="role">{t.role}</span>
+              <span class="employer">{t.employer}</span>
+              <span class="client mono">{t.client}</span>
+            </span>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="note">
+      Clients are described, not named. The companies above are employers.
+    </p>
+  </Section>
+
+  <Section eyebrow="Recognition" tight>
+    <p class="recognition">
+      Architected work recognised at {
+        recognition.map((r, i) => (
+          <>
+            {i > 0 && (i === recognition.length - 1 ? " and " : ", ")}
+            <span class="award">
+              the {r.award} {r.year}
+            </span>
+          </>
+        ))
+      }, for a self-serve fraud journey.
+    </p>
+  </Section>
+
+  <Section eyebrow="Contact" tight>
+    <div class="prose">
+      <p>
+        Email is best — I read everything and reply to anything that is not a
+        template. If you are hiring, lead with the problem rather than the
+        stack.
+      </p>
+    </div>
+
+    <ul class="contact">
+      <li>
+        <a
+          class="link"
+          id="about-mail"
+          href="#"
+          data-u={email.user}
+          data-d={email.domain}
+        >
+          <span class="mono"
+            >{email.user}<span aria-hidden="true">&#64;</span>{email.domain}</span
+          >
+        </a>
+      </li>
+      {
+        profiles.map((p) => (
+          <li>
+            <a class="link" href={p.url} rel="me">
+              <span class="mono">
+                {p.name} <span class="dim">{p.handle}</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding-block: var(--space-16) var(--space-8);
+  }
+
+  .page-head .label {
+    margin-bottom: var(--space-6);
+  }
+
+  .page-head h1 {
+    max-width: 20ch;
+  }
+
+  .lede-prose {
+    color: var(--text-2);
+    font-size: var(--text-lg);
+  }
+
+  .track {
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2) var(--space-8);
+    padding-block: var(--space-6);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .period {
+    font-size: var(--text-sm);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .detail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .role {
+    color: var(--text);
+    font-weight: 520;
+  }
+
+  .employer {
+    color: var(--text-3);
+    font-size: var(--text-sm);
+  }
+
+  .client {
+    color: var(--muted);
+    font-size: var(--text-xs);
+  }
+
+  @media (min-width: 40rem) {
+    .row {
+      grid-template-columns: 9rem 1fr;
+      align-items: baseline;
+    }
+  }
+
+  .note,
+  .recognition {
+    max-width: var(--measure);
+  }
+
+  .note {
+    margin-top: var(--space-6);
+    font-size: var(--text-sm);
+    color: var(--muted);
+  }
+
+  .recognition {
+    color: var(--text-2);
+    font-size: var(--text-lg);
+  }
+
+  .award {
+    color: var(--text);
+    border-bottom: 1px solid var(--accent);
+    padding-bottom: 1px;
+  }
+
+  .contact {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-8);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    gap: var(--space-3) var(--space-8);
+  }
+
+  .contact a {
+    color: var(--text-2);
+  }
+
+  .dim {
+    color: var(--muted);
+  }
+</style>
+
+<script>
+  const a = document.getElementById("about-mail") as HTMLAnchorElement | null;
+  if (a?.dataset.u && a.dataset.d) {
+    a.href = `mailto:${a.dataset.u}@${a.dataset.d}`;
+  }
+</script>

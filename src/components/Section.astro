@@ -1,0 +1,109 @@
+---
+/**
+ * The spine.
+ *
+ * A hairline runs the full height of every section at a fixed column, picking
+ * up a cyan node where each section begins. Stacked sections make it read as
+ * one continuous line threading the page — signal propagation, borrowed from
+ * the brand's own language and used as structure rather than decoration.
+ */
+interface Props {
+  eyebrow?: string;
+  id?: string;
+  /** Tightens the vertical rhythm. For sections that sit close together. */
+  tight?: boolean;
+}
+
+const { eyebrow, id, tight = false } = Astro.props;
+---
+
+<section class:list={["section", tight && "tight"]} id={id}>
+  <div class="shell grid">
+    <p class="eyebrow label">{eyebrow}</p>
+    <div class="rail" aria-hidden="true"></div>
+    <div class="body">
+      <slot />
+    </div>
+  </div>
+</section>
+
+<style>
+  .section {
+    /* One knob. The rail's bleed and the node's offset both read it, so the
+       spine stays joined whatever the rhythm. */
+    --sec-pad: clamp(var(--space-12), 7vh, var(--space-20, 5rem));
+    padding-block: var(--sec-pad);
+  }
+
+  .section.tight {
+    --sec-pad: var(--space-12);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: var(--spine-w) 1fr;
+    column-gap: var(--space-6);
+    row-gap: var(--space-4);
+  }
+
+  .eyebrow {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+    /* Optically centre the label on the node. */
+    transform: translateY(-1px);
+  }
+
+  .rail {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    position: relative;
+    background: var(--border);
+    /* Bleed into the section padding so consecutive rails join up. */
+    margin-block: calc(-1 * var(--sec-pad));
+    padding-block: var(--sec-pad);
+  }
+
+  /* The node. One per section — the only cyan in most viewports. */
+  .rail::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: var(--sec-pad);
+    width: var(--spine-node);
+    height: var(--spine-node);
+    margin-left: calc(var(--spine-node) / -2);
+    margin-top: calc(var(--spine-node) / -2 + 0.55em);
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--bg), 0 0 14px var(--accent-glow);
+  }
+
+  .body {
+    grid-column: 2;
+    grid-row: 2;
+    min-width: 0;
+  }
+
+  @media (min-width: 60rem) {
+    .grid {
+      grid-template-columns: 11rem var(--spine-w) 1fr;
+      column-gap: var(--space-8);
+    }
+
+    .eyebrow {
+      grid-column: 1;
+      grid-row: 1;
+      text-align: right;
+    }
+
+    .rail {
+      grid-column: 2;
+    }
+
+    .body {
+      grid-column: 3;
+      grid-row: 1 / -1;
+    }
+  }
+</style>

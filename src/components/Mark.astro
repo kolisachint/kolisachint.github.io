@@ -1,0 +1,75 @@
+---
+/**
+ * The `sk` monogram.
+ *
+ * Built with the Hoo Brand System's construction method: geometric strokes,
+ * round caps, one cyan node in the counter. Here the node sits at the `k`
+ * junction — the point where three signals meet.
+ *
+ * Tile-less and inherits `currentColor`, so it works on any surface. The
+ * tiled versions live in public/brand/ for favicons and social cards.
+ */
+interface Props {
+  size?: number;
+  class?: string;
+  /** Renders the node dimmed until hovered. Used in the masthead. */
+  reactive?: boolean;
+}
+
+const { size = 32, class: className, reactive = false } = Astro.props;
+const width = Math.round((size * 138) / 128);
+---
+
+<svg
+  class:list={["mark", className, reactive && "reactive"]}
+  viewBox="30 38 138 128"
+  width={width}
+  height={size}
+  role="img"
+  aria-label="sk monogram"
+  fill="none"
+>
+  <path
+    d="M80.5,94.5 A20.5,20.5 0 1 0 60,115 A20.5,20.5 0 1 1 39.5,135.5"
+    stroke="currentColor"
+    stroke-width="14"
+    stroke-linecap="round"></path>
+  <line
+    x1="118"
+    y1="48"
+    x2="118"
+    y2="156"
+    stroke="currentColor"
+    stroke-width="14"
+    stroke-linecap="round"></line>
+  <path
+    d="M158,94 L118,130 L158,156"
+    stroke="currentColor"
+    stroke-width="14"
+    stroke-linecap="round"
+    stroke-linejoin="round"></path>
+  <circle class="node" cx="118" cy="130" r="12"></circle>
+</svg>
+
+<style>
+  .mark {
+    color: var(--text);
+    overflow: visible;
+  }
+
+  .node {
+    fill: var(--accent);
+    transition:
+      fill var(--dur) var(--ease),
+      r var(--dur) var(--ease);
+  }
+
+  .reactive .node {
+    fill: var(--muted);
+  }
+
+  :global(a:hover) > .reactive .node,
+  :global(a:focus-visible) > .reactive .node {
+    fill: var(--accent);
+  }
+</style>

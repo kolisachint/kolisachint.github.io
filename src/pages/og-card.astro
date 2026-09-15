@@ -1,0 +1,127 @@
+---
+/**
+ * Source for public/brand/og.png. Rendered, screenshotted and committed —
+ * not fetched by visitors. Regenerate with `npm run og` after changing it.
+ *
+ * It is a real route so the card uses the site's real fonts and tokens rather
+ * than an approximation. Kept out of the sitemap and marked noindex.
+ */
+import "@fontsource-variable/inter";
+import "@fontsource-variable/jetbrains-mono";
+import "../styles/global.css";
+import { site, headlines } from "../site";
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>OG card</title>
+  </head>
+  <body class="og-body">
+    <div class="card">
+      <div class="rail" aria-hidden="true"><span class="node"></span></div>
+
+      <div class="content">
+        <p class="label">{site.role}</p>
+        <h1>{headlines.home}</h1>
+        <p class="foot mono">
+          <svg class="mark" viewBox="30 38 138 128" width="34" height="32" fill="none">
+            <path
+              d="M80.5,94.5 A20.5,20.5 0 1 0 60,115 A20.5,20.5 0 1 1 39.5,135.5"
+              stroke="#FAFAFA"
+              stroke-width="14"
+              stroke-linecap="round"></path>
+            <line
+              x1="118"
+              y1="48"
+              x2="118"
+              y2="156"
+              stroke="#FAFAFA"
+              stroke-width="14"
+              stroke-linecap="round"></line>
+            <path
+              d="M158,94 L118,130 L158,156"
+              stroke="#FAFAFA"
+              stroke-width="14"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+            <circle cx="118" cy="130" r="12" fill="#00F0FF"></circle>
+          </svg>
+          <span>{site.name}</span>
+          <span class="dim">kolisachint.github.io</span>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
+
+<style is:global>
+  .og-body {
+    margin: 0;
+    background: #09090b;
+  }
+
+  .card {
+    width: 1200px;
+    height: 630px;
+    display: flex;
+    gap: 56px;
+    padding: 78px 84px;
+    background: #09090b;
+    box-sizing: border-box;
+  }
+
+  .rail {
+    position: relative;
+    flex: 0 0 1px;
+    background: #27272a;
+  }
+
+  .node {
+    position: absolute;
+    left: 50%;
+    top: 96px;
+    width: 11px;
+    height: 11px;
+    margin-left: -5.5px;
+    border-radius: 50%;
+    background: #00f0ff;
+    box-shadow: 0 0 0 6px #09090b, 0 0 26px rgba(0, 240, 255, 0.5);
+  }
+
+  .card .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+  }
+
+  .card .label {
+    font-size: 17px;
+    letter-spacing: 0.14em;
+  }
+
+  .card h1 {
+    margin: 30px 0 0;
+    font-size: 72px;
+    line-height: 1.08;
+    letter-spacing: -0.028em;
+    color: #fafafa;
+    max-width: 17ch;
+  }
+
+  .card .foot {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 56px 0 0;
+    font-size: 19px;
+    color: #e4e4e7;
+  }
+
+  .card .dim {
+    color: #71717a;
+  }
+</style>

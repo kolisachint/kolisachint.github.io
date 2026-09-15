@@ -1,0 +1,159 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+  /** Shows the first paragraph of the body. Off in dense listings. */
+  detail?: string;
+}
+
+const { project, detail } = Astro.props;
+const { title, tagline, lang, repo, npm, site, status, tags } = project.data;
+---
+
+<article class="card">
+  <a class="card-link" href={repo}>
+    <span class="visually-hidden">{title} on GitHub</span>
+  </a>
+
+  <header class="head">
+    <h3 class="title">{title}</h3>
+    <span class="dot" aria-hidden="true"></span>
+  </header>
+
+  <p class="tagline">{tagline}</p>
+
+  {detail && <p class="detail">{detail}</p>}
+
+  <footer class="meta mono">
+    <span class="lang">{lang}</span>
+    <span class:list={["status", status]}>{status}</span>
+    {tags.slice(0, 3).map((t) => <span class="tag">{t}</span>)}
+    <span class="spacer"></span>
+    {npm && <a class="out" href={npm}>npm</a>}
+    {site && <a class="out" href={site}>site</a>}
+  </footer>
+</article>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    border: 1px solid var(--border);
+    border-radius: var(--hoo-r-card);
+    background: var(--surface);
+    transition:
+      border-color var(--dur) var(--ease),
+      background var(--dur) var(--ease),
+      transform var(--dur) var(--ease);
+  }
+
+  .card:hover {
+    border-color: var(--border-strong);
+    background: var(--surface-raised);
+    transform: translateY(-2px);
+  }
+
+  /* Whole-card target, but real links inside still win. */
+  .card-link {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    z-index: 0;
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .title {
+    font-size: var(--text-lg);
+    font-weight: 560;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  /* The card's node. Lights on hover — one cyan moment, earned. */
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--border-strong);
+    transition:
+      background var(--dur) var(--ease),
+      box-shadow var(--dur) var(--ease);
+  }
+
+  .card:hover .dot,
+  .card:focus-within .dot {
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
+  }
+
+  .tagline {
+    color: var(--text-2);
+    max-width: var(--measure-narrow);
+  }
+
+  .detail {
+    color: var(--text-3);
+    font-size: var(--text-sm);
+    max-width: var(--measure-narrow);
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    margin-top: auto;
+    padding-top: var(--space-4);
+    font-size: var(--text-xs);
+    color: var(--muted);
+  }
+
+  .lang {
+    color: var(--text-3);
+  }
+
+  .status::before {
+    content: "";
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    margin-right: 0.5em;
+    border-radius: 50%;
+    background: currentColor;
+    vertical-align: 0.1em;
+  }
+
+  .status.shipped {
+    color: var(--text-3);
+  }
+
+  .tag::before {
+    content: "#";
+    opacity: 0.55;
+  }
+
+  .spacer {
+    margin-left: auto;
+  }
+
+  .out {
+    position: relative;
+    z-index: 1;
+    color: var(--text-3);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+    text-underline-offset: 0.25em;
+  }
+
+  .out:hover {
+    color: var(--accent-ink);
+  }
+</style>
