@@ -51,21 +51,6 @@ const more = tail(repos);
               <Content />
             </div>
 
-            {entry.data.demo && (
-              <figure class="demo">
-                <video
-                  src={entry.data.demo.src}
-                  poster={entry.data.demo.poster}
-                  controls
-                  preload="none"
-                  playsinline
-                />
-                {entry.data.demo.caption && (
-                  <figcaption class="mono">{entry.data.demo.caption}</figcaption>
-                )}
-              </figure>
-            )}
-
             <p class="meta mono">
               <span class="lang">{entry.data.lang}</span>
               <span class="sep" aria-hidden="true">
@@ -212,28 +197,6 @@ const more = tail(repos);
 
   .body :global(a:hover) {
     color: var(--accent-ink);
-  }
-
-  .demo {
-    margin-top: var(--space-6);
-    margin-bottom: 0;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    border-radius: var(--hoo-r-card);
-    background: var(--surface);
-  }
-
-  .demo video {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 10;
-  }
-
-  .demo figcaption {
-    padding: var(--space-3) var(--space-4);
-    font-size: var(--text-xs);
-    color: var(--muted);
-    border-top: 1px solid var(--border);
   }
 
   .meta {
