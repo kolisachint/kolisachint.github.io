@@ -1,14 +1,14 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import { groups, source } from "../../lib/docs";
-
-const synced = new Date(source.syncedAt).toISOString().slice(0, 10);
+import DocsLayout from "../../layouts/DocsLayout.astro";
 
 /**
  * Deliberately not upstream's index.md, which is a list of links to the other
- * pages — the sidebar already does that job. This is the entry point: what the
- * thing is, how to install it, and where to go next.
+ * pages — the sidebar already does that job, and now that the landing renders
+ * inside the same two-pane shell it does it here too. This page is the entry
+ * point: what the thing is, how to install it, and what it looks like running.
  */
+const INSTALL = "npm install -g @kolisachint/hoocode-agent";
+
 const modes = [
   { name: "Ask", note: "answer, do not touch the repository" },
   { name: "Plan", note: "investigate and propose, no edits" },
@@ -17,67 +17,51 @@ const modes = [
 ];
 ---
 
-<BaseLayout
+<DocsLayout
+  id="index"
+  landing
   title="HooCode — deterministic terminal coding agent"
   description="HooCode is a deterministic terminal coding agent — four scoped modes (Ask · Plan · Build · Debug), 25+ providers, hybrid search, and one-click plugins in a single binary."
-  suffix={false}
 >
-  <section class="hero">
-    <div class="shell">
-      <div class="hero-grid">
-        <div class="hero-text">
-          {/* Not <picture> with prefers-color-scheme: the toggle sets data-theme,
-              so the media query would disagree with it the moment anyone switches
-              against their OS. Both marks ship; CSS picks. They are ~4 KB each. */}
-          <div class="lockup">
-            <img class="on-dark" src="/brand/hoo/hoocode.svg" alt="HooCode" width="274" height="80" />
-            <img class="on-light" src="/brand/hoo/hoocode-light.svg" alt="" aria-hidden="true" width="274" height="80" />
-          </div>
-
-          <h1>Deterministic terminal coding agent.</h1>
-
-          <p class="sub">
-            Four scoped modes, 25+ providers, hybrid search, and one-click
-            plugins in a single binary. Nothing applies without your approval.
-          </p>
-
-          <div class="install">
-            <p class="label">Install</p>
-            <pre class="cmd"><code>npm install -g @kolisachint/hoocode-agent</code></pre>
-            <p class="cmd-note mono">then run <code>hoocode</code> in a project directory</p>
-          </div>
-
-          <p class="links mono">
-            <a class="link" href="/hoocode/quickstart">Quickstart</a>
-            <span aria-hidden="true">·</span>
-            <a class="link" href="https://github.com/kolisachint/hoocode">GitHub</a>
-            <span aria-hidden="true">·</span>
-            <a class="link" href="https://www.npmjs.com/package/@kolisachint/hoocode-agent">npm</a>
-          </p>
-        </div>
-
-        {/* Click-to-play, never autoplay: 9 MB is not a background texture,
-            and preload="none" means it costs the poster until asked for. */}
-        <figure class="demo">
-          <video
-            src="/hoocode/demo.mp4"
-            poster="/hoocode/demo-poster.webp"
-            controls
-            preload="none"
-            playsinline
-            aria-label="HooCode demo recording"
-            aria-describedby="demo-caption"
-          />
-          <figcaption id="demo-caption" class="mono">
-            HooCode in Ask mode, mapping API routes with a subagent. 102
-            seconds, no audio.
-          </figcaption>
-        </figure>
-      </div>
+  <div class="lead">
+    {/* Not <picture> with prefers-color-scheme: the toggle sets data-theme,
+        so the media query would disagree with it the moment anyone switches
+        against their OS. Both marks ship; CSS picks. They are ~4 KB each. */}
+    <div class="lockup">
+      <img class="on-dark" src="/brand/hoo/hoocode.svg" alt="HooCode" width="274" height="80" />
+      <img class="on-light" src="/brand/hoo/hoocode-light.svg" alt="" aria-hidden="true" width="274" height="80" />
     </div>
-  </section>
 
-  <section class="shell band">
+    <h1>Deterministic terminal coding agent.</h1>
+
+    <p class="sub">
+      Four scoped modes, 25+ providers, hybrid search, and one-click plugins in
+      a single binary. Nothing applies without your approval.
+    </p>
+
+    <div class="install">
+      <p class="label" id="install-label">Install</p>
+      <div class="cmd-row">
+        <pre class="cmd" aria-labelledby="install-label"><code>{INSTALL}</code></pre>
+        <button class="copy mono" type="button" data-copy={INSTALL}>
+          <span data-copy-label>Copy</span>
+        </button>
+      </div>
+      <p class="cmd-note mono">
+        then run <code>hoocode</code> in a project directory
+      </p>
+      <p class="visually-hidden" role="status" data-copy-status></p>
+    </div>
+
+    <div class="actions">
+      <a class="btn primary" href="/hoocode/quickstart">Quickstart</a>
+      <a class="btn" href="https://github.com/kolisachint/hoocode">GitHub</a>
+      <a class="btn" href="https://www.npmjs.com/package/@kolisachint/hoocode-agent">npm</a>
+    </div>
+  </div>
+
+  <section class="block">
+    <h2 class="label">Modes</h2>
     <div class="modes">
       {
         modes.map((m) => (
@@ -90,55 +74,38 @@ const modes = [
     </div>
   </section>
 
-  <section class="shell index">
-    <h2 class="visually-hidden">Documentation</h2>
-    <div class="grid">
-      {
-        groups.map((g) => (
-          <div class="group">
-            <p class="label">{g.title}</p>
-            <ul>
-              {g.items.map((item) => (
-                <li>
-                  <a href={item.href}>{item.title}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
-      }
-    </div>
+  <section class="block">
+    <h2 class="label">Demo</h2>
 
-    <p class="provenance mono">
-      Documentation synced from {source.repo}@{source.sha.slice(0, 7)} on {synced}.
-      Corrections belong in that repository.
-    </p>
+    {/* Click-to-play, never autoplay: 9 MB is not a background texture, and
+        preload="none" means it costs the poster until asked for. Capped well
+        under the width of the pane — a recording of a terminal does not get
+        more legible by being stretched, it just stops looking deliberate.
+
+        The poster is frame 0 of the recording itself (`bin/site poster`): an
+        opened session, one empty prompt, nothing else. A frame lifted from the
+        middle looked busy before anyone had pressed play, and it advertised a
+        state the video does not start in. */}
+    <figure class="demo">
+      <video
+        src="/hoocode/demo.mp4"
+        poster="/hoocode/demo-poster.webp"
+        controls
+        preload="none"
+        playsinline
+        aria-label="HooCode demo recording"
+        aria-describedby="demo-caption"
+      />
+      <figcaption id="demo-caption" class="mono">
+        Ask, then Plan, then Build — one session scaffolds a Bun and Hono
+        service with tests. 102 seconds, no audio.
+      </figcaption>
+    </figure>
   </section>
-</BaseLayout>
+</DocsLayout>
 
 <style>
-  .hero {
-    padding-block: var(--space-16) var(--space-12);
-  }
-
-  /* One column until there is room for two. The media column is the wider of
-     the pair: the text sets to a narrow measure and stops, the recording is
-     the thing people came to look at. */
-  .hero-grid {
-    display: grid;
-    /* Explicit track with a 0 floor. The recording is intrinsically 1598px
-       wide; a 0-floor track means that number can never reach track sizing. */
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-12);
-    align-items: center;
-  }
-
-  @media (min-width: 60rem) {
-    .hero-grid {
-      grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
-      gap: var(--space-16);
-    }
-  }
+  /* -- Lead --------------------------------------------------------------- */
 
   .lockup {
     display: grid;
@@ -147,7 +114,7 @@ const modes = [
 
   .lockup img {
     grid-area: 1 / 1;
-    height: 44px;
+    height: 40px;
     width: auto;
   }
 
@@ -156,8 +123,8 @@ const modes = [
     visibility: hidden;
   }
 
-  .hero h1 {
-    margin-top: var(--space-8);
+  .lead h1 {
+    margin-top: var(--space-6);
     font-size: var(--text-2xl);
     max-width: 16ch;
   }
@@ -168,6 +135,8 @@ const modes = [
     max-width: var(--measure-narrow);
   }
 
+  /* -- Install ------------------------------------------------------------ */
+
   .install {
     margin-top: var(--space-8);
     max-width: 34rem;
@@ -177,9 +146,19 @@ const modes = [
     margin-bottom: var(--space-3);
   }
 
+  .cmd-row {
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-2);
+  }
+
   .cmd {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
     margin: 0;
-    padding: var(--space-4);
+    padding: var(--space-3) var(--space-4);
     border: 1px solid var(--border);
     border-radius: var(--hoo-r-badge);
     background: var(--surface);
@@ -187,6 +166,57 @@ const modes = [
     font-family: var(--font-mono);
     font-size: var(--text-sm);
     color: var(--text);
+  }
+
+  .copy {
+    flex: none;
+    min-width: 5.5rem;
+    padding-inline: var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: var(--hoo-r-badge);
+    background: transparent;
+    color: var(--text-3);
+    font-size: var(--text-xs);
+    cursor: pointer;
+    transition:
+      border-color var(--dur) var(--ease),
+      color var(--dur) var(--ease),
+      background var(--dur) var(--ease);
+  }
+
+  .copy:hover {
+    border-color: var(--border-strong);
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .copy[data-done] {
+    color: var(--accent-ink);
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+
+  /* No clipboard API, no button. The command is selectable either way. */
+  .copy[hidden] {
+    display: none;
+  }
+
+  /* Narrow screens: stack, and let the command wrap rather than hide its own
+     tail behind a scroll nobody discovers. */
+  @media (max-width: 30rem) {
+    .cmd-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .cmd {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      overflow-x: visible;
+    }
+
+    .copy {
+      min-height: 40px;
+    }
   }
 
   .cmd-note {
@@ -199,49 +229,29 @@ const modes = [
     color: var(--text-3);
   }
 
-  .links {
+  .actions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
     margin-top: var(--space-8);
-    font-size: var(--text-sm);
-    color: var(--muted);
   }
 
-  /* -- Demo --------------------------------------------------------------- */
+  /* -- Blocks ------------------------------------------------------------- */
 
-  .demo {
-    margin: 0;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    border-radius: var(--hoo-r-card);
-    background: var(--surface);
+  .block {
+    margin-top: var(--space-16);
   }
 
-  /* The recording's own ratio, so the poster fills the frame with no bars and
-     the space is reserved before it loads. */
-  .demo video {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1598 / 1080;
+  .block > .label {
+    margin-bottom: var(--space-4);
   }
 
-  .demo figcaption {
-    padding: var(--space-3) var(--space-4);
-    font-size: var(--text-xs);
-    color: var(--muted);
-    border-top: 1px solid var(--border);
-  }
-
-  /* -- Modes -------------------------------------------------------------- */
-
-  .band {
-    padding-block: var(--space-8);
-  }
-
+  /* Explicit counts, not auto-fit: four cells in a three-wide grid leaves one
+     empty, and with the hairline-gap technique an empty cell is a visible
+     grey rectangle. 1 → 2 → 4 always divides. */
   .modes {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    grid-template-columns: 1fr;
     gap: 1px;
     background: var(--border);
     border: 1px solid var(--border);
@@ -249,8 +259,22 @@ const modes = [
     overflow: hidden;
   }
 
+  @media (min-width: 34rem) {
+    .modes {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Only once the shell is wide enough that the sidebar has stopped taking
+     it out of the pane. */
+  @media (min-width: 86rem) {
+    .modes {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
   .mode {
-    padding: var(--space-5, 1.25rem) var(--space-6);
+    padding: var(--space-5) var(--space-6);
     background: var(--bg);
   }
 
@@ -273,48 +297,63 @@ const modes = [
     color: var(--text-3);
   }
 
-  /* -- Index -------------------------------------------------------------- */
+  /* -- Demo --------------------------------------------------------------- */
 
-  .index {
-    padding-block: var(--space-12) var(--space-24);
+  .demo {
+    margin: 0;
+    max-width: 34rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--hoo-r-card);
+    background: var(--surface);
+    box-shadow: var(--shadow-2);
   }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-    gap: var(--space-8) var(--space-12);
-  }
-
-  .group ul {
-    list-style: none;
-    padding: 0;
-    margin-top: var(--space-3);
-    border-left: 1px solid var(--border);
-  }
-
-  .group li a {
+  /* The recording's own ratio, so the poster fills the frame with no bars and
+     the space is reserved before it loads. */
+  .demo video {
     display: block;
-    padding: 0.28rem 0 0.28rem var(--space-4);
-    margin-left: -1px;
-    border-left: 1px solid transparent;
-    font-size: var(--text-sm);
-    color: var(--text-3);
-    transition:
-      color var(--dur) var(--ease),
-      border-color var(--dur) var(--ease);
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1598 / 1080;
   }
 
-  .group li a:hover {
-    color: var(--text);
-    border-left-color: var(--accent);
-  }
-
-  .provenance {
-    margin-top: var(--space-16);
-    padding-top: var(--space-6);
-    border-top: 1px solid var(--border);
+  .demo figcaption {
+    padding: var(--space-3) var(--space-4);
     font-size: var(--text-xs);
     color: var(--muted);
-    max-width: var(--measure);
+    border-top: 1px solid var(--border);
   }
 </style>
+
+<script>
+  // Copy-to-clipboard for the install line. Progressive: the button is removed
+  // outright where the API is unavailable, rather than left there to fail.
+  const btn = document.querySelector<HTMLButtonElement>(".copy");
+  const label = btn?.querySelector<HTMLElement>("[data-copy-label]");
+  const status = document.querySelector<HTMLElement>("[data-copy-status]");
+
+  if (btn && !navigator.clipboard) {
+    btn.hidden = true;
+  } else if (btn && label) {
+    let timer: number | undefined;
+
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.copy ?? "");
+      } catch {
+        return;
+      }
+      label.textContent = "Copied";
+      btn.dataset.done = "";
+      if (status) status.textContent = "Install command copied.";
+
+      clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        label.textContent = "Copy";
+        delete btn.dataset.done;
+        if (status) status.textContent = "";
+      }, 1600);
+    });
+  }
+</script>
