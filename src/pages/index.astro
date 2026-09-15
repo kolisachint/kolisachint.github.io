@@ -39,6 +39,7 @@ const rest = projects.length - featured.length;
           width="220"
           height="220"
           loading="eager"
+          fetchpriority="high"
           decoding="async"
         />
         <span class="portrait-node" aria-hidden="true"></span>
@@ -84,7 +85,7 @@ const rest = projects.length - featured.length;
       </p>
     </div>
 
-    <ul class="contact" data-reveal>
+    <ul class="contacts" data-reveal>
       <li>
         <a class="link" id="hero-mail" href="#" data-u={email.user} data-d={email.domain}>
           <span class="mono">{email.user}<span aria-hidden="true">&#64;</span>{email.domain}</span>
@@ -111,23 +112,8 @@ const rest = projects.length - featured.length;
       var(--space-16);
   }
 
-  /* One controlled glow moment: a faint cyan orb behind the portrait. */
-  .hero::before {
-    content: "";
-    position: absolute;
-    top: -10rem;
-    right: -12rem;
-    width: 34rem;
-    height: 34rem;
-    border-radius: 50%;
-    background: radial-gradient(
-      closest-side,
-      var(--accent-dim),
-      transparent 70%
-    );
-    opacity: 0.55;
-    pointer-events: none;
-  }
+  /* No glow orb here. Cyan is emphasis, not atmosphere — the portrait node
+     below is the one cyan moment this viewport gets. */
 
   .hero-grid {
     display: grid;
@@ -151,44 +137,12 @@ const rest = projects.length - featured.length;
     max-width: var(--measure-narrow);
   }
 
+  /* Buttons are global now — see .btn in global.css. */
   .actions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
     margin-top: var(--space-8);
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    height: 40px;
-    padding-inline: var(--space-6);
-    border: 1px solid var(--border);
-    border-radius: var(--hoo-r-badge);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--text-2);
-    transition:
-      border-color var(--dur) var(--ease),
-      color var(--dur) var(--ease),
-      background var(--dur) var(--ease);
-  }
-
-  .btn:hover {
-    border-color: var(--border-strong);
-    color: var(--text);
-    background: var(--surface);
-  }
-
-  .btn.primary {
-    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
-    color: var(--text);
-  }
-
-  .btn.primary:hover {
-    border-color: var(--accent);
-    background: var(--accent-dim);
-    box-shadow: 0 0 24px var(--accent-glow);
   }
 
   /* Portrait. Present, not dominant — the work is the headline. */
@@ -274,22 +228,6 @@ const rest = projects.length - featured.length;
     margin-top: var(--space-8);
     font-family: var(--font-mono);
     font-size: var(--text-sm);
-  }
-
-  .contact {
-    list-style: none;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
-    gap: var(--space-3) var(--space-8);
-  }
-
-  .contact a {
-    color: var(--text-2);
-  }
-
-  .dim {
-    color: var(--muted);
   }
 </style>
 

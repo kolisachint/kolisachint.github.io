@@ -38,7 +38,7 @@ const personLd = {
     "Apigee",
     "Rust",
     "TypeScript",
-    "LLM agent tooling",
+    "Coding agent tooling",
   ],
   sameAs: profiles.map((p) => p.url),
 };
@@ -89,9 +89,12 @@ const personLd = {
   <Section eyebrow="Track">
     <ol class="track" data-reveal>
       {
-        track.map((t) => (
-          <li class="row">
-            <span class="period mono">{t.period}</span>
+        track.map((t, i) => (
+          <li class:list={["row", i === 0 && "current"]}>
+            <span class="period mono">
+              <span class="node" aria-hidden="true" />
+              {t.period}
+            </span>
             <span class="detail">
               <span class="role">{t.role}</span>
               <span class="employer">{t.employer}</span>
@@ -131,7 +134,7 @@ const personLd = {
       </p>
     </div>
 
-    <ul class="contact" data-reveal>
+    <ul class="contacts" data-reveal>
       <li>
         <a
           class="link"
@@ -192,10 +195,33 @@ const personLd = {
     border-bottom: 1px solid var(--border);
   }
 
+  /* A marker per row. Only the current role is cyan — the rest are hairline
+     grey, so the eye lands on "now" and nowhere else. */
   .period {
     font-size: var(--text-sm);
     color: var(--muted);
     white-space: nowrap;
+  }
+
+  /* inline-block, not a flex item: the row aligns on the baseline, and a flex
+     container would hand it the dot's bottom edge instead of the text's. */
+  .node {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: var(--space-2);
+    border-radius: 50%;
+    background: var(--border-strong);
+    vertical-align: 0.12em;
+  }
+
+  .current .period {
+    color: var(--text-3);
+  }
+
+  .current .node {
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent-glow);
   }
 
   .detail {
@@ -221,7 +247,7 @@ const personLd = {
 
   @media (min-width: 40rem) {
     .row {
-      grid-template-columns: 9rem 1fr;
+      grid-template-columns: 10rem 1fr;
       align-items: baseline;
     }
   }
@@ -248,21 +274,8 @@ const personLd = {
     padding-bottom: 1px;
   }
 
-  .contact {
-    list-style: none;
-    padding: 0;
+  .contacts {
     margin-top: var(--space-8);
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
-    gap: var(--space-3) var(--space-8);
-  }
-
-  .contact a {
-    color: var(--text-2);
-  }
-
-  .dim {
-    color: var(--muted);
   }
 </style>
 

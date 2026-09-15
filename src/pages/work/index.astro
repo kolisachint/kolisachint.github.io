@@ -28,6 +28,18 @@ const more = tail(repos);
     <div class="shell" data-hero>
       <p class="label">Work</p>
       <h1>{headlines.work}</h1>
+
+      {/* Nine entries, each several paragraphs long. Without an index the page
+          is a scroll; with one it is a document. */}
+      <nav class="jump" aria-label="Jump to a project">
+        {
+          projects.map(({ entry }) => (
+            <a class="chip mono" href={`#${entry.id}`}>
+              {entry.data.title}
+            </a>
+          ))
+        }
+      </nav>
     </div>
   </header>
 
@@ -133,6 +145,34 @@ const more = tail(repos);
     max-width: 20ch;
   }
 
+  .jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-8);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    padding-inline: var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: var(--text-xs);
+    color: var(--text-3);
+    transition:
+      border-color var(--dur) var(--ease),
+      color var(--dur) var(--ease),
+      background var(--dur) var(--ease);
+  }
+
+  .chip:hover {
+    border-color: var(--border-strong);
+    background: var(--surface);
+    color: var(--text);
+  }
+
   .projects {
     list-style: none;
     padding: 0;
@@ -144,6 +184,17 @@ const more = tail(repos);
     margin-top: var(--space-12);
     padding-top: var(--space-12);
     border-top: 1px solid var(--border);
+  }
+
+  /* Arriving from the jump nav, clear the sticky masthead plus the rule. */
+  .project {
+    scroll-margin-top: calc(62px + var(--space-12));
+  }
+
+  /* Landing on an entry should say so, then get out of the way. */
+  .project:target .node {
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
   }
 
   .project-head {

@@ -11,13 +11,11 @@ import Mark from "../components/Mark.astro";
     <p class="sub">
       The page moved, or never existed. Neither is your fault.
     </p>
-    <p class="links mono">
-      <a class="link" href="/">Home</a>
-      <span aria-hidden="true">·</span>
-      <a class="link" href="/work">Work</a>
-      <span aria-hidden="true">·</span>
-      <a class="link" href="/about">About</a>
-    </p>
+    <nav class="links" aria-label="Somewhere that exists">
+      <a class="btn primary" href="/">Home</a>
+      <a class="btn" href="/work">Work</a>
+      <a class="btn" href="/hoocode">HooCode docs</a>
+    </nav>
   </section>
 </BaseLayout>
 
@@ -46,9 +44,8 @@ import Mark from "../components/Mark.astro";
 
   .links {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--space-3);
     margin-top: var(--space-4);
-    font-size: var(--text-sm);
-    color: var(--muted);
   }
 </style>
