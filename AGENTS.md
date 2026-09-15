@@ -120,10 +120,18 @@ Deployment is GitHub Actions to GitHub Pages. The site must build with
 npm run dev      local server
 npm run build    static build to dist/
 npm run check    astro check — must be 0 errors before a commit
+npm run verify   check + build + audit — the gate before a commit
+npm run audit    this file, expressed as greps (bin/site audit)
+npm run shots    screenshot every page, dark + light, 1440/820/390 → .shots/
 npm run repos    refresh the committed GitHub repository snapshot
 npm run docs     re-vendor the HooCode documentation
 npm run og       re-render public/brand/og.png from /og-card
 ```
+
+`bin/site` is the tool belt behind the last three, plus `bin/site design` for
+the ui-ux-pro-max search. `.hoocode/skills/site-design/` is the skill that
+explains the design loop and the traps it has already hit; an agent working on
+appearance should load it.
 
 The domain is undecided. Never hardcode `kolisachint.github.io` in a page,
 component, or content file. Read it from `site` in `astro.config.mjs` so a custom
@@ -222,9 +230,13 @@ relocate them without asking.
 ```
 AGENTS.md                this file
 astro.config.mjs         `site` lives here — the only place the domain appears
+bin/site                 verify · audit · shots · design — the repo's tool belt
+.hoocode/skills/         project-local agent skills
+  site-design/SKILL.md   the design loop, and every trap already paid for
 scripts/
   refresh-repos.mjs      GitHub snapshot refresher (npm run repos)
   make-og.sh             renders /og-card → public/brand/og.png (npm run og)
+  shot.mjs               CDP screenshots — real viewports, both themes
 public/
   brand/sk*.svg          the personal monogram, dark + light
   brand/favicon*.svg     32×favicon, dark + light
@@ -239,8 +251,9 @@ src/
   styles/tokens.css      raw brand palette → semantic tokens, both themes
   styles/global.css      reset, base elements, layout primitives
   styles/docs.css        documentation prose — plain CSS, namespaced under .doc
-  layouts/BaseLayout     head, masthead, theme boot script, footer
-  layouts/DocsLayout     sidebar, table of contents, prev/next, provenance
+  layouts/BaseLayout      head, masthead, theme boot script, footer
+  layouts/DocsLayout      the two-pane docs shell — sidebar, TOC, prev/next,
+                          provenance. `landing` renders /hoocode through it.
   components/            Mark, Section (the spine), ProjectCard, Footer, toggle
   lib/docs.ts            sidebar, ordering, titles and summaries for the docs
   lib/satteri-hoocode.mjs  Markdown plugins for the vendored docs
