@@ -13,7 +13,12 @@ const featured = projects.slice(0, 6);
 const rest = projects.length - featured.length;
 ---
 
-<BaseLayout title={`${site.name} — ${site.role}`} suffix={false}>
+<!-- Written out rather than composed: site.role already carries an em dash,
+     and two of them in one <title> reads as a mistake. -->
+<BaseLayout
+  title={`${site.name} — solution architect, cloud data platforms`}
+  suffix={false}
+>
   <section class="hero">
     <div class="shell hero-grid">
       <div class="hero-text">
