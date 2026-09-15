@@ -10,10 +10,10 @@ featured: true
 order: 1
 ---
 
-Most coding agents ask for trust. HooCode asks for approval. Every file edit and
-every shell command passes through a permission gate, and the agent works inside
-an explicit mode — Ask, Plan, Build, Debug — rather than behind one
-do-everything prompt that quietly changes behaviour between turns.
+Most coding agents ask for trust. HooCode asks for approval. It works in
+four scoped modes — Ask, Plan, Build, Debug — across 25+ providers, with
+hybrid search and one-click plugins in a single binary. Nothing applies
+without your approval.
 
 The repository is a monorepo of four parts that are useful on their own: the
 agent CLI, a runtime that handles tool calling and state, a unified API across

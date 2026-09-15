@@ -171,7 +171,7 @@
   },
   {
     "name": "hoocode",
-    "description": "A deterministic terminal coding agent, published to npm as @kolisachint/hoocode-agent. Agent runtime with tool calling, a unified LLM API across 25+ providers, a differential-rendering TUI, a permission gate on every edit, MCP and subagents. Extends a fork of the MIT-licensed pi-mono.",
+    "description": "Deterministic terminal coding agent with four scoped modes (Ask, Plan, Build, Debug), 25+ providers, hybrid search, and one-click plugins in a single binary. Published to npm as @kolisachint/hoocode-agent.",
     "lang": "TypeScript",
     "url": "https://github.com/kolisachint/hoocode",
     "stars": 1,
