@@ -143,6 +143,12 @@ hr {
   margin: var(--space-12) 0;
 }
 
+/* The masthead is sticky and 62px tall. Without this, every in-page anchor
+   lands underneath it. */
+:target {
+  scroll-margin-top: calc(62px + var(--space-6));
+}
+
 /* ---------------------------------------------------------------------------
    Layout primitives
    --------------------------------------------------------------------------- */
@@ -181,6 +187,81 @@ hr {
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   letter-spacing: var(--tracking-normal);
+}
+
+/* ---------------------------------------------------------------------------
+   Controls
+
+   Buttons appeared on three pages with three sets of local styles. They are
+   one thing, so they live in one place. Height is --control-h, which clears
+   the 44px touch floor without being asked twice.
+   --------------------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: var(--control-h);
+  padding-inline: var(--space-6);
+  border: 1px solid var(--border);
+  border-radius: var(--hoo-r-badge);
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    background var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
+}
+
+.btn:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+  background: var(--surface);
+}
+
+/* The page's single cyan action. One per viewport — see AGENTS.md. */
+.btn.primary {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  color: var(--text);
+}
+
+.btn.primary:hover {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  box-shadow: 0 0 24px var(--accent-glow);
+}
+
+.btn.small {
+  height: 34px;
+  padding-inline: var(--space-4);
+  font-size: var(--text-xs);
+}
+
+/* A row of addresses and profiles. Home and About both ended up hand-rolling
+   this; it is the same list in both places. */
+.contacts {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: var(--space-3) var(--space-8);
+}
+
+.contacts a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  color: var(--text-2);
+}
+
+.contacts .dim {
+  color: var(--muted);
 }
 
 .visually-hidden {

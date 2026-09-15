@@ -151,7 +151,7 @@
 }
 
 .doc pre {
-  padding: var(--space-4) var(--space-5, 1.25rem);
+  padding: var(--space-4) var(--space-5);
   border: 1px solid var(--border);
   border-radius: var(--hoo-r-badge);
   background: var(--surface) !important;
