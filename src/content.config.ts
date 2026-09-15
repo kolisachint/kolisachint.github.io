@@ -45,4 +45,17 @@ const projects = defineCollection({
  * });
  */
 
-export const collections = { projects };
+/**
+ * The vendored HooCode documentation. Synced by `npm run docs` from
+ * kolisachint/hoocode; never hand-edited here.
+ *
+ * The source files carry no frontmatter and are kept byte-identical to
+ * upstream, so the schema is empty on purpose. Titles come from
+ * src/data/hoocode-nav.json, falling back to the page's first H1.
+ */
+const docs = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/docs/hoocode" }),
+  schema: z.object({}),
+});
+
+export const collections = { projects, docs };

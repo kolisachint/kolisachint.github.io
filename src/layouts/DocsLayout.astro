@@ -1,0 +1,403 @@
+---
+import type { MarkdownHeading } from "astro";
+import BaseLayout from "./BaseLayout.astro";
+import "../styles/docs.css";
+import { groups, neighbours, groupFor, sourceUrl, source, DOCS_BASE } from "../lib/docs";
+
+interface Props {
+  id: string;
+  title: string;
+  description: string;
+  headings: MarkdownHeading[];
+  listed: boolean;
+}
+
+const { id, title, description, headings, listed } = Astro.props;
+
+const { prev, next } = neighbours(id);
+const group = groupFor(id);
+// h1 is the page title and h4+ is too granular for a rail this narrow.
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const synced = new Date(source.syncedAt).toISOString().slice(0, 10);
+---
+
+<BaseLayout title={`${title} · HooCode docs`} description={description} suffix={false}>
+  <div class="docs shell">
+    <aside class="side">
+      {/* A disclosure, open by default. On wide screens the summary is hidden
+          and this renders as an ordinary sidebar. On narrow ones a few lines of
+          script close it, so the reader is not scrolling past thirty-three
+          links to reach the page they just clicked. With script disabled it
+          stays open — long, but never broken. */}
+      <details class="disclosure" open>
+        <summary>
+          <span class="mono">Documentation</span>
+          <span class="chev" aria-hidden="true"></span>
+        </summary>
+
+        <nav aria-label="Documentation">
+        <a class="side-home" href={DOCS_BASE}>
+          <span class="mono">hoocode</span>
+          <span class="label">docs</span>
+        </a>
+
+        {
+          groups.map((g) => (
+            <div class="group">
+              <p class="label group-title">{g.title}</p>
+              <ul>
+                {g.items.map((item) => (
+                  <li>
+                    <a
+                      href={item.href}
+                      aria-current={item.id === id ? "page" : undefined}
+                    >
+                      {item.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+        </nav>
+      </details>
+    </aside>
+
+    <div class="main">
+      <p class="crumbs label">
+        <a href={DOCS_BASE}>HooCode</a>
+        {group && <><span aria-hidden="true">/</span><span>{group}</span></>}
+        {!listed && <><span aria-hidden="true">/</span><span>Reference</span></>}
+      </p>
+
+      <article class="doc">
+        <slot />
+      </article>
+
+      {
+        (prev || next) && (
+          <nav class="seq" aria-label="Documentation sequence">
+            {prev ? (
+              <a class="seq-link prev" href={prev.href}>
+                <span class="label">Previous</span>
+                <span class="seq-title">{prev.title}</span>
+              </a>
+            ) : (
+              <span />
+            )}
+            {next && (
+              <a class="seq-link next" href={next.href}>
+                <span class="label">Next</span>
+                <span class="seq-title">{next.title}</span>
+              </a>
+            )}
+          </nav>
+        )
+      }
+
+      <footer class="provenance mono">
+        <a href={sourceUrl(id)}>Edit this page on GitHub</a>
+        <span aria-hidden="true">·</span>
+        <span>
+          Synced from {source.repo}@{source.sha.slice(0, 7)} on {synced}
+        </span>
+      </footer>
+    </div>
+
+    {
+      toc.length > 1 && (
+        <aside class="toc">
+          <p class="label">On this page</p>
+          <ul>
+            {toc.map((h) => (
+              <li class:list={[`d${h.depth}`]}>
+                <a href={`#${h.slug}`}>{h.text}</a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .docs {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+    align-items: start;
+    padding-block: var(--space-8) var(--space-24);
+  }
+
+  /* -- Sidebar ------------------------------------------------------------ */
+
+  .side {
+    min-width: 0;
+  }
+
+  .side-home {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .side-home .mono {
+    font-weight: 500;
+  }
+
+  .group + .group {
+    margin-top: var(--space-6);
+  }
+
+  .group-title {
+    margin-bottom: var(--space-2);
+  }
+
+  .side ul {
+    list-style: none;
+    padding: 0;
+    border-left: 1px solid var(--border);
+  }
+
+  .side li a {
+    display: block;
+    padding: 0.28rem 0 0.28rem var(--space-4);
+    margin-left: -1px;
+    border-left: 1px solid transparent;
+    font-size: var(--text-sm);
+    color: var(--text-3);
+    transition:
+      color var(--dur) var(--ease),
+      border-color var(--dur) var(--ease);
+  }
+
+  .side li a:hover {
+    color: var(--text);
+    border-left-color: var(--border-strong);
+  }
+
+  /* The spine motif again: the current page lights its segment. */
+  .side li a[aria-current="page"] {
+    color: var(--text);
+    border-left-color: var(--accent);
+  }
+
+  /* -- Main --------------------------------------------------------------- */
+
+  .main {
+    min-width: 0;
+  }
+
+  .crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-6);
+  }
+
+  .crumbs a {
+    color: var(--text-3);
+  }
+
+  .crumbs a:hover {
+    color: var(--accent-ink);
+  }
+
+  .seq {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    margin-top: var(--space-16);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--border);
+  }
+
+  .seq-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-4) var(--space-5, 1.25rem);
+    border: 1px solid var(--border);
+    border-radius: var(--hoo-r-card);
+    transition:
+      border-color var(--dur) var(--ease),
+      background var(--dur) var(--ease);
+  }
+
+  .seq-link:hover {
+    border-color: var(--border-strong);
+    background: var(--surface);
+  }
+
+  .seq-link.next {
+    text-align: right;
+  }
+
+  .seq-title {
+    color: var(--text);
+  }
+
+  .provenance {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-8);
+    font-size: var(--text-xs);
+    color: var(--muted);
+  }
+
+  .provenance a {
+    color: var(--text-3);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+    text-underline-offset: 0.25em;
+  }
+
+  .provenance a:hover {
+    color: var(--accent-ink);
+  }
+
+  /* -- Table of contents -------------------------------------------------- */
+
+  .toc ul {
+    list-style: none;
+    padding: 0;
+    border-left: 1px solid var(--border);
+  }
+
+  .toc p.label {
+    margin-bottom: var(--space-2);
+  }
+
+  .toc li a {
+    display: block;
+    padding: 0.22rem 0 0.22rem var(--space-4);
+    font-size: var(--text-sm);
+    color: var(--text-3);
+    transition: color var(--dur) var(--ease);
+  }
+
+  .toc li.d3 a {
+    padding-left: var(--space-8);
+    font-size: var(--text-xs);
+  }
+
+  .toc li a:hover {
+    color: var(--text);
+  }
+
+  /* -- Shape ------------------------------------------------------------- */
+
+  @media (min-width: 60rem) {
+    .docs {
+      grid-template-columns: 15rem minmax(0, 1fr);
+      gap: var(--space-12);
+    }
+
+    .side {
+      position: sticky;
+      top: calc(62px + var(--space-6));
+      max-height: calc(100dvh - 62px - var(--space-12));
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+
+    .seq {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 86rem) {
+    .docs {
+      grid-template-columns: 15rem minmax(0, 1fr) 13rem;
+    }
+
+    .toc {
+      position: sticky;
+      top: calc(62px + var(--space-6));
+      max-height: calc(100dvh - 62px - var(--space-12));
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+  }
+
+  /* -- Disclosure -------------------------------------------------------- */
+
+  .disclosure > summary {
+    display: none;
+  }
+
+  @media (max-width: 59.999rem) {
+    .disclosure {
+      border: 1px solid var(--border);
+      border-radius: var(--hoo-r-card);
+    }
+
+    .disclosure > summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding: var(--space-4) var(--space-5, 1.25rem);
+      cursor: pointer;
+      color: var(--text);
+      font-size: var(--text-sm);
+      list-style: none;
+    }
+
+    .disclosure > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .chev {
+      width: 8px;
+      height: 8px;
+      border-right: 1.5px solid var(--muted);
+      border-bottom: 1.5px solid var(--muted);
+      rotate: 45deg;
+      translate: 0 -2px;
+      transition: rotate var(--dur) var(--ease);
+    }
+
+    .disclosure[open] .chev {
+      rotate: 225deg;
+      translate: 0 2px;
+    }
+
+    .disclosure > nav {
+      padding: 0 var(--space-5, 1.25rem) var(--space-5, 1.25rem);
+    }
+
+    .disclosure[open] > summary {
+      border-bottom: 1px solid var(--border);
+      margin-bottom: var(--space-4);
+    }
+
+    .toc {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Collapse the sidebar on narrow screens. It ships open so that a reader
+  // without JavaScript still gets a working index.
+  const disclosure = document.querySelector<HTMLDetailsElement>(".disclosure");
+  const narrow = matchMedia("(max-width: 59.999rem)");
+
+  const sync = () => {
+    if (!disclosure) return;
+    if (narrow.matches) disclosure.removeAttribute("open");
+    else disclosure.setAttribute("open", "");
+  };
+
+  sync();
+  narrow.addEventListener("change", sync);
+</script>

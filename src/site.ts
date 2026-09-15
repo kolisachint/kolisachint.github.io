@@ -96,5 +96,6 @@ export const recognition = [
 
 export const nav = [
   { label: "Work", href: "/work" },
+  { label: "HooCode", href: "/hoocode" },
   { label: "About", href: "/about" },
 ] as const;

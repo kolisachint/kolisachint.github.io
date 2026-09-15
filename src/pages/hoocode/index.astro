@@ -1,0 +1,255 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { groups, source } from "../../lib/docs";
+
+const synced = new Date(source.syncedAt).toISOString().slice(0, 10);
+
+/**
+ * Deliberately not upstream's index.md, which is a list of links to the other
+ * pages — the sidebar already does that job. This is the entry point: what the
+ * thing is, how to install it, and where to go next.
+ */
+const modes = [
+  { name: "Ask", note: "answer, do not touch the repository" },
+  { name: "Plan", note: "investigate and propose, no edits" },
+  { name: "Build", note: "implement, one step at a time" },
+  { name: "Debug", note: "reproduce, isolate, fix" },
+];
+---
+
+<BaseLayout
+  title="HooCode — deterministic terminal coding agent"
+  description="HooCode is a terminal coding agent that keeps you in control: every edit and shell command passes a permission gate, and the agent is scoped by an explicit mode. Documentation, install and reference."
+  suffix={false}
+>
+  <section class="hero">
+    <div class="shell">
+      {/* Not <picture> with prefers-color-scheme: the toggle sets data-theme,
+          so the media query would disagree with it the moment anyone switches
+          against their OS. Both marks ship; CSS picks. They are ~4 KB each. */}
+      <div class="lockup">
+        <img class="on-dark" src="/brand/hoo/hoocode.svg" alt="HooCode" width="274" height="80" />
+        <img class="on-light" src="/brand/hoo/hoocode-light.svg" alt="" aria-hidden="true" width="274" height="80" />
+      </div>
+
+      <h1>Deterministic terminal coding agent.</h1>
+
+      <p class="sub">
+        Every edit and every shell command passes through a permission gate.
+        The agent works inside an explicit mode rather than behind one
+        do-everything prompt.
+      </p>
+
+      <div class="install">
+        <p class="label">Install</p>
+        <pre class="cmd"><code>npm install -g @kolisachint/hoocode-agent</code></pre>
+        <p class="cmd-note mono">then run <code>hoocode</code> in a project directory</p>
+      </div>
+
+      <p class="links mono">
+        <a class="link" href="/hoocode/quickstart">Quickstart</a>
+        <span aria-hidden="true">·</span>
+        <a class="link" href="https://github.com/kolisachint/hoocode">GitHub</a>
+        <span aria-hidden="true">·</span>
+        <a class="link" href="https://www.npmjs.com/package/@kolisachint/hoocode-agent">npm</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="shell band">
+    <div class="modes">
+      {
+        modes.map((m) => (
+          <div class="mode">
+            <p class="mode-name mono">{m.name}</p>
+            <p class="mode-note">{m.note}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="shell index">
+    <h2 class="visually-hidden">Documentation</h2>
+    <div class="grid">
+      {
+        groups.map((g) => (
+          <div class="group">
+            <p class="label">{g.title}</p>
+            <ul>
+              {g.items.map((item) => (
+                <li>
+                  <a href={item.href}>{item.title}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="provenance mono">
+      Documentation synced from {source.repo}@{source.sha.slice(0, 7)} on {synced}.
+      Corrections belong in that repository.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: var(--space-16) var(--space-12);
+  }
+
+  .lockup {
+    display: grid;
+    width: fit-content;
+  }
+
+  .lockup img {
+    grid-area: 1 / 1;
+    height: 44px;
+    width: auto;
+  }
+
+  :global([data-theme="dark"]) .on-light,
+  :global([data-theme="light"]) .on-dark {
+    visibility: hidden;
+  }
+
+  .hero h1 {
+    margin-top: var(--space-8);
+    font-size: var(--text-2xl);
+    max-width: 16ch;
+  }
+
+  .sub {
+    margin-top: var(--space-4);
+    color: var(--text-3);
+    max-width: var(--measure-narrow);
+  }
+
+  .install {
+    margin-top: var(--space-8);
+    max-width: 34rem;
+  }
+
+  .install .label {
+    margin-bottom: var(--space-3);
+  }
+
+  .cmd {
+    margin: 0;
+    padding: var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: var(--hoo-r-badge);
+    background: var(--surface);
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text);
+  }
+
+  .cmd-note {
+    margin-top: var(--space-3);
+    font-size: var(--text-xs);
+    color: var(--muted);
+  }
+
+  .cmd-note code {
+    color: var(--text-3);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+    font-size: var(--text-sm);
+    color: var(--muted);
+  }
+
+  /* -- Modes -------------------------------------------------------------- */
+
+  .band {
+    padding-block: var(--space-8);
+  }
+
+  .modes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--hoo-r-card);
+    overflow: hidden;
+  }
+
+  .mode {
+    padding: var(--space-5, 1.25rem) var(--space-6);
+    background: var(--bg);
+  }
+
+  .mode-name {
+    color: var(--text);
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  /* The cursor from the HooCode lockup, used as the mode's tick. */
+  .mode-name::after {
+    content: "_";
+    color: var(--accent);
+    margin-left: 2px;
+  }
+
+  .mode-note {
+    margin-top: var(--space-1);
+    font-size: var(--text-sm);
+    color: var(--text-3);
+  }
+
+  /* -- Index -------------------------------------------------------------- */
+
+  .index {
+    padding-block: var(--space-12) var(--space-24);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: var(--space-8) var(--space-12);
+  }
+
+  .group ul {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-3);
+    border-left: 1px solid var(--border);
+  }
+
+  .group li a {
+    display: block;
+    padding: 0.28rem 0 0.28rem var(--space-4);
+    margin-left: -1px;
+    border-left: 1px solid transparent;
+    font-size: var(--text-sm);
+    color: var(--text-3);
+    transition:
+      color var(--dur) var(--ease),
+      border-color var(--dur) var(--ease);
+  }
+
+  .group li a:hover {
+    color: var(--text);
+    border-left-color: var(--accent);
+  }
+
+  .provenance {
+    margin-top: var(--space-16);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border);
+    font-size: var(--text-xs);
+    color: var(--muted);
+    max-width: var(--measure);
+  }
+</style>

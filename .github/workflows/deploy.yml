@@ -4,13 +4,14 @@ on:
   push:
     branches: [master]
   workflow_dispatch:
-  # The work page reads the GitHub API at build time. A weekly rebuild keeps
-  # the repository list current without anyone touching the repo.
+  # Weekly refresh of the two vendored datasets: the HooCode documentation and
+  # the GitHub repository snapshot. Both are committed, so the site keeps
+  # building offline while the live copy stays current.
   schedule:
     - cron: "17 6 * * 1"
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -30,6 +31,32 @@ jobs:
           cache: npm
 
       - run: npm ci
+
+      # Not on push: a push already carries whatever the author synced, and
+      # rewriting it underneath them would be surprising.
+      - name: Refresh vendored data
+        if: github.event_name != 'push'
+        run: |
+          npm run docs
+          npm run repos
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Committed in the same run rather than in a job of its own. A push made
+      # with GITHUB_TOKEN does not trigger workflows, so a separate sync job
+      # would update the repository and never deploy the result.
+      - name: Commit drift
+        if: github.event_name != 'push'
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No drift."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Refresh vendored HooCode docs and repository snapshot"
+          git push
 
       - name: Build
         run: npm run build

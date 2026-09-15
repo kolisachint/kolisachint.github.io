@@ -108,6 +108,7 @@ The full dependency list, and why each one is there:
 | Package | Why |
 |---|---|
 | `astro` | the framework |
+| `@astrojs/markdown-satteri` | configures the Markdown processor Astro already runs, so the docs pipeline can take plugins |
 | `@fontsource-variable/inter` | self-hosted Inter, no Google beacon |
 | `@fontsource-variable/jetbrains-mono` | self-hosted JetBrains Mono |
 | `@astrojs/check`, `typescript`, `@types/node` | dev only — type checking |
@@ -119,7 +120,8 @@ Deployment is GitHub Actions to GitHub Pages. The site must build with
 npm run dev      local server
 npm run build    static build to dist/
 npm run check    astro check — must be 0 errors before a commit
-npm run repos    refresh the committed GitHub snapshot
+npm run repos    refresh the committed GitHub repository snapshot
+npm run docs     re-vendor the HooCode documentation
 npm run og       re-render public/brand/og.png from /og-card
 ```
 
@@ -197,6 +199,11 @@ relocate them without asking.
   field to an entry. The `notes` collection is written but commented out —
   registering an empty collection makes every build warn. Uncomment it when
   there is a first note.
+- **`src/content/docs/hoocode/` is generated. Never edit a file in it.** Any
+  correction belongs in the `kolisachint/hoocode` repository, at
+  `packages/coding-agent/docs`. Then run `npm run docs`. An edit made here is
+  silently destroyed by the next sync, and the page still credits upstream for
+  it.
 - Facts that more than one page states live in `src/site.ts`, not in a page.
   That file is where the publish gate's approvals are recorded.
 - Project entries are **curated prose**, not a description scraped from GitHub.
@@ -231,27 +238,65 @@ src/
   lib/github.ts          live fetch + snapshot fallback + the tail filter
   styles/tokens.css      raw brand palette → semantic tokens, both themes
   styles/global.css      reset, base elements, layout primitives
+  styles/docs.css        documentation prose — plain CSS, namespaced under .doc
   layouts/BaseLayout     head, masthead, theme boot script, footer
+  layouts/DocsLayout     sidebar, table of contents, prev/next, provenance
   components/            Mark, Section (the spine), ProjectCard, Footer, toggle
+  lib/docs.ts            sidebar, ordering, titles and summaries for the docs
+  lib/satteri-hoocode.mjs  Markdown plugins for the vendored docs
+  content/docs/hoocode/  GENERATED — see the rule above
+  data/hoocode-nav.json  GENERATED — sidebar, redirects, source commit
   pages/
     index.astro          home
     work/index.astro     curated projects + the GitHub tail
     about.astro          bio, track, recognition, contact, JSON-LD Person
+    hoocode/index.astro  docs landing — hand-written, not upstream's index.md
+    hoocode/[...slug]    one route per vendored page
     og-card.astro        render source for og.png — noindex, not in the sitemap
-    sitemap.xml.ts       hand-rolled, add every new route
+    sitemap.xml.ts       hand-written routes + every docs page, derived
     robots.txt.ts        derives the sitemap URL from `site`
     404.astro
-.github/workflows/       deploy to Pages
+public/hoocode/images/   GENERATED — images referenced by the docs
+.github/workflows/       deploy to Pages, and the weekly vendor refresh
 ```
-
-Reserved for later, do not build yet: `src/content/docs/` for a Starlight docs
-island mounted at `/hoocode`. The information architecture leaves room for it.
-Nothing in v1 should make that harder.
 
 **The work page's long tail is filtered by rule, not by hand**: a repository
 appears only if it is not a fork, was pushed since 2024, has a description, and
 that description does not say "placeholder". Curating the list by hand would rot
 within a month. If a repo should appear, give it a description on GitHub.
+
+---
+
+## The documentation section
+
+`/hoocode` renders documentation authored in another repository. Four rules keep
+that honest.
+
+**The source of truth is upstream.** `packages/coding-agent/docs` in
+`kolisachint/hoocode`. `npm run docs` copies the markdown, the images and
+`docs.json` into this repo and records the commit it took them from. Every docs
+page shows that commit and links to its own source. Fix things there, sync here.
+
+**The sidebar is generated, not written.** It comes from upstream `docs.json`,
+as do the redirects. Adding a page to the HooCode docs and listing it in
+`docs.json` is the whole procedure for making it appear here. There is no second
+list to keep in step.
+
+**Vendored, not fetched at build time.** The site must build with no network,
+which rules out fetching during the build. The cost is drift, so the deploy
+workflow re-syncs weekly and commits whatever changed.
+
+**Do not hand-write docs prose here.** The one exception is
+`src/pages/hoocode/index.astro`, the landing page, which is ours: upstream's
+`index.md` is a list of links to the other pages, and the sidebar already is
+that. `index.md` is excluded from routing for this reason.
+
+No search yet. Pagefind is the obvious addition when the section justifies it;
+it is a static index and works without a framework, at the cost of the first
+JavaScript on the site.
+
+Room is left for `/hoocowork` and `/hooteams` to arrive the same way. Generalise
+`lib/docs.ts` when the second one lands, not before.
 
 ---
 

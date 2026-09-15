@@ -1,0 +1,261 @@
+/* ---------------------------------------------------------------------------
+   Documentation prose.
+
+   A plain stylesheet rather than Astro scoped styles: the markdown arrives as
+   raw HTML from <Content />, so every rule would otherwise need :global().
+   Everything is namespaced under .doc.
+   --------------------------------------------------------------------------- */
+
+.doc {
+  color: var(--text-2);
+}
+
+/*
+ * Prose holds an editorial measure; code, tables and images do not. A 68ch cap
+ * on a wide reference table just forces a scrollbar onto something that had
+ * room to breathe.
+ */
+.doc :is(p, ul, ol, blockquote, h1, h2, h3, h4, details) {
+  max-width: var(--measure);
+}
+
+.doc :is(pre, .table-wrap, img) {
+  max-width: 100%;
+}
+
+/* -- Headings ------------------------------------------------------------- */
+
+.doc h1 {
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-6);
+}
+
+.doc h2 {
+  font-size: var(--text-xl);
+  margin-top: var(--space-12);
+  margin-bottom: var(--space-4);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border);
+}
+
+.doc h3 {
+  font-size: var(--text-lg);
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-3);
+}
+
+.doc h4 {
+  font-size: var(--text-base);
+  font-weight: 600;
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-2);
+}
+
+/* Headings keep their generated ids, so deep links work even though there is
+   no visible permalink — see the note in src/lib/satteri-hoocode.mjs. Offset
+   the scroll target past the sticky masthead. */
+.doc :is(h1, h2, h3, h4) {
+  scroll-margin-top: calc(62px + var(--space-4));
+}
+
+/* -- Flow ----------------------------------------------------------------- */
+
+.doc p,
+.doc ul,
+.doc ol,
+.doc blockquote,
+.doc pre,
+.doc table,
+.doc .expressive-code {
+  margin-block: var(--space-4);
+}
+
+.doc :where(ul, ol) {
+  padding-left: 1.35em;
+}
+
+.doc li + li {
+  margin-top: var(--space-2);
+}
+
+.doc li > :where(ul, ol) {
+  margin-block: var(--space-2);
+}
+
+.doc li::marker {
+  color: var(--muted);
+}
+
+.doc a {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition:
+    color var(--dur) var(--ease),
+    text-decoration-color var(--dur) var(--ease);
+}
+
+.doc a:hover {
+  color: var(--accent-ink);
+  text-decoration-color: var(--accent-ink);
+}
+
+.doc strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.doc hr {
+  margin-block: var(--space-8);
+}
+
+.doc img {
+  border: 1px solid var(--border);
+  border-radius: var(--hoo-r-badge);
+  margin-inline: auto;
+}
+
+.doc blockquote {
+  padding-left: var(--space-6);
+  border-left: 2px solid var(--accent);
+  color: var(--text-3);
+}
+
+.doc blockquote > :first-child {
+  margin-top: 0;
+}
+
+.doc blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* -- Code ----------------------------------------------------------------- */
+
+.doc :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  padding: 0.15em 0.4em;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  overflow-wrap: break-word;
+}
+
+/* Inside a table cell, never break an identifier: a narrow column turned
+   `plan` into `pla n`. The cell can be wide; the wrapper scrolls. */
+.doc :is(td, th) code {
+  white-space: nowrap;
+}
+
+.doc pre {
+  padding: var(--space-4) var(--space-5, 1.25rem);
+  border: 1px solid var(--border);
+  border-radius: var(--hoo-r-badge);
+  background: var(--surface) !important;
+  overflow-x: auto;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  tab-size: 2;
+}
+
+.doc pre code {
+  font-family: var(--font-mono);
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+/*
+ * Shiki runs with defaultColor:false, so each token carries --shiki-light and
+ * --shiki-dark and no colour of its own. The theme attribute picks one. No
+ * JavaScript, and highlighting follows the toggle instantly.
+ */
+:root[data-theme="dark"] .doc .shiki,
+:root[data-theme="dark"] .doc .shiki span {
+  color: var(--shiki-dark);
+  font-style: var(--shiki-dark-font-style);
+  font-weight: var(--shiki-dark-font-weight);
+  text-decoration: var(--shiki-dark-text-decoration);
+}
+
+:root[data-theme="light"] .doc .shiki,
+:root[data-theme="light"] .doc .shiki span {
+  color: var(--shiki-light);
+  font-style: var(--shiki-light-font-style);
+  font-weight: var(--shiki-light-font-weight);
+  text-decoration: var(--shiki-light-text-decoration);
+}
+
+/* -- Tables --------------------------------------------------------------- */
+
+.doc .table-wrap {
+  overflow-x: auto;
+  margin-block: var(--space-6);
+}
+
+.doc table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.doc td:first-child,
+.doc th:first-child {
+  padding-right: var(--space-6);
+}
+
+.doc th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: var(--space-2) var(--space-4) var(--space-2) 0;
+  border-bottom: 1px solid var(--border-strong);
+  white-space: nowrap;
+}
+
+.doc td {
+  padding: var(--space-3) var(--space-4) var(--space-3) 0;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.doc tr:last-child td {
+  border-bottom: 0;
+}
+
+/* -- Details -------------------------------------------------------------- */
+
+.doc details {
+  margin-block: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--hoo-r-badge);
+  background: var(--surface);
+}
+
+.doc summary {
+  cursor: pointer;
+  color: var(--text);
+  font-weight: 520;
+}
+
+.doc details[open] summary {
+  margin-bottom: var(--space-3);
+}
+
+/* -- First and last child reset ------------------------------------------- */
+
+.doc > :first-child {
+  margin-top: 0;
+}
+
+.doc > :last-child {
+  margin-bottom: 0;
+}
