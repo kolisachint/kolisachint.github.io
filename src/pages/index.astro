@@ -21,7 +21,7 @@ const rest = projects.length - featured.length;
 >
   <section class="hero">
     <div class="shell hero-grid">
-      <div class="hero-text">
+      <div class="hero-text" data-hero>
         <p class="label">{site.role}</p>
         <h1>{headlines.home}</h1>
         <p class="sub">{headlines.homeSub}</p>
@@ -47,12 +47,12 @@ const rest = projects.length - featured.length;
   </section>
 
   <Section eyebrow="Now" tight>
-    <p class="now">{now.text}</p>
-    <p class="now-stamp mono">Updated {now.updated}</p>
+    <p class="now" data-reveal>{now.text}</p>
+    <p class="now-stamp mono" data-reveal>Updated {now.updated}</p>
   </Section>
 
   <Section eyebrow="Selected work">
-    <div class="sec-head">
+    <div class="sec-head" data-reveal>
       <h2>Things I build in the open</h2>
       <p class="lede">
         Tooling for coding agents, mostly in Rust and TypeScript. Small binaries
@@ -61,10 +61,14 @@ const rest = projects.length - featured.length;
     </div>
 
     <div class="cards">
-      {featured.map((project) => <ProjectCard project={project} />)}
+      {featured.map((project, i) => (
+        <div class="card-wrap" data-reveal style={`--reveal-delay:${i * 60}ms`}>
+          <ProjectCard project={project} />
+        </div>
+      ))}
     </div>
 
-    <p class="more">
+    <p class="more" data-reveal>
       <a class="link" href="/work"
         >All work{rest > 0 && <span>, including {rest} more</span>} &rarr;</a
       >
@@ -72,7 +76,7 @@ const rest = projects.length - featured.length;
   </Section>
 
   <Section eyebrow="Contact" tight>
-    <div class="sec-head">
+    <div class="sec-head" data-reveal>
       <h2>Reachable</h2>
       <p class="lede">
         Email is best. I read everything, and reply to anything that is not a
@@ -80,7 +84,7 @@ const rest = projects.length - featured.length;
       </p>
     </div>
 
-    <ul class="contact">
+    <ul class="contact" data-reveal>
       <li>
         <a class="link" id="hero-mail" href="#" data-u={email.user} data-d={email.domain}>
           <span class="mono">{email.user}<span aria-hidden="true">&#64;</span>{email.domain}</span>
@@ -101,8 +105,28 @@ const rest = projects.length - featured.length;
 
 <style>
   .hero {
+    position: relative;
+    overflow: clip;
     padding-block: clamp(var(--space-16), 12vh, var(--space-32))
       var(--space-16);
+  }
+
+  /* One controlled glow moment: a faint cyan orb behind the portrait. */
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: -10rem;
+    right: -12rem;
+    width: 34rem;
+    height: 34rem;
+    border-radius: 50%;
+    background: radial-gradient(
+      closest-side,
+      var(--accent-dim),
+      transparent 70%
+    );
+    opacity: 0.55;
+    pointer-events: none;
   }
 
   .hero-grid {
@@ -164,6 +188,7 @@ const rest = projects.length - featured.length;
   .btn.primary:hover {
     border-color: var(--accent);
     background: var(--accent-dim);
+    box-shadow: 0 0 24px var(--accent-glow);
   }
 
   /* Portrait. Present, not dominant — the work is the headline. */
@@ -235,6 +260,14 @@ const rest = projects.length - featured.length;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
     gap: var(--space-4);
+  }
+
+  .card-wrap {
+    min-width: 0;
+  }
+
+  .card-wrap :global(.card) {
+    height: 100%;
   }
 
   .more {

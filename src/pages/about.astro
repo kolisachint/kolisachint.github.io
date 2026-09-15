@@ -56,14 +56,14 @@ const personLd = {
   />
 
   <header class="page-head">
-    <div class="shell">
+    <div class="shell" data-hero>
       <p class="label">About</p>
       <h1>{headlines.about}</h1>
     </div>
   </header>
 
   <Section eyebrow="In short">
-    <div class="prose lede-prose">
+    <div class="prose lede-prose" data-reveal>
       <p>
         I'm a solution architect working on cloud data platforms. Most of that
         time has been inside large regulated enterprises — banking, retail,
@@ -87,7 +87,7 @@ const personLd = {
   </Section>
 
   <Section eyebrow="Track">
-    <ol class="track">
+    <ol class="track" data-reveal>
       {
         track.map((t) => (
           <li class="row">
@@ -108,7 +108,7 @@ const personLd = {
   </Section>
 
   <Section eyebrow="Recognition" tight>
-    <p class="recognition">
+    <p class="recognition" data-reveal>
       Architected work recognised at {
         recognition.map((r, i) => (
           <>
@@ -131,7 +131,7 @@ const personLd = {
       </p>
     </div>
 
-    <ul class="contact">
+    <ul class="contact" data-reveal>
       <li>
         <a
           class="link"

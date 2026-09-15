@@ -48,13 +48,15 @@ const { title, tagline, lang, repo, npm, site, status, tags } = project.data;
     transition:
       border-color var(--dur) var(--ease),
       background var(--dur) var(--ease),
-      transform var(--dur) var(--ease);
+      transform var(--dur) var(--ease),
+      box-shadow var(--dur) var(--ease);
   }
 
   .card:hover {
     border-color: var(--border-strong);
     background: var(--surface-raised);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px -16px rgba(0, 0, 0, 0.6);
   }
 
   /* Whole-card target, but real links inside still win. */

@@ -25,7 +25,7 @@ const more = tail(repos);
   description="Open-source tooling for coding agents — terminal agents, deterministic browser automation, embedding search, offline speech recognition. Rust and TypeScript."
 >
   <header class="page-head">
-    <div class="shell">
+    <div class="shell" data-hero>
       <p class="label">Work</p>
       <h1>{headlines.work}</h1>
     </div>
@@ -35,7 +35,7 @@ const more = tail(repos);
     <ol class="projects">
       {
         projects.map(({ entry, Content }) => (
-          <li class="project" id={entry.id}>
+          <li class="project" id={entry.id} data-reveal>
             <div class="project-head">
               <h2>
                 <a class="title-link" href={entry.data.repo}>
@@ -91,7 +91,7 @@ const more = tail(repos);
   </Section>
 
   <Section eyebrow="Also on GitHub">
-    <div class="tail-head">
+    <div class="tail-head" data-reveal>
       <h2>Everything else with a description</h2>
       <p class="lede">
         Smaller repositories, experiments and ports. If a repository has no
