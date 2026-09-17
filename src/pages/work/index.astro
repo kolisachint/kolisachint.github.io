@@ -30,7 +30,10 @@ const more = tail(repos);
       <h1>{headlines.work}</h1>
 
       {/* Nine entries, each several paragraphs long. Without an index the page
-          is a scroll; with one it is a document. */}
+          is a scroll; with one it is a document. The visible label is there
+          because a row of pills reads as a filter set until something says
+          otherwise. */}
+      <p class="jump-label label">Jump to</p>
       <nav class="jump" aria-label="Jump to a project">
         {
           projects.map(({ entry }) => (
@@ -58,10 +61,6 @@ const more = tail(repos);
             </div>
 
             <p class="tagline">{entry.data.tagline}</p>
-
-            <div class="prose body">
-              <Content />
-            </div>
 
             <p class="meta mono">
               <span class="lang">{entry.data.lang}</span>
@@ -96,6 +95,16 @@ const more = tail(repos);
                 </>
               )}
             </p>
+
+            {/* Nine entries of three paragraphs each is six thousand pixels of
+                identical column. Title, tagline and facts say what it is; the
+                prose is a click away rather than a scroll past. */}
+            <details class="why">
+              <summary><span class="mono">why it exists</span></summary>
+              <div class="prose body">
+                <Content />
+              </div>
+            </details>
           </li>
         ))
       }
@@ -110,6 +119,12 @@ const more = tail(repos);
         description it is not listed here — that rule is the filter.
       </p>
     </div>
+
+    <p class="tail-legend mono" aria-hidden="true">
+      <span>Repository</span>
+      <span>Description</span>
+      <span class="tail-lang">Language</span>
+    </p>
 
     <ul class="tail">
       {
@@ -145,11 +160,14 @@ const more = tail(repos);
     max-width: 20ch;
   }
 
+  .page-head .jump-label {
+    margin: var(--space-8) 0 var(--space-3);
+  }
+
   .jump {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
-    margin-top: var(--space-8);
   }
 
   .chip {
@@ -181,14 +199,14 @@ const more = tail(repos);
   }
 
   .project + .project {
-    margin-top: var(--space-12);
-    padding-top: var(--space-12);
+    margin-top: var(--space-8);
+    padding-top: var(--space-8);
     border-top: 1px solid var(--border);
   }
 
   /* Arriving from the jump nav, clear the sticky masthead plus the rule. */
   .project {
-    scroll-margin-top: calc(62px + var(--space-12));
+    scroll-margin-top: calc(var(--masthead-h) + var(--space-12));
   }
 
   /* Landing on an entry should say so, then get out of the way. */
@@ -230,8 +248,56 @@ const more = tail(repos);
     max-width: var(--measure);
   }
 
+  /* -- The disclosure ----------------------------------------------------
+     A bare text toggle, not a bordered panel: nine bordered panels inside
+     nine bordered entries is a page made of boxes. */
+  .why {
+    margin-top: var(--space-4);
+  }
+
+  .why summary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-h-sm);
+    font-size: var(--text-xs);
+    color: var(--text-3);
+    cursor: pointer;
+    list-style: none;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .why summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .why summary:hover {
+    color: var(--text);
+  }
+
+  /* Drawn, not a glyph: a font's triangle sits off the optical centre. */
+  .why summary::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-right: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .why[open] summary::before {
+    transform: rotate(45deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .why summary::before {
+      transition: none;
+    }
+  }
+
   .body {
-    margin-top: var(--space-6);
+    margin-top: var(--space-4);
     color: var(--text-3);
   }
 
@@ -242,7 +308,7 @@ const more = tail(repos);
   .body :global(a) {
     color: var(--text-2);
     text-decoration: underline;
-    text-decoration-color: var(--border-strong);
+    text-decoration-color: var(--text-3);
     text-underline-offset: 0.22em;
   }
 
@@ -256,7 +322,7 @@ const more = tail(repos);
     gap: var(--space-2);
     margin-top: var(--space-6);
     font-size: var(--text-xs);
-    color: var(--muted);
+    color: var(--text-3);
   }
 
   .lang {
@@ -270,7 +336,7 @@ const more = tail(repos);
   .out {
     color: var(--text-3);
     text-decoration: underline;
-    text-decoration-color: var(--border-strong);
+    text-decoration-color: var(--text-3);
     text-underline-offset: 0.25em;
   }
 
@@ -288,10 +354,17 @@ const more = tail(repos);
     color: var(--text-3);
   }
 
+  /* Three unlabelled columns of repository, sentence and language. The legend
+     is decoration over a list of links, so it is hidden from the accessibility
+     tree — a screen reader gets the link text, which already reads in order. */
+  .tail-legend {
+    display: none;
+  }
+
   .tail {
     list-style: none;
     padding: 0;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--border-strong);
   }
 
   .tail-row {
@@ -314,16 +387,35 @@ const more = tail(repos);
     font-size: var(--text-sm);
   }
 
+  /* GitHub descriptions run from six words to forty. Unclamped, the rows
+     ranged from one line to four and the column read as rubble; the row is a
+     link to the repository, which has the full sentence. */
   .tail-desc {
     font-size: var(--text-sm);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
   }
 
   .tail-lang {
     font-size: var(--text-xs);
-    color: var(--muted);
+    color: var(--text-3);
   }
 
   @media (min-width: 46rem) {
+    .tail-legend {
+      display: grid;
+      grid-template-columns: 13rem 1fr 7rem;
+      gap: var(--space-6);
+      margin: 0 0 var(--space-2);
+      padding-inline: var(--space-3);
+      font-size: var(--text-xs);
+      letter-spacing: var(--tracking-label);
+      text-transform: uppercase;
+      color: var(--text-3);
+    }
+
     .tail-row {
       grid-template-columns: 13rem 1fr 7rem;
       align-items: baseline;
@@ -339,6 +431,6 @@ const more = tail(repos);
   .source-note {
     margin-top: var(--space-6);
     font-size: var(--text-xs);
-    color: var(--muted);
+    color: var(--text-3);
   }
 </style>

@@ -134,32 +134,21 @@ const personLd = {
       </p>
     </div>
 
-    <ul class="contacts" data-reveal>
-      <li>
-        <a
-          class="link"
-          id="about-mail"
-          href="#"
-          data-u={email.user}
-          data-d={email.domain}
+    {/* Email only. The same five profile links sit a hundred pixels below
+        this, in the footer, on every page of the site. */}
+    <p class="mail" data-reveal>
+      <a
+        class="link"
+        id="about-mail"
+        href="#"
+        data-u={email.user}
+        data-d={email.domain}
+      >
+        <span class="mono"
+          >{email.user}<span aria-hidden="true">&#64;</span>{email.domain}</span
         >
-          <span class="mono"
-            >{email.user}<span aria-hidden="true">&#64;</span>{email.domain}</span
-          >
-        </a>
-      </li>
-      {
-        profiles.map((p) => (
-          <li>
-            <a class="link" href={p.url} rel="me">
-              <span class="mono">
-                {p.name} <span class="dim">{p.handle}</span>
-              </span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+      </a>
+    </p>
   </Section>
 </BaseLayout>
 
@@ -199,7 +188,7 @@ const personLd = {
      grey, so the eye lands on "now" and nowhere else. */
   .period {
     font-size: var(--text-sm);
-    color: var(--muted);
+    color: var(--text-3);
     white-space: nowrap;
   }
 
@@ -241,7 +230,7 @@ const personLd = {
   }
 
   .client {
-    color: var(--muted);
+    color: var(--text-3);
     font-size: var(--text-xs);
   }
 
@@ -260,8 +249,10 @@ const personLd = {
   .note {
     margin-top: var(--space-6);
     font-size: var(--text-sm);
-    color: var(--muted);
+    color: var(--text-3);
   }
+
+
 
   .recognition {
     color: var(--text-2);
@@ -274,8 +265,9 @@ const personLd = {
     padding-bottom: 1px;
   }
 
-  .contacts {
-    margin-top: var(--space-8);
+  .mail {
+    margin: var(--space-8) 0 0;
+    font-size: var(--text-lg);
   }
 </style>
 

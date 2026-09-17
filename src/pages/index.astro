@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Section from "../components/Section.astro";
 import ProjectCard from "../components/ProjectCard.astro";
-import { site, headlines, profiles, email, now } from "../site";
+import { site, headlines, email, now, track, recognition } from "../site";
 
 const projects = (await getCollection("projects"))
   .filter((p) => p.data.featured)
@@ -11,6 +11,40 @@ const projects = (await getCollection("projects"))
 
 const featured = projects.slice(0, 6);
 const rest = projects.length - featured.length;
+
+/* The record band. Every value is derived from `track` and `recognition`, so
+   the home page cannot drift from /about and no new fact enters the site by
+   the back door. Spelled numbers, to match the voice everywhere else.
+
+   A start year rather than a running total: "since 2008" is the same fact and
+   never needs a January edit, where "18 years" would have disagreed with the
+   /about headline the moment the year turned. */
+const words = ["no", "one", "two", "three", "four", "five", "six"];
+const firstYear = Number(track[track.length - 1].period.slice(0, 4));
+const current = track[0];
+
+const record = [
+  {
+    label: "Experience",
+    value: `Since ${firstYear}`,
+    note: "enterprise data",
+  },
+  {
+    label: "Employers",
+    value: words[track.length].replace(/^./, (c) => c.toUpperCase()),
+    note: "banking · retail · telecoms",
+  },
+  {
+    label: "Recognition",
+    value: `${words[recognition.length].replace(/^./, (c) => c.toUpperCase())} industry awards`,
+    note: recognition.map((r) => r.year).join(" · "),
+  },
+  {
+    label: "Current",
+    value: "Google Cloud data platform",
+    note: current.client,
+  },
+];
 ---
 
 <!-- Written out rather than composed: site.role already carries an em dash,
@@ -42,8 +76,27 @@ const rest = projects.length - featured.length;
           fetchpriority="high"
           decoding="async"
         />
-        <span class="portrait-node" aria-hidden="true"></span>
       </div>
+    </div>
+  </section>
+
+  <!-- The h1 claims two things and the page used to evidence only the second.
+       A recruiter has thirty seconds and should not have to click through to
+       /about to find the first eighteen years. -->
+  <section class="record">
+    <div class="shell">
+      <h2 class="visually-hidden">Career record</h2>
+      <dl class="record-grid">
+        {
+          record.map((fact, i) => (
+            <div class="fact" data-reveal style={`--reveal-delay:${i * 60}ms`}>
+              <dt class="label">{fact.label}</dt>
+              <dd class="fact-value">{fact.value}</dd>
+              <dd class="fact-note mono">{fact.note}</dd>
+            </div>
+          ))
+        }
+      </dl>
     </div>
   </section>
 
@@ -85,22 +138,13 @@ const rest = projects.length - featured.length;
       </p>
     </div>
 
-    <ul class="contacts" data-reveal>
-      <li>
-        <a class="link" id="hero-mail" href="#" data-u={email.user} data-d={email.domain}>
-          <span class="mono">{email.user}<span aria-hidden="true">&#64;</span>{email.domain}</span>
-        </a>
-      </li>
-      {
-        profiles.map((p) => (
-          <li>
-            <a class="link" href={p.url} rel="me">
-              <span class="mono">{p.name} <span class="dim">{p.handle}</span></span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+    <!-- Email only. The same five profile links sat a hundred pixels below
+         this list, in the footer, on every page. -->
+    <p class="mail" data-reveal>
+      <a class="link" id="hero-mail" href="#" data-u={email.user} data-d={email.domain}>
+        <span class="mono">{email.user}<span aria-hidden="true">&#64;</span>{email.domain}</span>
+      </a>
+    </p>
   </Section>
 </BaseLayout>
 
@@ -112,8 +156,10 @@ const rest = projects.length - featured.length;
       var(--space-16);
   }
 
-  /* No glow orb here. Cyan is emphasis, not atmosphere — the portrait node
-     below is the one cyan moment this viewport gets. */
+  /* No glow orb here, and no node on the portrait either. Cyan is emphasis,
+     not atmosphere: in a real 1440x900 viewport the portrait node, the primary
+     button and the masthead's current-page dot were all lit at once. The
+     button is the one this viewport keeps. */
 
   .hero-grid {
     display: grid;
@@ -153,8 +199,10 @@ const rest = projects.length - featured.length;
   }
 
   .hero-portrait img {
-    width: clamp(140px, 22vw, 220px);
-    height: clamp(140px, 22vw, 220px);
+    /* 96px at 390 — a portrait, not the orphaned square that used to sit
+       alone between the buttons and the spine. */
+    width: clamp(96px, 22vw, 220px);
+    height: clamp(96px, 22vw, 220px);
     object-fit: cover;
     border-radius: var(--hoo-r-card);
     border: 1px solid var(--border);
@@ -166,16 +214,10 @@ const rest = projects.length - featured.length;
     filter: grayscale(0) contrast(1);
   }
 
-  /* One node, bottom-left of the frame — the mark's signal, echoed. */
-  .portrait-node {
-    position: absolute;
-    left: -4px;
-    bottom: 22px;
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 0 4px var(--bg), 0 0 16px var(--accent-glow);
+  /* Below 52rem it leads, as a profile picture does. Above, it sits opposite
+     the headline and the DOM order is the reading order again. */
+  .hero-portrait {
+    order: -1;
   }
 
   @media (min-width: 52rem) {
@@ -184,7 +226,69 @@ const rest = projects.length - featured.length;
       gap: var(--space-16);
     }
     .hero-portrait {
+      order: 0;
       justify-self: end;
+    }
+  }
+
+  /* -- Record band ------------------------------------------------------ */
+
+  .record .shell {
+    padding-block: var(--space-8);
+    border-block: 1px solid var(--border);
+  }
+
+  /* Subgrid, so a value that wraps to two lines does not push its own note
+     out of line with the other three. Label, value, note are three shared
+     rows, not three independent stacks. */
+  .record-grid {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: var(--space-6) var(--space-8);
+  }
+
+  .fact {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: var(--space-2);
+  }
+
+  .fact dd {
+    margin: 0;
+  }
+
+  .fact-value {
+    font-size: var(--text-lg);
+    line-height: var(--leading-snug);
+    color: var(--text-2);
+    text-wrap: balance;
+  }
+
+  .fact-note {
+    font-size: var(--text-xs);
+    color: var(--text-3);
+    align-self: end;
+  }
+
+  /* Two, then four. Never three — a four-item row that wraps to 3 + 1 reads
+     as a mistake. */
+  @media (min-width: 34rem) {
+    .record-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 60rem) {
+    .record-grid {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .fact {
+      grid-row: span 3;
+      grid-template-rows: subgrid;
     }
   }
 
@@ -197,7 +301,7 @@ const rest = projects.length - featured.length;
   .now-stamp {
     margin-top: var(--space-3);
     font-size: var(--text-xs);
-    color: var(--muted);
+    color: var(--text-3);
   }
 
   .sec-head {
@@ -210,9 +314,14 @@ const rest = projects.length - featured.length;
     color: var(--text-3);
   }
 
+  .mail {
+    margin: 0;
+    font-size: var(--text-lg);
+  }
+
   .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--card-min)), 1fr));
     gap: var(--space-4);
   }
 
