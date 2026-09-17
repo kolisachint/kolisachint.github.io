@@ -91,9 +91,15 @@ const { eyebrow, id, tight = false } = Astro.props;
       column-gap: var(--space-8);
     }
 
+    /* The rail column was 11rem of nothing beside a section that can run two
+       thousand pixels. Sticking the label to it means "selected work" is still
+       overhead when you are six cards down — structure for two lines of CSS. */
     .eyebrow {
       grid-column: 1;
       grid-row: 1;
+      align-self: start;
+      position: sticky;
+      top: calc(var(--masthead-h) + var(--space-8));
       text-align: right;
     }
 
