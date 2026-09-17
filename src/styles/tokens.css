@@ -91,6 +91,14 @@
   --shell: 74rem;
   --gutter: clamp(1.25rem, 5vw, 3rem);
 
+  /* Fixed chrome and column widths. These appear inside calc() and grid
+     templates in six files; one number each, so a proportion is a one-line
+     change and not a hunt. */
+  --masthead-h: 62px;
+  --sidebar-w: 15rem;
+  --toc-w: 13rem;
+  --card-min: 19rem;
+
   /* The spine. A hairline running the page, picking up cyan at section nodes. */
   --spine-w: 1px;
   --spine-node: 7px;
@@ -100,8 +108,10 @@
   --dur-slow: 340ms;
 
   /* Control height. One number for buttons, inputs and pill links, so a row
-     of mixed controls sits on a single baseline. Clears the 44px touch floor. */
+     of mixed controls sits on a single baseline. Clears the 44px touch floor.
+     The small variant is the floor itself, never below it. */
   --control-h: 44px;
+  --control-h-sm: 38px;
 }
 
 /* ---------------------------------------------------------------------------
@@ -121,6 +131,12 @@
   --text: var(--hoo-white);
   --text-2: var(--hoo-text-2);
   --text-3: var(--hoo-text-3);
+
+  /* --muted is not a text colour. #71717a is 3.67:1 on --surface and 4.12:1
+     on --bg, and everything it was used for renders at 12-13px, so the large
+     text exemption does not apply. Metadata and labels use --text-3 and earn
+     their quietness from size, case and tracking instead. What is left here
+     is marker dots and hairline graphics, which need 3:1, not 4.5:1. */
   --muted: var(--hoo-muted);
 
   --accent: var(--hoo-cyan);
@@ -130,6 +146,12 @@
 
   --selection-bg: var(--hoo-cyan-dim);
   --selection-fg: var(--hoo-white);
+
+  /* Overlay ink for controls that sit on a still or a recording. Alpha over
+     --hoo-base, and deliberately the same in both themes: the thing behind it
+     is an image of a terminal, which does not flip when the site does. */
+  --media-scrim: rgba(9, 9, 11, 0.45);
+  --media-ink: var(--hoo-white);
 
   /* Elevation. Black on a near-black ground; the light theme overrides this,
      because the same shadow over white reads as dirt. */
@@ -143,8 +165,12 @@
   --bg: #ffffff;
   --surface: var(--hoo-zinc-100);
   --surface-raised: #ffffff;
-  --border: var(--hoo-zinc-200);
-  --border-strong: var(--hoo-zinc-300);
+
+  /* One step down the same ramp from the dark theme's choice. zinc-200 on
+     white is 1.27:1 — a card edge that is not there, which is why light read
+     as floating text where dark reads as objects. */
+  --border: var(--hoo-zinc-300);
+  --border-strong: var(--hoo-text-3);
 
   --text: var(--hoo-base);
   --text-2: var(--hoo-zinc-800);
@@ -158,6 +184,10 @@
 
   --selection-bg: rgba(14, 116, 144, 0.16);
   --selection-fg: var(--hoo-base);
+
+  /* Not flipped. See the note in the dark block. */
+  --media-scrim: rgba(9, 9, 11, 0.45);
+  --media-ink: var(--hoo-white);
 
   --shadow-1: 0 1px 2px rgba(9, 9, 11, 0.06);
   --shadow-2: 0 12px 28px -18px rgba(9, 9, 11, 0.28);

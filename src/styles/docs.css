@@ -55,7 +55,7 @@
    no visible permalink — see the note in src/lib/satteri-hoocode.mjs. Offset
    the scroll target past the sticky masthead. */
 .doc :is(h1, h2, h3, h4) {
-  scroll-margin-top: calc(62px + var(--space-4));
+  scroll-margin-top: calc(var(--masthead-h) + var(--space-4));
 }
 
 /* -- Flow ----------------------------------------------------------------- */
@@ -83,7 +83,7 @@
 }
 
 .doc li::marker {
-  color: var(--muted);
+  color: var(--text-3);
 }
 
 .doc a {
@@ -214,7 +214,7 @@
   font-weight: 500;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--text-3);
   padding: var(--space-2) var(--space-4) var(--space-2) 0;
   border-bottom: 1px solid var(--border-strong);
   white-space: nowrap;

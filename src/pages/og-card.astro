@@ -128,8 +128,10 @@ const host = Astro.site?.host ?? "";
     color: var(--text-2);
   }
 
+  /* 19px at 4.12:1 on the card ground is under AA, and this image is often
+     seen at a third of its size in a feed. */
   .card .dim {
-    color: var(--muted);
+    color: var(--text-3);
   }
 
   /* Stroke and fill are set here rather than as presentation attributes:

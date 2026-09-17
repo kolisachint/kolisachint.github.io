@@ -286,7 +286,7 @@ const synced = new Date(source.syncedAt).toISOString().slice(0, 10);
     gap: var(--space-2);
     margin-top: var(--space-8);
     font-size: var(--text-xs);
-    color: var(--muted);
+    color: var(--text-3);
   }
 
   .provenance a {
@@ -333,14 +333,14 @@ const synced = new Date(source.syncedAt).toISOString().slice(0, 10);
 
   @media (min-width: 60rem) {
     .docs {
-      grid-template-columns: 15rem minmax(0, 1fr);
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
       gap: var(--space-12);
     }
 
     .side {
       position: sticky;
-      top: calc(62px + var(--space-6));
-      max-height: calc(100dvh - 62px - var(--space-12));
+      top: calc(var(--masthead-h) + var(--space-6));
+      max-height: calc(100dvh - var(--masthead-h) - var(--space-12));
       overflow-y: auto;
       overscroll-behavior: contain;
       scrollbar-width: thin;
@@ -353,19 +353,19 @@ const synced = new Date(source.syncedAt).toISOString().slice(0, 10);
 
   @media (min-width: 86rem) {
     .docs {
-      grid-template-columns: 15rem minmax(0, 1fr) 13rem;
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr) var(--toc-w);
     }
 
     /* Pages with no table of contents — the landing, and short references —
        get the two-pane shell rather than an empty third column. */
     .docs.two {
-      grid-template-columns: 15rem minmax(0, 1fr);
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
     }
 
     .toc {
       position: sticky;
-      top: calc(62px + var(--space-6));
-      max-height: calc(100dvh - 62px - var(--space-12));
+      top: calc(var(--masthead-h) + var(--space-6));
+      max-height: calc(100dvh - var(--masthead-h) - var(--space-12));
       overflow-y: auto;
       scrollbar-width: thin;
     }
