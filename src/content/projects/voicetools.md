@@ -6,12 +6,13 @@ repo: https://github.com/kolisachint/voicetools
 status: early
 tags: ["asr", "onnx", "offline", "cli"]
 featured: true
-order: 6
+order: 4
 ---
 
 A small Rust binary that opens the microphone, notices when you have stopped
 talking, and streams recognised text on stdout in a line protocol simple enough
-to drop into a TUI as push-to-talk. Nothing leaves the machine.
+to drop into a TUI as push-to-talk. Nothing leaves the machine — which is the
+reason it exists, and also why it works on a train.
 
 Recognition is Parakeet-TDT through ONNX Runtime at int8, with whisper.cpp
 available as a fallback backend. Models are pre-exported and fetched on first

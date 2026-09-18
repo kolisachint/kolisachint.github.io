@@ -22,31 +22,21 @@ const more = tail(repos);
 
 <BaseLayout
   title="Work"
-  description="Open-source tooling for coding agents — terminal agents, deterministic browser automation, embedding search, offline speech recognition. Rust and TypeScript."
+  description="Four open-source tools — a terminal coding agent, an embedding search engine, token-efficient web fetch, and offline speech recognition. Rust and TypeScript."
 >
   <header class="page-head">
     <div class="shell" data-hero>
       <p class="label">Work</p>
       <h1>{headlines.work}</h1>
 
-      {/* Nine entries, each several paragraphs long. Without an index the page
-          is a scroll; with one it is a document. The visible label is there
-          because a row of pills reads as a filter set until something says
-          otherwise. */}
-      <p class="jump-label label">Jump to</p>
-      <nav class="jump" aria-label="Jump to a project">
-        {
-          projects.map(({ entry }) => (
-            <a class="chip mono" href={`#${entry.id}`}>
-              {entry.data.title}
-            </a>
-          ))
-        }
-      </nav>
+      <p class="intro">
+        All four are open source and free to use. Each one below says what it
+        does, and — if you want the longer answer — why it exists at all.
+      </p>
     </div>
   </header>
 
-  <Section eyebrow={`Selected · ${projects.length}`}>
+  <Section eyebrow={`The four · ${projects.length}`}>
     <ol class="projects">
       {
         projects.map(({ entry, Content }) => (
@@ -96,9 +86,9 @@ const more = tail(repos);
               )}
             </p>
 
-            {/* Nine entries of three paragraphs each is six thousand pixels of
-                identical column. Title, tagline and facts say what it is; the
-                prose is a click away rather than a scroll past. */}
+            {/* Title, tagline and facts say what the thing is in four lines.
+                The story behind it is worth reading but nobody should have to
+                scroll past four of them to reach the next name. */}
             <details class="why">
               <summary><span class="mono">why it exists</span></summary>
               <div class="prose body">
@@ -113,10 +103,12 @@ const more = tail(repos);
 
   <Section eyebrow="Also on GitHub">
     <div class="tail-head" data-reveal>
-      <h2>Everything else with a description</h2>
+      <h2>Everything else, in one line each</h2>
       <p class="lede">
-        Smaller repositories, experiments and ports. If a repository has no
-        description it is not listed here — that rule is the filter.
+        Other tools, experiments and half-finished ideas — including a few I am
+        fond of. The list builds itself: any repository of mine with a
+        description lands here, and one without a description does not. Have a
+        dig around.
       </p>
     </div>
 
@@ -160,35 +152,13 @@ const more = tail(repos);
     max-width: 20ch;
   }
 
-  .page-head .jump-label {
-    margin: var(--space-8) 0 var(--space-3);
-  }
-
-  .jump {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-  }
-
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    min-height: 38px;
-    padding-inline: var(--space-4);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    font-size: var(--text-xs);
+  /* The jump-to-project chips went with the five entries they were built for.
+     Four headings fit on one screen at most sizes; an index of four is
+     furniture. */
+  .page-head .intro {
+    margin-top: var(--space-6);
+    max-width: var(--measure);
     color: var(--text-3);
-    transition:
-      border-color var(--dur) var(--ease),
-      color var(--dur) var(--ease),
-      background var(--dur) var(--ease);
-  }
-
-  .chip:hover {
-    border-color: var(--border-strong);
-    background: var(--surface);
-    color: var(--text);
   }
 
   .projects {
@@ -249,8 +219,8 @@ const more = tail(repos);
   }
 
   /* -- The disclosure ----------------------------------------------------
-     A bare text toggle, not a bordered panel: nine bordered panels inside
-     nine bordered entries is a page made of boxes. */
+     A bare text toggle, not a bordered panel: a bordered panel inside every
+     bordered entry is a page made of boxes. */
   .why {
     margin-top: var(--space-4);
   }

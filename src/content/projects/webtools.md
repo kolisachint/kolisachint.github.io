@@ -1,12 +1,12 @@
 ---
 title: webtools
-tagline: Token-efficient web fetch and search for agents, with reference-style URLs.
+tagline: Lets an agent read the web without spending its memory on link addresses.
 lang: Rust
 repo: https://github.com/kolisachint/webtools
 status: shipped
 tags: ["agents", "search", "tokens"]
 featured: true
-order: 5
+order: 3
 ---
 
 A web page pasted into a context window is mostly URLs, and URLs are expensive.
@@ -17,9 +17,9 @@ a cheap marker but can still recover the exact URL when it needs it.
 
 The other half is honesty about failure. A search that was blocked, a page that
 needs JavaScript, and a page that is genuinely empty are three different
-outcomes. Most tools return the same silent nothing for all three; an agent then
-hallucinates over the gap. Here they are distinct, and the agent can act on the
-difference.
+outcomes. Return the same silent nothing for all three and the agent fills the
+gap with invention. Here they are distinct, and it can act on the difference
+instead.
 
 One binary, no API keys, no backend — and it takes keys when you want better
 search results.

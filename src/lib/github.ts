@@ -11,17 +11,18 @@ export interface Repo {
   archived: boolean;
 }
 
-/** Repos with a curated entry in src/content/projects — excluded from the tail. */
+/**
+ * Repos with a curated entry in src/content/projects — excluded from the tail.
+ *
+ * Four, deliberately. Everything else that used to be written up at length now
+ * gets a single row in the tail instead: still findable, no longer competing
+ * with the four for a reader's attention.
+ */
 const CURATED = new Set([
   "hoocode",
-  "hoocowork",
-  "hooteams",
   "embeddingsearchtools",
   "webtools",
   "voicetools",
-  "browsertools",
-  "filetools",
-  "screencut",
 ]);
 
 /** Meta-repos that are not work: the profile README, this site itself. */

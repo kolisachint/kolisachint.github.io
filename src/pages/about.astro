@@ -4,7 +4,7 @@ import Section from "../components/Section.astro";
 import {
   site,
   headlines,
-  track,
+  background,
   recognition,
   profiles,
   email,
@@ -25,17 +25,13 @@ const personLd = {
   mainEntityOfPage: canonical,
   jobTitle: "Solution Architect",
   description: site.description,
-  worksFor: {
-    "@type": "Organization",
-    name: "Tata Consultancy Services",
-  },
+  /* No `worksFor`. The visible page names no employer, and structured data
+     that says more than the page does is a back door, not a feature. */
   knowsAbout: [
     "Google Cloud Platform",
     "BigQuery",
-    "Apache Kafka",
     "Data platform architecture",
     "Data warehouse migration",
-    "Apigee",
     "Rust",
     "TypeScript",
     "Coding agent tooling",
@@ -46,7 +42,7 @@ const personLd = {
 
 <BaseLayout
   title="About"
-  description="Solution architect working on cloud data platforms in large regulated enterprises, and the author of open-source tooling for coding agents."
+  description="Solution architect working on cloud data platforms, and the author of small open-source tools for coding agents. Eighteen years in enterprise data."
 >
   <script
     slot="head"
@@ -65,72 +61,39 @@ const personLd = {
   <Section eyebrow="In short">
     <div class="prose lede-prose" data-reveal>
       <p>
-        I'm a solution architect working on cloud data platforms. Most of that
-        time has been inside large regulated enterprises — banking, retail,
-        telecoms — where the interesting problem is rarely the algorithm and
-        almost always the migration: moving something that cannot stop, without
-        stopping it.
+        Hello. I'm Sachin — a solution architect, which mostly means I design
+        the layer nobody sees: the pipelines and platforms that decide whether
+        an app shows you the right number.
       </p>
       <p>
-        Right now that means Google Cloud — BigQuery, Kafka, Composer, Apigee.
-        Before that, a long run through Teradata, Informatica, Ab Initio and the
-        rest of the on-premise warehouse world, which is why I'm relaxed about
-        legacy systems and suspicious of rewrites.
+        {background.sentence} The interesting problem is rarely the algorithm.
+        It is almost always the migration — moving something that cannot stop,
+        without stopping it — which is why I'm relaxed about legacy systems and
+        suspicious of rewrites.
       </p>
       <p>
-        The open-source work comes from the same place. Nearly everything on the{" "}
-        <a class="link" href="/work">work page</a> exists because a tool I needed
-        was either missing, too slow, or too eager to guess. They are small on
-        purpose.
+        I don't write about that work here. It belongs to the people who paid
+        for it, and the parts I could describe would not tell you much anyway.
+        What I can show you is the code I write in the open, which comes from
+        exactly the same place: every tool on the{" "}
+        <a class="link" href="/work">work page</a> exists because the one I
+        needed was missing, too slow, or too eager to guess. They are small on
+        purpose, and I would rather you read them than take my word for any of
+        it.
+      </p>
+      <p>
+        If you found your way here from a repository or an npm page — welcome,
+        and thank you for being curious. Ask me anything about any of it.
       </p>
     </div>
-  </Section>
-
-  <Section eyebrow="Track">
-    <ol class="track" data-reveal>
-      {
-        track.map((t, i) => (
-          <li class:list={["row", i === 0 && "current"]}>
-            <span class="period mono">
-              <span class="node" aria-hidden="true" />
-              {t.period}
-            </span>
-            <span class="detail">
-              <span class="role">{t.role}</span>
-              <span class="employer">{t.employer}</span>
-              <span class="client mono">{t.client}</span>
-            </span>
-          </li>
-        ))
-      }
-    </ol>
-
-    <p class="note">
-      Clients are described, not named. The companies above are employers.
-    </p>
-  </Section>
-
-  <Section eyebrow="Recognition" tight>
-    <p class="recognition" data-reveal>
-      Architected work recognised at {
-        recognition.map((r, i) => (
-          <>
-            {i > 0 && (i === recognition.length - 1 ? " and " : ", ")}
-            <span class="award">
-              the {r.award} {r.year}
-            </span>
-          </>
-        ))
-      }, for a self-serve fraud journey.
-    </p>
   </Section>
 
   <Section eyebrow="Contact" tight>
     <div class="prose">
       <p>
-        Email is best — I read everything and reply to anything that is not a
-        template. If you are hiring, lead with the problem rather than the
-        stack.
+        Email is the best way to reach me. A question about one of the tools, a
+        bug, a disagreement, or just an introduction — all equally welcome, and
+        none of them need an excuse.
       </p>
     </div>
 
@@ -148,6 +111,20 @@ const personLd = {
           >{email.user}<span aria-hidden="true">&#64;</span>{email.domain}</span
         >
       </a>
+    </p>
+
+    {/* One line, at the very bottom, in the small grey. The awards are public
+        record and worth stating once; a section of their own turned them into
+        a trophy cabinet. */}
+    <p class="recognition mono" data-reveal>
+      Work I architected was recognised at the {
+        recognition.map((r, i) => (
+          <>
+            {i > 0 && (i === recognition.length - 1 ? " and the " : ", ")}
+            {r.award} {r.year}
+          </>
+        ))
+      }.
     </p>
   </Section>
 </BaseLayout>
@@ -170,99 +147,14 @@ const personLd = {
     font-size: var(--text-lg);
   }
 
-  .track {
-    list-style: none;
-    padding: 0;
-    border-top: 1px solid var(--border);
-  }
-
-  .row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-2) var(--space-8);
-    padding-block: var(--space-6);
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* A marker per row. Only the current role is cyan — the rest are hairline
-     grey, so the eye lands on "now" and nowhere else. */
-  .period {
-    font-size: var(--text-sm);
-    color: var(--text-3);
-    white-space: nowrap;
-  }
-
-  /* inline-block, not a flex item: the row aligns on the baseline, and a flex
-     container would hand it the dot's bottom edge instead of the text's. */
-  .node {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    margin-right: var(--space-2);
-    border-radius: 50%;
-    background: var(--border-strong);
-    vertical-align: 0.12em;
-  }
-
-  .current .period {
-    color: var(--text-3);
-  }
-
-  .current .node {
-    background: var(--accent);
-    box-shadow: 0 0 12px var(--accent-glow);
-  }
-
-  .detail {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-  }
-
-  .role {
-    color: var(--text);
-    font-weight: 520;
-  }
-
-  .employer {
-    color: var(--text-3);
-    font-size: var(--text-sm);
-  }
-
-  .client {
-    color: var(--text-3);
-    font-size: var(--text-xs);
-  }
-
-  @media (min-width: 40rem) {
-    .row {
-      grid-template-columns: 10rem 1fr;
-      align-items: baseline;
-    }
-  }
-
-  .note,
+  /* Deliberately quiet: the smallest type on the page, in the dimmest grey,
+     no accent and no border. It is a fact the page states once, not a claim
+     the page is built around. */
   .recognition {
     max-width: var(--measure);
-  }
-
-  .note {
-    margin-top: var(--space-6);
-    font-size: var(--text-sm);
+    margin-top: var(--space-10);
+    font-size: var(--text-xs);
     color: var(--text-3);
-  }
-
-
-
-  .recognition {
-    color: var(--text-2);
-    font-size: var(--text-lg);
-  }
-
-  .award {
-    color: var(--text);
-    border-bottom: 1px solid var(--accent);
-    padding-bottom: 1px;
   }
 
   .mail {

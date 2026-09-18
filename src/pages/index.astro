@@ -3,46 +3,42 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Section from "../components/Section.astro";
 import ProjectCard from "../components/ProjectCard.astro";
-import { site, headlines, email, now, track, recognition } from "../site";
+import { site, headlines, email, now } from "../site";
 
 const projects = (await getCollection("projects"))
   .filter((p) => p.data.featured)
   .sort((a, b) => a.data.order - b.data.order);
 
-const featured = projects.slice(0, 6);
-const rest = projects.length - featured.length;
+/* Four entries, and four is the whole set. The slice stays so that adding a
+   fifth markdown file does not silently change this page's shape. */
+const featured = projects.slice(0, 4);
 
-/* The record band. Every value is derived from `track` and `recognition`, so
-   the home page cannot drift from /about and no new fact enters the site by
-   the back door. Spelled numbers, to match the voice everywhere else.
+/* The band under the hero used to be four statistics — years, employers,
+   awards, current engagement. It read as a scoreboard, which is the wrong
+   first impression for a personal site, and three of the four facts described
+   work that is not public.
 
-   A start year rather than a running total: "since 2008" is the same fact and
-   never needs a January edit, where "18 years" would have disagreed with the
-   /about headline the moment the year turned. */
-const words = ["no", "one", "two", "three", "four", "five", "six"];
-const firstYear = Number(track[track.length - 1].period.slice(0, 4));
-const current = track[0];
-
-const record = [
+   What replaces it is a set of directions. A visitor arriving from a README
+   wants the code; one arriving from a search wants to know who wrote it. Each
+   card says where it goes and what is there, so neither has to guess. */
+const signposts = [
   {
-    label: "Experience",
-    value: `Since ${firstYear}`,
-    note: "enterprise data",
+    label: "The tools",
+    href: "/work",
+    title: "Four things I build in the open",
+    note: "A coding agent, and the Rust it leans on.",
   },
   {
-    label: "Employers",
-    value: words[track.length].replace(/^./, (c) => c.toUpperCase()),
-    note: "banking · retail · telecoms",
+    label: "The docs",
+    href: "/hoocode",
+    title: "HooCode, documented in full",
+    note: "The same pages that ship with the package.",
   },
   {
-    label: "Recognition",
-    value: `${words[recognition.length].replace(/^./, (c) => c.toUpperCase())} industry awards`,
-    note: recognition.map((r) => r.year).join(" · "),
-  },
-  {
-    label: "Current",
-    value: "Google Cloud data platform",
-    note: current.client,
+    label: "The person",
+    href: "/about",
+    title: "How I ended up here",
+    note: "Eighteen years of data, and what changed.",
   },
 ];
 ---
@@ -61,8 +57,8 @@ const record = [
         <p class="sub">{headlines.homeSub}</p>
 
         <div class="actions">
-          <a class="btn primary" href="/work">See the work</a>
-          <a class="btn" href="/about">About</a>
+          <a class="btn primary" href="/work">See the tools</a>
+          <a class="btn" href="/about">About me</a>
         </div>
       </div>
 
@@ -80,23 +76,29 @@ const record = [
     </div>
   </section>
 
-  <!-- The h1 claims two things and the page used to evidence only the second.
-       A recruiter has thirty seconds and should not have to click through to
-       /about to find the first eighteen years. -->
+  <!-- Directions, not statistics. See the note in the frontmatter. -->
   <section class="record">
     <div class="shell">
-      <h2 class="visually-hidden">Career record</h2>
-      <dl class="record-grid">
+      <h2 class="visually-hidden">Where to start</h2>
+      <nav class="record-grid" aria-label="Where to start">
         {
-          record.map((fact, i) => (
-            <div class="fact" data-reveal style={`--reveal-delay:${i * 60}ms`}>
-              <dt class="label">{fact.label}</dt>
-              <dd class="fact-value">{fact.value}</dd>
-              <dd class="fact-note mono">{fact.note}</dd>
-            </div>
+          signposts.map((s, i) => (
+            <a
+              class="fact"
+              href={s.href}
+              data-reveal
+              style={`--reveal-delay:${i * 60}ms`}
+            >
+              <span class="label">{s.label}</span>
+              <span class="fact-value">
+                {s.title}
+                <span class="arrow" aria-hidden="true">→</span>
+              </span>
+              <span class="fact-note mono">{s.note}</span>
+            </a>
           ))
         }
-      </dl>
+      </nav>
     </div>
   </section>
 
@@ -105,12 +107,13 @@ const record = [
     <p class="now-stamp mono" data-reveal>Updated {now.updated}</p>
   </Section>
 
-  <Section eyebrow="Selected work">
+  <Section eyebrow="In the open">
     <div class="sec-head" data-reveal>
       <h2>Things I build in the open</h2>
       <p class="lede">
-        Tooling for coding agents, mostly in Rust and TypeScript. Small binaries
-        that do one thing, and the runtimes that stitch them together.
+        Four of them. One terminal coding agent in TypeScript, and three small
+        Rust binaries it leans on. Each does a single thing, all of it is free
+        to read, and none of it needs my permission to use.
       </p>
     </div>
 
@@ -123,18 +126,16 @@ const record = [
     </div>
 
     <p class="more" data-reveal>
-      <a class="link" href="/work"
-        >All work{rest > 0 && <span>, including {rest} more</span>} &rarr;</a
-      >
+      <a class="link" href="/work">Why each one exists &rarr;</a>
     </p>
   </Section>
 
   <Section eyebrow="Contact" tight>
     <div class="sec-head" data-reveal>
-      <h2>Reachable</h2>
+      <h2>Say hello</h2>
       <p class="lede">
-        Email is best. I read everything, and reply to anything that is not a
-        template.
+        Email is the best way to reach me — about the tools, the data work, or
+        something you are stuck on. I read everything.
       </p>
     </div>
 
@@ -253,10 +254,7 @@ const record = [
     display: grid;
     grid-template-rows: auto 1fr auto;
     gap: var(--space-2);
-  }
-
-  .fact dd {
-    margin: 0;
+    transition: color var(--dur) var(--ease);
   }
 
   .fact-value {
@@ -264,6 +262,7 @@ const record = [
     line-height: var(--leading-snug);
     color: var(--text-2);
     text-wrap: balance;
+    transition: color var(--dur) var(--ease);
   }
 
   .fact-note {
@@ -272,17 +271,43 @@ const record = [
     align-self: end;
   }
 
-  /* Two, then four. Never three — a four-item row that wraps to 3 + 1 reads
-     as a mistake. */
-  @media (min-width: 34rem) {
-    .record-grid {
-      grid-template-columns: repeat(2, 1fr);
+  /* They are links now, so they have to look clickable without becoming three
+     more boxes on a page already made of boxes. A dim arrow at rest, brighter
+     and nudged on hover. Nothing lights up cyan — the hero button already owns
+     that in this viewport. */
+  .arrow {
+    display: inline-block;
+    margin-left: 0.15em;
+    color: var(--text-3);
+    transition:
+      transform var(--dur) var(--ease),
+      color var(--dur) var(--ease);
+  }
+
+  .fact:hover .fact-value {
+    color: var(--text);
+  }
+
+  .fact:hover .arrow {
+    color: var(--accent-ink);
+    transform: translateX(3px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arrow {
+      transition: color var(--dur) var(--ease);
+    }
+
+    .fact:hover .arrow {
+      transform: none;
     }
   }
 
-  @media (min-width: 60rem) {
+  /* One column, then three. Never two — three items in a two-column row wrap
+     to 2 + 1 and read as a mistake. */
+  @media (min-width: 46rem) {
     .record-grid {
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       grid-template-rows: auto 1fr auto;
     }
 

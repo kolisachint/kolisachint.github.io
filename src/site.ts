@@ -10,7 +10,7 @@ export const site = {
   shortName: "sk",
   role: "Solution architect — cloud data platforms",
   description:
-    "Architect of large data systems, author of small sharp tools. Cloud data platforms at bank scale; open-source agent tooling in Rust and TypeScript.",
+    "Solution architect working on cloud data platforms, and the author of four small open-source tools for coding agents, written in Rust and TypeScript.",
   locale: "en_GB",
 } as const;
 
@@ -19,10 +19,10 @@ export const site = {
  * Do not reword or relocate without asking.
  */
 export const headlines = {
-  home: "Architect of large data systems. Author of small sharp tools.",
+  home: "Large data systems by day. Small, sharp tools the rest of the time.",
   homeSub:
     "I work on data platforms, coding agents, and the space between them.",
-  work: "I build data platforms at bank scale — and the tools I wish I'd had.",
+  work: "Four tools I built because I needed them, and kept because they worked.",
   about:
     "Eighteen years moving data. Lately, teaching agents to move it for me.",
 } as const;
@@ -50,40 +50,25 @@ export const profiles = [
  */
 export const now = {
   updated: "September 2026",
-  text: "Building HooCode, a terminal coding agent, and the small Rust tools it leans on — search, browser, speech, files.",
+  text: "Building HooCode, a terminal coding agent, and the small Rust tools it leans on for search, speech and fetching the web. All of it is open, and questions about any of it are welcome.",
 } as const;
 
 /**
- * Employment record. Approved for publication 2026-09-15.
- * Source: my-life/data/career-facts.md. Employers named, clients anonymised.
- * Years only — no grades, no months, no compensation.
+ * The employment record, reduced to a sentence on purpose.
+ *
+ * The four-row table of employers, years, roles and engagement descriptors was
+ * removed 2026-09-18. None of that work is in the public domain, a stranger
+ * does not need it to understand what this site is for, and listing it turned
+ * the page into a CV nobody asked to read. LinkedIn carries the specifics for
+ * anyone who wants them; the sentence below is what the site itself claims.
+ *
+ * The span is traceable to the verified career record — first working day
+ * 7 January 2008. Nothing else here is a fact about an employer or a client.
  */
-export const track = [
-  {
-    period: "2021 — now",
-    employer: "Tata Consultancy Services",
-    role: "Solution architect",
-    client: "UK tier-1 retail bank",
-  },
-  {
-    period: "2018 — 2021",
-    employer: "Sears IT & Management Services India",
-    role: "Architect",
-    client: "US Fortune-500 retailer",
-  },
-  {
-    period: "2010 — 2018",
-    employer: "Cognizant",
-    role: "Senior associate",
-    client: "UK tier-1 bank · Gulf national telecom operator",
-  },
-  {
-    period: "2008 — 2010",
-    employer: "Mahindra Satyam",
-    role: "Software developer",
-    client: "Australian national telecom operator",
-  },
-] as const;
+export const background = {
+  sentence:
+    "Eighteen years in enterprise data — banking, retail, telecoms. Mostly large organisations, where the systems are old, the rules are strict, and nothing is allowed to stop while you change it.",
+} as const;
 
 /**
  * Approved phrasing, 2026-09-15. Credits the work, not the person. Do not

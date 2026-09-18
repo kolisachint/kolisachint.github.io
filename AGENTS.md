@@ -193,10 +193,48 @@ relocate them without asking.
 
 | Slot | Line |
 |---|---|
-| Home `<h1>` | Architect of large data systems. Author of small sharp tools. |
+| Home `<h1>` | Large data systems by day. Small, sharp tools the rest of the time. |
 | Home subhead | I work on data platforms, coding agents, and the space between them. |
-| `/work` lead | I build data platforms at bank scale — and the tools I wish I'd had. |
+| `/work` lead | Four tools I built because I needed them, and kept because they worked. |
 | `/about` opener | Eighteen years moving data. Lately, teaching agents to move it for me. |
+
+The first and third were replaced 2026-09-18, with approval. The originals
+("Architect of large data systems. Author of small sharp tools." and "I build
+data platforms at bank scale — and the tools I wish I'd had.") read as two
+self-awarded titles and a scale claim. They are not coming back.
+
+---
+
+## Tone, and the two rules that set it
+
+The site was rewritten 2026-09-18 because it read as a boast. Two rules came
+out of that, and both are load-bearing.
+
+**The site does not describe his employed work.** No employers, no roles, no
+years, no engagement descriptors, no stack lists tied to a client. `/about`
+says *"Eighteen years in enterprise data — banking, retail, telecoms"* and
+stops. That work is not in the public domain and a stranger does not need it to
+understand the site. LinkedIn carries the specifics for anyone who asks. The
+four-row employment table that used to sit on `/about` was deleted, along with
+`track` in `src/site.ts` and `worksFor` in the page's JSON-LD — structured data
+that says more than the visible page is a back door, not a feature.
+
+The two awards survive as **one line of small grey type at the foot of
+`/about`**, and nowhere else. Stated once, as a fact. Not a section, not a
+home-page tile, never "award-winning".
+
+**Four curated projects. Not five.** hoocode, embeddingsearchtools, webtools,
+voicetools — the four the career record calls "the four that carry the story".
+Everything else that used to have a write-up (hoocowork, hooteams, browsertools,
+filetools, screencut) now gets a single row in the generated tail on `/work`,
+which is where a fifth one goes too. Adding a fifth file to
+`src/content/projects/` is a decision to raise, not a detail to slip into a
+commit — and it means removing one of the four.
+
+The voice is a welcome, not a pitch. A visitor arriving from a README is a
+guest. Sentences that begin "Most X do Y. I do Z." are a pitch. Instructions to
+the reader about how to contact him properly are a door policy. Neither belongs
+here.
 
 ---
 
@@ -243,7 +281,7 @@ public/
   brand/og.png           social card, generated — never hand-edited
   img/                   photography
 src/
-  site.ts                name, headlines, profiles, career record
+  site.ts                name, headlines, profiles, the one-sentence background
   content.config.ts      collection schemas
   content/projects/      curated project entries, one markdown file each
   data/repos.json        committed GitHub snapshot — build fallback
