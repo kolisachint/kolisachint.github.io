@@ -59,15 +59,21 @@ it is not verified, and it does not go on the site.
 Employers may be named: Tata Consultancy Services, Sears IT & Management
 Services India, Cognizant, Mahindra Satyam.
 
-Clients may not. Use the agreed framings:
+Clients may not — not the name, not a detail that identifies one. Every
+engagement is referred to only by its agreed public framing. These five are the
+whole permitted vocabulary:
 
-| Real client | Public framing |
-|---|---|
-| Lloyds Banking Group | UK tier-1 retail bank |
-| Sears Holdings | US Fortune-500 retailer |
-| Saudi Telecom | Gulf national telecom operator |
-| Barclays | UK tier-1 bank (emerging markets) |
-| Telstra | Australian national telecom operator |
+- UK tier-1 retail bank
+- US Fortune-500 retailer
+- Gulf national telecom operator
+- UK tier-1 bank (emerging markets)
+- Australian national telecom operator
+
+Which real client each framing stands for is recorded in the private life repo,
+and only there. **This file is committed to a public repository** — a
+name-to-framing table written here would hand a reader the key to every framing
+on the site, which is the one thing the framings exist to prevent. If you need
+the mapping to check a draft, read it in the private repo and leave it there.
 
 The two industry awards are public record and may be named in full — Banking
 Tech Awards 2024 and Card & Payments Awards 2025. That a reader can connect a
