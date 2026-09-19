@@ -2,9 +2,9 @@
   "source": {
     "repo": "kolisachint/hoocode",
     "path": "packages/coding-agent/docs",
-    "branch": "claude/hoocode-release-prep-g7uz6x",
-    "sha": "0c61219273db1b1a5b54b77df5d321bcb6c91c79",
-    "syncedAt": "2026-09-19T08:51:06.956783Z"
+    "branch": "main",
+    "sha": "dd287cddb2effb2e349c9335879bd2a26d873a37",
+    "syncedAt": "2026-09-19T12:41:32.366Z"
   },
   "navigation": [
     {

@@ -17,18 +17,21 @@ import DocsLayout from "../../layouts/DocsLayout.astro";
  *
  * The scripts they fetch are vendored to public/hoocode by scripts/sync-docs.mjs
  * from install/ in the hoocode repository, so these URLs are stable and the file
- * served is byte-identical to the one reviewed there.
+ * served is byte-identical to the one reviewed there. The host comes from `site`
+ * in astro.config.mjs, so a custom domain does not need an edit here.
  */
+const installs = new URL("/hoocode", Astro.site).href;
+
 const INSTALLS = [
   {
     id: "unix",
     label: "macOS / Linux",
-    cmd: "curl -fsSL https://kolisachint.github.io/hoocode/install.sh | sh",
+    cmd: `curl -fsSL ${installs}/install.sh | sh`,
   },
   {
     id: "windows",
     label: "Windows",
-    cmd: "irm https://kolisachint.github.io/hoocode/install.ps1 | iex",
+    cmd: `irm ${installs}/install.ps1 | iex`,
   },
   {
     id: "npm",
