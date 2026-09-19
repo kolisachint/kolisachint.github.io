@@ -24,6 +24,14 @@ CLI, a runtime that handles tool calling and state, the unified provider API,
 and a terminal UI library with differential rendering, so a long session does
 not repaint the world on every token.
 
+One command installs it, on any of the three platforms, with no runtime to set
+up first:
+
+```bash
+curl -fsSL https://kolisachint.github.io/hoocode/install.sh | sh   # macOS, Linux
+irm https://kolisachint.github.io/hoocode/install.ps1 | iex        # Windows
+```
+
 It was originally derived from Mario Zechner's MIT-licensed `pi-mono` and has
 grown a long way from it — modes, subagents, skills, plugins, MCP, session
 persistence — but a good deal of the foundation is still his. The credit and

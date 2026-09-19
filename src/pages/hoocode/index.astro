@@ -7,7 +7,35 @@ import DocsLayout from "../../layouts/DocsLayout.astro";
  * inside the same two-pane shell it does it here too. This page is the entry
  * point: what the thing is, how to install it, and what it looks like running.
  */
-const INSTALL = "npm install -g @kolisachint/hoocode-agent";
+/**
+ * Three ways in, in the order most people want them.
+ *
+ * The one-liners come first because they need nothing installed first — the npm
+ * line, which was the only option here, quietly asks the reader to already have
+ * Node, and the people most likely to bounce off this page are exactly the ones
+ * who do not.
+ *
+ * The scripts they fetch are vendored to public/hoocode by scripts/sync-docs.mjs
+ * from install/ in the hoocode repository, so these URLs are stable and the file
+ * served is byte-identical to the one reviewed there.
+ */
+const INSTALLS = [
+  {
+    id: "unix",
+    label: "macOS / Linux",
+    cmd: "curl -fsSL https://kolisachint.github.io/hoocode/install.sh | sh",
+  },
+  {
+    id: "windows",
+    label: "Windows",
+    cmd: "irm https://kolisachint.github.io/hoocode/install.ps1 | iex",
+  },
+  {
+    id: "npm",
+    label: "npm · Node 20+",
+    cmd: "npm install -g @kolisachint/hoocode-agent",
+  },
+];
 
 const modes = [
   { name: "Ask", note: "answer, do not touch the repository" },
@@ -41,14 +69,22 @@ const modes = [
 
     <div class="install">
       <p class="label" id="install-label">Install</p>
-      <div class="cmd-row">
-        <pre class="cmd" aria-labelledby="install-label"><code>{INSTALL}</code></pre>
-        <button class="copy mono" type="button" data-copy={INSTALL}>
-          <span data-copy-label>Copy</span>
-        </button>
-      </div>
+      {
+        INSTALLS.map((install) => (
+          <div class="install-row">
+            <p class="platform mono" id={`install-${install.id}`}>{install.label}</p>
+            <div class="cmd-row">
+              <pre class="cmd" aria-labelledby={`install-${install.id}`}><code>{install.cmd}</code></pre>
+              <button class="copy mono" type="button" data-copy={install.cmd}>
+                <span data-copy-label>Copy</span>
+              </button>
+            </div>
+          </div>
+        ))
+      }
       <p class="cmd-note mono">
-        then run <code>hoocode</code> in a project directory
+        no root needed · then run <code>hoocode</code> in a project directory ·
+        <a href="/hoocode/install">all install options</a>
       </p>
       <p class="visually-hidden" role="status" data-copy-status></p>
     </div>
@@ -153,7 +189,19 @@ const modes = [
   }
 
   .install .label {
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  /* Rows share the block's measure so the three commands line up, which is what
+     makes them read as one choice rather than three instructions. */
+  .install-row + .install-row {
+    margin-top: var(--space-4);
+  }
+
+  .platform {
+    margin-bottom: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--text-3);
   }
 
   .cmd-row {
@@ -414,33 +462,43 @@ const modes = [
     demo.addEventListener("play", start);
   }
 
-  // Copy-to-clipboard for the install line. Progressive: the button is removed
-  // outright where the API is unavailable, rather than left there to fail.
-  const btn = document.querySelector<HTMLButtonElement>(".copy");
-  const label = btn?.querySelector<HTMLElement>("[data-copy-label]");
+  // Copy-to-clipboard for the install lines. Progressive: the buttons are
+  // removed outright where the API is unavailable, rather than left there to
+  // fail. One shared status region and one shared timer, so copying a second
+  // command resets the first button instead of leaving two reading "Copied".
+  const buttons = document.querySelectorAll<HTMLButtonElement>(".copy");
   const status = document.querySelector<HTMLElement>("[data-copy-status]");
 
-  if (btn && !navigator.clipboard) {
-    btn.hidden = true;
-  } else if (btn && label) {
+  if (!navigator.clipboard) {
+    for (const btn of buttons) btn.hidden = true;
+  } else {
     let timer: number | undefined;
 
-    btn.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(btn.dataset.copy ?? "");
-      } catch {
-        return;
-      }
-      label.textContent = "Copied";
-      btn.dataset.done = "";
-      if (status) status.textContent = "Install command copied.";
-
-      clearTimeout(timer);
-      timer = window.setTimeout(() => {
-        label.textContent = "Copy";
+    const reset = () => {
+      for (const btn of buttons) {
+        const label = btn.querySelector<HTMLElement>("[data-copy-label]");
+        if (label) label.textContent = "Copy";
         delete btn.dataset.done;
-        if (status) status.textContent = "";
-      }, 1600);
-    });
+      }
+      if (status) status.textContent = "";
+    };
+
+    for (const btn of buttons) {
+      btn.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(btn.dataset.copy ?? "");
+        } catch {
+          return;
+        }
+        reset();
+        const label = btn.querySelector<HTMLElement>("[data-copy-label]");
+        if (label) label.textContent = "Copied";
+        btn.dataset.done = "";
+        if (status) status.textContent = "Install command copied.";
+
+        clearTimeout(timer);
+        timer = window.setTimeout(reset, 1600);
+      });
+    }
   }
 </script>

@@ -15,11 +15,12 @@
  *   src/content/docs/hoocode/**.md   the pages
  *   src/data/hoocode-nav.json        sidebar, redirects and the source commit
  *   public/hoocode/images/*          images referenced by the pages
+ *   public/hoocode/install.{sh,ps1}  the one-click installers, served verbatim
  *
  * Nothing here is hand-edited. Fix the hoocode repo and re-run.
  */
 import { writeFile, mkdir, rm } from "node:fs/promises";
-import { dirname, resolve, extname } from "node:path";
+import { basename, dirname, resolve, extname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -30,6 +31,12 @@ const SRC = "packages/coding-agent/docs";
 const DOCS_OUT = resolve(ROOT, "src/content/docs/hoocode");
 const IMG_OUT = resolve(ROOT, "public/hoocode/images");
 const NAV_OUT = resolve(ROOT, "src/data/hoocode-nav.json");
+// The installers are served from here, so that
+// `curl -fsSL https://kolisachint.github.io/hoocode/install.sh | sh` is the
+// documented one-liner rather than a raw.githubusercontent.com URL whose shape
+// changes whenever the default branch does.
+const INSTALL_OUT = resolve(ROOT, "public/hoocode");
+const INSTALLERS = ["install/install.sh", "install/install.ps1"];
 
 const token = process.env.GITHUB_TOKEN;
 const headers = {
@@ -121,6 +128,20 @@ if (!nav) {
   process.exit(1);
 }
 
+// -- The installers. They live outside SRC, so they need their own pass rather
+//    than falling out of the tree filter above. Copied verbatim: the file people
+//    pipe into `sh` has to be byte-identical to the one reviewed in the
+//    repository, and any transform here would be an unreviewable step between
+//    the two. ----------------------------------------------------------------
+
+await mkdir(INSTALL_OUT, { recursive: true });
+let installers = 0;
+for (const path of INSTALLERS) {
+  const text = await (await raw(path)).text();
+  await writeFile(resolve(INSTALL_OUT, basename(path)), text);
+  installers++;
+}
+
 await mkdir(dirname(NAV_OUT), { recursive: true });
 await writeFile(
   NAV_OUT,
@@ -142,5 +163,5 @@ await writeFile(
 );
 
 console.log(
-  `synced ${pages} pages, ${images} images from ${OWNER}/${REPO}@${sha.slice(0, 8)}`,
+  `synced ${pages} pages, ${images} images, ${installers} installers from ${OWNER}/${REPO}@${sha.slice(0, 8)}`,
 );

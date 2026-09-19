@@ -2,9 +2,9 @@
   "source": {
     "repo": "kolisachint/hoocode",
     "path": "packages/coding-agent/docs",
-    "branch": "main",
-    "sha": "e966bf501f76edac9b790e60fd53e6ba175981ec",
-    "syncedAt": "2026-09-15T08:35:53.112Z"
+    "branch": "claude/hoocode-release-prep-g7uz6x",
+    "sha": "bb7a3f0fded40f24b9b1da7c0e4148952a6b235a",
+    "syncedAt": "2026-09-19T08:23:31.056927Z"
   },
   "navigation": [
     {
@@ -13,6 +13,10 @@
         {
           "title": "Overview",
           "path": "index.md"
+        },
+        {
+          "title": "Install",
+          "path": "install.md"
         },
         {
           "title": "Quickstart",
