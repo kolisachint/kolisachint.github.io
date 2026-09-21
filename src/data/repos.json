@@ -1,5 +1,65 @@
 [
   {
+    "name": "hoocode",
+    "description": "Deterministic terminal coding agent with four scoped modes (Ask, Plan, Build, Debug), 25+ providers, hybrid search, and one-click plugins in a single binary. Published to npm as @kolisachint/hoocode-agent.",
+    "lang": "TypeScript",
+    "url": "https://github.com/kolisachint/hoocode",
+    "stars": 1,
+    "updated": "2026-09-21T12:51:36Z",
+    "fork": false,
+    "archived": false
+  },
+  {
+    "name": "kolisachint.github.io",
+    "description": "My Site",
+    "lang": "Astro",
+    "url": "https://github.com/kolisachint/kolisachint.github.io",
+    "stars": 0,
+    "updated": "2026-09-21T09:42:58Z",
+    "fork": false,
+    "archived": false
+  },
+  {
+    "name": "kolisachint",
+    "description": "My GitHub profile README.",
+    "lang": "JavaScript",
+    "url": "https://github.com/kolisachint/kolisachint",
+    "stars": 0,
+    "updated": "2026-09-18T16:59:24Z",
+    "fork": false,
+    "archived": false
+  },
+  {
+    "name": "webtools",
+    "description": "Token-efficient web fetch and search for LLM agents. Preserves reference-style URLs as single-token markers so a page fits inside a context budget.",
+    "lang": "Rust",
+    "url": "https://github.com/kolisachint/webtools",
+    "stars": 0,
+    "updated": "2026-09-18T16:52:34Z",
+    "fork": false,
+    "archived": false
+  },
+  {
+    "name": "voicetools",
+    "description": "Offline speech recognition in Rust. Microphone to VAD to Parakeet-TDT on ONNX Runtime, 25 languages, whisper.cpp fallback. No audio leaves the machine.",
+    "lang": "Rust",
+    "url": "https://github.com/kolisachint/voicetools",
+    "stars": 0,
+    "updated": "2026-09-18T16:52:30Z",
+    "fork": false,
+    "archived": false
+  },
+  {
+    "name": "embeddingsearchtools",
+    "description": "Semantic search in Rust. MiniLM through ONNX Runtime with int8 weights bundled in-binary, HNSW approximate nearest neighbour written from scratch, BM25 fusion for hybrid retrieval, mmap-backed store. Library, CLI and daemon.",
+    "lang": "Rust",
+    "url": "https://github.com/kolisachint/embeddingsearchtools",
+    "stars": 0,
+    "updated": "2026-09-18T16:52:22Z",
+    "fork": false,
+    "archived": false
+  },
+  {
     "name": "pycortex",
     "description": "A Python port of the hoocode terminal coding agent, rebuilt as an ultra-modular monorepo — one responsibility, one pyproject and its own tests per package, ported in measured-churn order so the stable code ships to PyPI first. 354 modules, 118 test files, migration in progress.",
     "lang": "Python",
@@ -130,82 +190,12 @@
     "archived": false
   },
   {
-    "name": "voicetools",
-    "description": "Offline speech recognition in Rust. Microphone to VAD to Parakeet-TDT on ONNX Runtime, 25 languages, whisper.cpp fallback. No audio leaves the machine.",
-    "lang": "Rust",
-    "url": "https://github.com/kolisachint/voicetools",
-    "stars": 0,
-    "updated": "2026-09-15T07:41:22Z",
-    "fork": false,
-    "archived": false
-  },
-  {
-    "name": "embeddingsearchtools",
-    "description": "Semantic search in Rust. MiniLM through ONNX Runtime with int8 weights bundled in-binary, HNSW approximate nearest neighbour written from scratch, BM25 fusion for hybrid retrieval, mmap-backed store. Library, CLI and daemon.",
-    "lang": "Rust",
-    "url": "https://github.com/kolisachint/embeddingsearchtools",
-    "stars": 0,
-    "updated": "2026-09-15T07:41:20Z",
-    "fork": false,
-    "archived": false
-  },
-  {
-    "name": "computertools",
-    "description": "Placeholder — not started.",
-    "lang": null,
-    "url": "https://github.com/kolisachint/computertools",
-    "stars": 0,
-    "updated": "2026-09-15T07:39:57Z",
-    "fork": false,
-    "archived": false
-  },
-  {
-    "name": "kolisachint",
-    "description": "My GitHub profile README.",
-    "lang": null,
-    "url": "https://github.com/kolisachint/kolisachint",
-    "stars": 0,
-    "updated": "2026-09-15T07:11:12Z",
-    "fork": false,
-    "archived": false
-  },
-  {
-    "name": "hoocode",
-    "description": "Deterministic terminal coding agent with four scoped modes (Ask, Plan, Build, Debug), 25+ providers, hybrid search, and one-click plugins in a single binary. Published to npm as @kolisachint/hoocode-agent.",
-    "lang": "TypeScript",
-    "url": "https://github.com/kolisachint/hoocode",
-    "stars": 1,
-    "updated": "2026-09-14T12:51:23Z",
-    "fork": false,
-    "archived": false
-  },
-  {
-    "name": "webtools",
-    "description": "Token-efficient web fetch and search for LLM agents. Preserves reference-style URLs as single-token markers so a page fits inside a context budget.",
-    "lang": "Rust",
-    "url": "https://github.com/kolisachint/webtools",
-    "stars": 0,
-    "updated": "2026-08-31T17:45:52Z",
-    "fork": false,
-    "archived": false
-  },
-  {
     "name": "cortexcode",
     "description": "Rust migration of the HooCode TypeScript coding-agent framework. A multi-crate workspace — ai, agent, code, tui — published to crates.io as focused, version-locked crates.",
     "lang": "Rust",
     "url": "https://github.com/kolisachint/cortexcode",
     "stars": 0,
     "updated": "2026-07-23T15:07:50Z",
-    "fork": false,
-    "archived": false
-  },
-  {
-    "name": "phase-garden",
-    "description": "Placeholder — not started.",
-    "lang": null,
-    "url": "https://github.com/kolisachint/phase-garden",
-    "stars": 0,
-    "updated": "2026-07-02T04:54:57Z",
     "fork": false,
     "archived": false
   },
@@ -370,16 +360,6 @@
     "archived": false
   },
   {
-    "name": "antigravity_test",
-    "description": null,
-    "lang": null,
-    "url": "https://github.com/kolisachint/antigravity_test",
-    "stars": 0,
-    "updated": "2025-11-26T13:24:10Z",
-    "fork": false,
-    "archived": false
-  },
-  {
     "name": "oreilly-downloader",
     "description": "Download Oreilly books as epub ",
     "lang": "Nix",
@@ -387,16 +367,6 @@
     "stars": 0,
     "updated": "2023-06-08T15:34:19Z",
     "fork": true,
-    "archived": false
-  },
-  {
-    "name": "kolisachint.github.io",
-    "description": "My Site",
-    "lang": "Ruby",
-    "url": "https://github.com/kolisachint/kolisachint.github.io",
-    "stars": 0,
-    "updated": "2022-10-19T20:12:59Z",
-    "fork": false,
     "archived": false
   },
   {
