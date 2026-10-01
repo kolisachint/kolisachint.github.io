@@ -15,12 +15,15 @@ import DocsLayout from "../../layouts/DocsLayout.astro";
  * Node, and the people most likely to bounce off this page are exactly the ones
  * who do not.
  *
- * The scripts they fetch are vendored to public/hoocode-ts by scripts/sync-docs.mjs
- * from install/ in the hoocode-ts repository, so these URLs are stable and the file
+ * /hoocode/install.sh is the Rust build's installer, copied from install/ in
+ * kolisachint/hoocode. Windows has no Rust build, so that line installs the
+ * TypeScript build, vendored to public/hoocode-ts by scripts/sync-docs.mjs from
+ * install/ in the hoocode-ts repository, so these URLs are stable and the file
  * served is byte-identical to the one reviewed there. The host comes from `site`
  * in astro.config.mjs, so a custom domain does not need an edit here.
  */
-const installs = new URL("/hoocode-ts", Astro.site).href;
+const installs = new URL("/hoocode", Astro.site).href;
+const installsTs = new URL("/hoocode-ts", Astro.site).href;
 
 const INSTALLS = [
   {
@@ -30,13 +33,13 @@ const INSTALLS = [
   },
   {
     id: "windows",
-    label: "Windows",
-    cmd: `irm ${installs}/install.ps1 | iex`,
+    label: "Windows · TypeScript build",
+    cmd: `irm ${installsTs}/install.ps1 | iex`,
   },
   {
     id: "npm",
-    label: "npm · Node 20+",
-    cmd: "npm install -g @kolisachint/hoocode-agent",
+    label: "npm / bun",
+    cmd: "npm install -g @kolisachint/hoocode",
   },
 ];
 
@@ -94,8 +97,8 @@ const modes = [
 
     <div class="actions">
       <a class="btn primary" href="/hoocode/quickstart">Quickstart</a>
-      <a class="btn" href="https://github.com/kolisachint/hoocode-ts">GitHub</a>
-      <a class="btn" href="https://www.npmjs.com/package/@kolisachint/hoocode-agent">npm</a>
+      <a class="btn" href="https://github.com/kolisachint/hoocode">GitHub</a>
+      <a class="btn" href="https://www.npmjs.com/package/@kolisachint/hoocode">npm</a>
     </div>
   </div>
 

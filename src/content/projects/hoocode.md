@@ -1,9 +1,9 @@
 ---
 title: HooCode
 tagline: A terminal coding agent that shows you every change before it makes it.
-lang: TypeScript
-repo: https://github.com/kolisachint/hoocode-ts
-npm: https://www.npmjs.com/package/@kolisachint/hoocode-agent
+lang: Rust
+repo: https://github.com/kolisachint/hoocode
+npm: https://www.npmjs.com/package/@kolisachint/hoocode
 status: shipped
 tags: ["agents", "cli", "tui", "llm"]
 featured: true
@@ -28,8 +28,8 @@ One command installs it, on any of the three platforms, with no runtime to set
 up first:
 
 ```bash
-curl -fsSL https://kolisachint.github.io/hoocode-ts/install.sh | sh   # macOS, Linux
-irm https://kolisachint.github.io/hoocode-ts/install.ps1 | iex        # Windows
+curl -fsSL https://kolisachint.github.io/hoocode/install.sh | sh      # macOS, Linux
+irm https://kolisachint.github.io/hoocode-ts/install.ps1 | iex        # Windows (TypeScript build)
 ```
 
 It was originally derived from Mario Zechner's MIT-licensed `pi-mono` and has
