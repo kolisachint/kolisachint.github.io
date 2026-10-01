@@ -36,7 +36,8 @@ const NAV_OUT = resolve(ROOT, "src/data/hoocode-nav.json");
 // `curl -fsSL https://kolisachint.github.io/hoocode-ts/install.sh | sh` is the
 // documented one-liner rather than a raw.githubusercontent.com URL whose shape
 // changes whenever the default branch does.
-// public/hoocode/install.* is left for the Rust build's installer.
+// public/hoocode/install.sh is the Rust build's installer, copied by hand from
+// kolisachint/hoocode install/install.sh (auto-sync: see docs/design/distribution.md there).
 const INSTALL_OUT = resolve(ROOT, "public/hoocode-ts");
 const INSTALLERS = ["install/install.sh", "install/install.ps1"];
 
