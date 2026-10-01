@@ -4,7 +4,7 @@
  *
  *   npm run docs
  *
- * The docs are authored in the hoocode repository, at
+ * The docs are authored in the hoocode-ts repository (the TypeScript build), at
  * packages/coding-agent/docs. This script copies them here rather than the
  * site fetching them at build time, for one reason: AGENTS.md requires that
  * `npm run build` work with no network and no token. Vendoring keeps that
@@ -15,7 +15,7 @@
  *   src/content/docs/hoocode/**.md   the pages
  *   src/data/hoocode-nav.json        sidebar, redirects and the source commit
  *   public/hoocode/images/*          images referenced by the pages
- *   public/hoocode/install.{sh,ps1}  the one-click installers, served verbatim
+ *   public/hoocode-ts/install.{sh,ps1}  the TS one-click installers, served verbatim
  *
  * Nothing here is hand-edited. Fix the hoocode repo and re-run.
  */
@@ -25,17 +25,19 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const OWNER = "kolisachint";
-const REPO = "hoocode";
+// kolisachint/hoocode is the Rust build; the docs and the TS installers live here.
+const REPO = "hoocode-ts";
 const SRC = "packages/coding-agent/docs";
 
 const DOCS_OUT = resolve(ROOT, "src/content/docs/hoocode");
 const IMG_OUT = resolve(ROOT, "public/hoocode/images");
 const NAV_OUT = resolve(ROOT, "src/data/hoocode-nav.json");
 // The installers are served from here, so that
-// `curl -fsSL https://kolisachint.github.io/hoocode/install.sh | sh` is the
+// `curl -fsSL https://kolisachint.github.io/hoocode-ts/install.sh | sh` is the
 // documented one-liner rather than a raw.githubusercontent.com URL whose shape
 // changes whenever the default branch does.
-const INSTALL_OUT = resolve(ROOT, "public/hoocode");
+// public/hoocode/install.* is left for the Rust build's installer.
+const INSTALL_OUT = resolve(ROOT, "public/hoocode-ts");
 const INSTALLERS = ["install/install.sh", "install/install.ps1"];
 
 const token = process.env.GITHUB_TOKEN;
