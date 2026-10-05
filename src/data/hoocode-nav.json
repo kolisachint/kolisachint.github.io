@@ -1,10 +1,10 @@
 {
   "source": {
-    "repo": "kolisachint/hoocode",
+    "repo": "kolisachint/hoocode-ts",
     "path": "packages/coding-agent/docs",
     "branch": "main",
-    "sha": "6d27450b9a00ef627263890c2b7ead392d7e1d15",
-    "syncedAt": "2026-09-28T14:02:37.412Z"
+    "sha": "a41b72730efbe5c663aa4f5aa99bf38cbab04aef",
+    "syncedAt": "2026-10-05T14:47:57.493Z"
   },
   "navigation": [
     {

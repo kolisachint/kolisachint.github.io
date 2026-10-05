@@ -1,22 +1,62 @@
 [
   {
-    "name": "hoocode",
+    "name": "hoocode-ts",
     "description": "Deterministic terminal coding agent with four scoped modes (Ask, Plan, Build, Debug), 25+ providers, hybrid search, and one-click plugins in a single binary. Published to npm as @kolisachint/hoocode-agent.",
     "lang": "TypeScript",
-    "url": "https://github.com/kolisachint/hoocode",
+    "url": "https://github.com/kolisachint/hoocode-ts",
     "stars": 1,
-    "updated": "2026-09-28T13:58:53Z",
+    "updated": "2026-10-05T14:43:55Z",
     "fork": false,
     "archived": false
   },
   {
-    "name": "cortexcode",
+    "name": "hoobot",
+    "description": null,
+    "lang": "TypeScript",
+    "url": "https://github.com/kolisachint/hoobot",
+    "stars": 0,
+    "updated": "2026-10-05T04:17:09Z",
+    "fork": false,
+    "archived": false
+  },
+  {
+    "name": "markdown-editor",
+    "description": "The essence of writing",
+    "lang": "C++",
+    "url": "https://github.com/kolisachint/markdown-editor",
+    "stars": 0,
+    "updated": "2026-10-04T15:35:46Z",
+    "fork": true,
+    "archived": false
+  },
+  {
+    "name": "hoocode",
     "description": "Rust migration of the HooCode TypeScript coding-agent framework. A multi-crate workspace — ai, agent, code, tui — published to crates.io as focused, version-locked crates.",
     "lang": "Rust",
-    "url": "https://github.com/kolisachint/cortexcode",
+    "url": "https://github.com/kolisachint/hoocode",
     "stars": 1,
-    "updated": "2026-09-28T11:49:42Z",
+    "updated": "2026-10-02T20:52:09Z",
     "fork": false,
+    "archived": false
+  },
+  {
+    "name": "kolisachint.github.io",
+    "description": "My Site",
+    "lang": "Astro",
+    "url": "https://github.com/kolisachint/kolisachint.github.io",
+    "stars": 0,
+    "updated": "2026-10-01T12:44:23Z",
+    "fork": false,
+    "archived": false
+  },
+  {
+    "name": "codex",
+    "description": "Lightweight coding agent that runs in your terminal",
+    "lang": "Rust",
+    "url": "https://github.com/kolisachint/codex",
+    "stars": 0,
+    "updated": "2026-09-30T18:47:13Z",
+    "fork": true,
     "archived": false
   },
   {
@@ -25,7 +65,17 @@
     "lang": "JavaScript",
     "url": "https://github.com/kolisachint/drawio-canvas",
     "stars": 0,
-    "updated": "2026-09-24T11:50:05Z",
+    "updated": "2026-09-30T06:33:44Z",
+    "fork": false,
+    "archived": false
+  },
+  {
+    "name": "oracle-vm",
+    "description": "Terraform and cloud-init for a free Oracle Cloud Always Free VM with five AI CLI tools pre-installed and a hardened hoocowork systemd service.",
+    "lang": "Shell",
+    "url": "https://github.com/kolisachint/oracle-vm",
+    "stars": 0,
+    "updated": "2026-09-29T04:29:03Z",
     "fork": false,
     "archived": false
   },
@@ -37,16 +87,6 @@
     "stars": 0,
     "updated": "2026-09-22T04:45:41Z",
     "fork": true,
-    "archived": false
-  },
-  {
-    "name": "kolisachint.github.io",
-    "description": "My Site",
-    "lang": "Astro",
-    "url": "https://github.com/kolisachint/kolisachint.github.io",
-    "stars": 0,
-    "updated": "2026-09-21T12:54:52Z",
-    "fork": false,
     "archived": false
   },
   {
@@ -126,16 +166,6 @@
     "url": "https://github.com/kolisachint/product-builder",
     "stars": 0,
     "updated": "2026-09-15T07:41:48Z",
-    "fork": false,
-    "archived": false
-  },
-  {
-    "name": "oracle-vm",
-    "description": "Terraform and cloud-init for a free Oracle Cloud Always Free VM with five AI CLI tools pre-installed and a hardened hoocowork systemd service.",
-    "lang": "Shell",
-    "url": "https://github.com/kolisachint/oracle-vm",
-    "stars": 0,
-    "updated": "2026-09-15T07:41:46Z",
     "fork": false,
     "archived": false
   },
@@ -266,6 +296,16 @@
     "url": "https://github.com/kolisachint/bigquery-mcp",
     "stars": 0,
     "updated": "2026-06-09T18:45:49Z",
+    "fork": true,
+    "archived": false
+  },
+  {
+    "name": "soft-paper",
+    "description": "A custom Obsidian theme to feel more reflective.",
+    "lang": null,
+    "url": "https://github.com/kolisachint/soft-paper",
+    "stars": 0,
+    "updated": "2026-05-27T12:49:08Z",
     "fork": true,
     "archived": false
   },
