@@ -1,21 +1,41 @@
 [
   {
-    "name": "hoocode-ts",
-    "description": "Deterministic terminal coding agent with four scoped modes (Ask, Plan, Build, Debug), 25+ providers, hybrid search, and one-click plugins in a single binary. Published to npm as @kolisachint/hoocode-agent.",
-    "lang": "TypeScript",
-    "url": "https://github.com/kolisachint/hoocode-ts",
-    "stars": 1,
-    "updated": "2026-10-12T15:29:31Z",
-    "fork": false,
-    "archived": false
-  },
-  {
     "name": "hoocode",
     "description": "Rust migration of the HooCode TypeScript coding-agent framework. A multi-crate workspace — ai, agent, code, tui — published to crates.io as focused, version-locked crates.",
     "lang": "Rust",
     "url": "https://github.com/kolisachint/hoocode",
     "stars": 1,
-    "updated": "2026-10-11T15:04:05Z",
+    "updated": "2026-10-19T13:20:58Z",
+    "fork": false,
+    "archived": false
+  },
+  {
+    "name": "hoocode-ts",
+    "description": "Deterministic terminal coding agent with four scoped modes (Ask, Plan, Build, Debug), 25+ providers, hybrid search, and one-click plugins in a single binary. Published to npm as @kolisachint/hoocode-agent.",
+    "lang": "TypeScript",
+    "url": "https://github.com/kolisachint/hoocode-ts",
+    "stars": 1,
+    "updated": "2026-10-19T13:20:25Z",
+    "fork": false,
+    "archived": false
+  },
+  {
+    "name": "broom",
+    "description": null,
+    "lang": "Rust",
+    "url": "https://github.com/kolisachint/broom",
+    "stars": 0,
+    "updated": "2026-10-16T11:21:06Z",
+    "fork": false,
+    "archived": false
+  },
+  {
+    "name": "kolisachint.github.io",
+    "description": "My Site",
+    "lang": "Astro",
+    "url": "https://github.com/kolisachint/kolisachint.github.io",
+    "stars": 0,
+    "updated": "2026-10-12T15:34:29Z",
     "fork": false,
     "archived": false
   },
@@ -36,16 +56,6 @@
     "url": "https://github.com/kolisachint/drawio-canvas",
     "stars": 0,
     "updated": "2026-10-06T19:02:27Z",
-    "fork": false,
-    "archived": false
-  },
-  {
-    "name": "kolisachint.github.io",
-    "description": "My Site",
-    "lang": "Astro",
-    "url": "https://github.com/kolisachint/kolisachint.github.io",
-    "stars": 0,
-    "updated": "2026-10-05T14:48:00Z",
     "fork": false,
     "archived": false
   },
