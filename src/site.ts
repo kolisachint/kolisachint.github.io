@@ -17,10 +17,13 @@ export const site = {
 /**
  * The headlines, one slot each. Assigned deliberately — see AGENTS.md.
  * Do not reword or relocate without asking. The home subhead was retired
- * 2026-10-22 when the site went short and scannable; site.role does its job.
+ * and restored the same day (2026-10-22): it names coding agents, which
+ * neither the headline nor site.role does.
  */
 export const headlines = {
   home: "Large data systems by day. Small, sharp tools the rest of the time.",
+  homeSub:
+    "I work on data platforms, coding agents, and the space between them.",
   work: "Four tools I built because I needed them, and kept because they worked.",
   about:
     "Eighteen years moving data. Lately, teaching agents to move it for me.",
@@ -47,7 +50,8 @@ export const profiles = [
  * The career, in a few lines. Source: data/career-facts.md and the public bio
  * in the private life repo, which he approved as the site's source on
  * 2026-10-22 (see AGENTS.md). Short on purpose: a line each, not a CV.
- * Clients stay anonymised by their public framing.
+ * Clients stay anonymised by their public framing. The Google Cloud
+ * certification is deliberately left off, at his request (2026-10-22).
  */
 export const career = {
   /** Shown small under the role line on the home page. */
@@ -57,7 +61,6 @@ export const career = {
     "a batch and real-time data platform on Google Cloud for a UK tier-1 retail bank, and its move off an on-premise data warehouse",
   earlier:
     "Before that: four years on the same bank's cards and payments, and before that Sears, Cognizant and Mahindra Satyam, building data platforms for retail, telecoms and banking.",
-  credential: "Google Cloud Certified Professional Data Engineer",
 } as const;
 
 /**

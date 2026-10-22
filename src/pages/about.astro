@@ -28,10 +28,6 @@ const personLd = {
   /* Says no more than the visible page does: structured data that goes
      further is a back door, not a feature. */
   worksFor: { "@type": "Organization", name: career.employer },
-  hasCredential: {
-    "@type": "EducationalOccupationalCredential",
-    name: career.credential,
-  },
   knowsAbout: [
     "Google Cloud Platform",
     "BigQuery",
@@ -79,9 +75,9 @@ const personLd = {
   <Section eyebrow="In short">
     <div class="prose lede-prose" data-reveal>
       <p>
-        Hello, I'm Sachin, a solution architect in Pune and a{" "}
-        {career.credential}. I design the data platforms nobody sees: the
-        pipelines that decide whether an app shows you the right number.
+        Hello, I'm Sachin, a solution architect in Pune. I design the data
+        platforms nobody sees: the pipelines that decide whether an app shows
+        you the right number.
       </p>
       <p>
         Right now I'm at {career.employer}, architecting {career.current}.{" "}

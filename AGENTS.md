@@ -195,8 +195,9 @@ His words: nobody has time to read a long site. Visitors want to know who he
 is, what he does, and which projects might help them, and they decide in
 seconds. So:
 
-- **Home is the ten-second version.** Photo, name, the headline (who), the role
-  line and one small employer line (what), then the four projects, then one line with the email. No
+- **Home is the ten-second version.** Photo, name, the headline and subhead
+  (who), the role line and one small employer line (what), then the four
+  projects, then one line with the email. No
   signpost band, no "Now" paragraph, no section ledes. The masthead already
   links every page.
 - **Every project gets one plain-language line** saying who it helps and what
@@ -218,12 +219,13 @@ If not, fold it or leave it out.
 
 ## Headlines are assigned — do not rewrite them
 
-Three lines, one slot each. They were chosen together. Do not reword, merge, or
+Four lines, one slot each. They were chosen together. Do not reword, merge, or
 relocate them without asking.
 
 | Slot | Line |
 |---|---|
 | Home `<h1>` | Large data systems by day. Small, sharp tools the rest of the time. |
+| Home subhead | I work on data platforms, coding agents, and the space between them. |
 | `/work` lead | Four tools I built because I needed them, and kept because they worked. |
 | `/about` opener | Eighteen years moving data. Lately, teaching agents to move it for me. |
 
@@ -232,9 +234,10 @@ The first and third were replaced 2026-09-18, with approval. The originals
 data platforms at bank scale — and the tools I wish I'd had.") read as two
 self-awarded titles and a scale claim. They are not coming back.
 
-The home subhead ("I work on data platforms, coding agents, and the space
-between them.") was retired 2026-10-22 for the short-and-scannable pass. The
-role line, `site.role`, now sits under the home `<h1>` as the what-I-do line.
+The home subhead was retired on 2026-10-22 for the short-and-scannable pass and
+restored the same day, with approval: it is the only line on the home page that
+names coding agents, which is what all four projects are. It sits between the
+`<h1>` and the role line (`site.role`).
 
 ---
 
@@ -342,7 +345,6 @@ src/
     robots.txt.ts        derives the sitemap URL from `site`
     404.astro
 public/hoocode/install.sh  GENERATED — verbatim copy of hoocode's installer
-public/hoocode-ts/       the retired TypeScript installers, frozen
 .github/workflows/       deploy to Pages, and the weekly vendor refresh
 ```
 
@@ -382,8 +384,8 @@ the next version. Never describe an unreleased version as out.
 **The installer is copied, not written.** `public/hoocode/install.sh` is a
 verbatim copy of `install/install.sh` in `kolisachint/hoocode`. `npm run docs`
 refreshes it, and the deploy workflow runs that weekly and commits any drift.
-Never edit it here. `public/hoocode-ts/` holds the retired TypeScript
-installers as last synced; nothing links to them or refreshes them.
+Never edit it here. The retired TypeScript installers (`/hoocode-ts/`) were
+removed on 2026-10-22; there is no Windows install.
 
 No search. Five pages do not need it.
 
