@@ -64,8 +64,8 @@ const signposts = [
 
       <div class="hero-portrait">
         <img
-          src="/img/sachin-koli.jpg"
-          alt={site.name}
+          src="/img/sachin-koli.webp"
+          alt={`Illustrated portrait of ${site.name} in sunglasses and a navy blazer, on a yellow background`}
           width="220"
           height="220"
           loading="eager"
@@ -111,8 +111,8 @@ const signposts = [
     <div class="sec-head" data-reveal>
       <h2>Things I build in the open</h2>
       <p class="lede">
-        Four of them. One terminal coding agent in TypeScript, and three small
-        Rust binaries it leans on. Each does a single thing, all of it is free
+        Four of them, written in Rust. One terminal coding agent, and three small
+        binaries it leans on. Each does a single thing, all of it is free
         to read, and none of it needs my permission to use.
       </p>
     </div>
@@ -207,13 +207,12 @@ const signposts = [
     object-fit: cover;
     border-radius: var(--hoo-r-card);
     border: 1px solid var(--border);
-    filter: grayscale(1) contrast(1.02);
-    transition: filter 420ms var(--ease);
   }
 
-  .hero-portrait:hover img {
-    filter: grayscale(0) contrast(1);
-  }
+  /* The portrait is an illustration now, on flat yellow. It used to be a
+     photograph shown in greyscale until hover; desaturating a painted portrait
+     only turns the yellow a muddy grey, so it shows in colour. It is imagery,
+     not interface colour: cyan is still the only accent. */
 
   /* Below 52rem it leads, as a profile picture does. Above, it sits opposite
      the headline and the DOM order is the reading order again. */

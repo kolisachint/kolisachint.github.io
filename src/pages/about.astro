@@ -52,9 +52,19 @@ const personLd = {
   />
 
   <header class="page-head">
-    <div class="shell" data-hero>
-      <p class="label">About</p>
-      <h1>{headlines.about}</h1>
+    <div class="shell head-grid" data-hero>
+      <div>
+        <p class="label">About</p>
+        <h1>{headlines.about}</h1>
+      </div>
+      <img
+        class="portrait"
+        src="/img/sachin-koli.webp"
+        alt={`Illustrated portrait of ${site.name} in sunglasses and a navy blazer, on a yellow background`}
+        width="160"
+        height="160"
+        decoding="async"
+      />
     </div>
   </header>
 
@@ -132,6 +142,34 @@ const personLd = {
 <style>
   .page-head {
     padding-block: var(--space-16) var(--space-8);
+  }
+
+  /* Same portrait as the home hero, smaller. Leads on a phone, as a profile
+     picture does; sits opposite the headline once there is room. */
+  .head-grid {
+    display: grid;
+    gap: var(--space-8);
+    align-items: center;
+  }
+
+  .portrait {
+    order: -1;
+    width: clamp(88px, 18vw, 160px);
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--hoo-r-card);
+    border: 1px solid var(--border);
+  }
+
+  @media (min-width: 52rem) {
+    .head-grid {
+      grid-template-columns: 1fr auto;
+      gap: var(--space-16);
+    }
+    .portrait {
+      order: 0;
+    }
   }
 
   .page-head .label {
