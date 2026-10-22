@@ -1,23 +1,18 @@
 ---
 title: voicetools
-tagline: Offline voice-to-text for the terminal. Microphone to stdout, no cloud.
+tagline: For anyone who would rather talk than type in the terminal. It turns your microphone into text on your own machine, with nothing sent to the cloud.
 lang: Rust
 repo: https://github.com/kolisachint/voicetools
+download: https://github.com/kolisachint/voicetools/releases
 status: early
 tags: ["asr", "onnx", "offline", "cli"]
 featured: true
 order: 4
 ---
 
-A small Rust binary that opens the microphone, notices when you have stopped
-talking, and streams recognised text on stdout in a line protocol simple enough
-to drop into a TUI as push-to-talk. Nothing leaves the machine — which is the
-reason it exists, and also why it works on a train.
+It notices when you stop talking and prints what you said, in a format simple
+enough to use as push-to-talk inside another tool. It works offline, on a train
+too.
 
-Recognition is Parakeet-TDT through ONNX Runtime at int8, with whisper.cpp
-available as a fallback backend. Models are pre-exported and fetched on first
-run, so there is no Python and no NeMo in the install path.
-
-One finding worth writing down: the ONNX sessions run single-threaded on
-purpose. Multi-threaded int8 inference is non-deterministic, and the greedy
-decode responds by dropping or garbling words. Correctness first, then speed.
+Recognition is Parakeet-TDT through ONNX Runtime at int8, with whisper.cpp as a
+fallback. The models download on first run; no Python needed.

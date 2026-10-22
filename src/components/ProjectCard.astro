@@ -1,85 +1,86 @@
 ---
+/**
+ * One project, readable in a few seconds: the name, one line on who it helps
+ * and what it solves, then how to get it. Home and /work both use this, so the
+ * two pages cannot drift apart. /work passes the longer story in the slot,
+ * folded behind a disclosure.
+ */
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
   project: CollectionEntry<"projects">;
-  /** Shows the first paragraph of the body. Off in dense listings. */
-  detail?: string;
+  /** Heading level for the title, so each page keeps its outline. */
+  level?: 2 | 3;
 }
 
-const { project, detail } = Astro.props;
-const { title, tagline, lang, repo, npm, site, status, tags } = project.data;
+const { project, level = 3 } = Astro.props;
+const { title, tagline, lang, repo, npm, docs, install, download } = project.data;
+const H = `h${level}` as "h2" | "h3";
+
+/* The install line names the site's own host. It is written as {origin} in
+   the content file and filled in here from `site`, so a custom domain is
+   still a one-line change in astro.config.mjs. */
+const origin = new URL(Astro.site ?? "http://localhost").origin;
+const cmd = install?.replaceAll("{origin}", origin);
 ---
 
-<article class="card">
-  <a class="card-link" href={repo}>
-    <span class="visually-hidden">{title} on GitHub</span>
-  </a>
-
+<article class="card" id={project.id}>
   <header class="head">
-    <h3 class="title">{title}</h3>
-    <span class="dot" aria-hidden="true"></span>
+    <H class="title"><a href={repo}>{title}</a></H>
+    <span class="lang mono">{lang}</span>
   </header>
 
   <p class="tagline">{tagline}</p>
 
-  {detail && <p class="detail">{detail}</p>}
+  {
+    cmd ? (
+      <div class="cmd-row">
+        <pre class="cmd" aria-label={`Install ${title}`}><code>{cmd}</code></pre>
+        <button class="copy mono" type="button" data-copy={cmd} hidden>
+          Copy
+        </button>
+      </div>
+    ) : (
+      download && (
+        <p class="get">
+          <a class="link" href={download}>Download a prebuilt binary</a>
+        </p>
+      )
+    )
+  }
 
-  <footer class="meta mono">
-    <span class="lang">{lang}</span>
-    <span class:list={["status", status]}>{status}</span>
-    {tags.slice(0, 3).map((t) => <span class="tag">{t}</span>)}
-    <span class="spacer"></span>
+  <p class="links mono">
+    <a class="out" href={repo}>source</a>
+    {docs && <a class="out" href={docs}>docs</a>}
     {npm && <a class="out" href={npm}>npm</a>}
-    {site && <a class="out" href={site}>site</a>}
-  </footer>
+  </p>
+
+  <slot />
 </article>
 
 <style>
   .card {
-    position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--space-3);
+    height: 100%;
     padding: var(--space-6);
     border: 1px solid var(--border);
     border-radius: var(--hoo-r-card);
     background: var(--surface);
-    transition:
-      border-color var(--dur) var(--ease),
-      background var(--dur) var(--ease),
-      transform var(--dur) var(--ease),
-      box-shadow var(--dur) var(--ease);
+    scroll-margin-top: calc(var(--masthead-h) + var(--space-8));
+    transition: border-color var(--dur) var(--ease);
   }
 
   .card:hover,
   .card:focus-within {
     border-color: var(--border-strong);
-    background: var(--surface-raised);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-2);
-  }
-
-  /* The lift is decoration. Under reduced motion the card still responds,
-     it just does not move. */
-  @media (prefers-reduced-motion: reduce) {
-    .card:hover,
-    .card:focus-within {
-      transform: none;
-    }
-  }
-
-  /* Whole-card target, but real links inside still win. */
-  .card-link {
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    z-index: 0;
   }
 
   .head {
     display: flex;
-    align-items: center;
+    align-items: baseline;
+    justify-content: space-between;
     gap: var(--space-3);
   }
 
@@ -89,76 +90,75 @@ const { title, tagline, lang, repo, npm, site, status, tags } = project.data;
     letter-spacing: var(--tracking-tight);
   }
 
-  /* The card's node. Lights on hover — one cyan moment, earned. */
-  .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--border-strong);
-    transition:
-      background var(--dur) var(--ease),
-      box-shadow var(--dur) var(--ease);
+  .title a:hover {
+    color: var(--accent-ink);
   }
 
-  .card:hover .dot,
-  .card:focus-within .dot {
-    background: var(--accent);
-    box-shadow: 0 0 10px var(--accent-glow);
-  }
-
-  .tagline {
-    color: var(--text-2);
-    max-width: var(--measure-narrow);
-  }
-
-  .detail {
-    color: var(--text-3);
-    font-size: var(--text-sm);
-    max-width: var(--measure-narrow);
-  }
-
-  .meta {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--space-2) var(--space-4);
-    margin-top: auto;
-    padding-top: var(--space-4);
+  .lang {
     font-size: var(--text-xs);
     color: var(--text-3);
   }
 
-  .lang {
+  .tagline {
+    color: var(--text-2);
+    max-width: var(--measure);
+  }
+
+  .cmd-row {
+    display: flex;
+    gap: var(--space-2);
+    margin-top: auto;
+    padding-top: var(--space-2);
+  }
+
+  .cmd {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--border);
+    border-radius: var(--hoo-r-badge);
+    background: var(--bg);
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-2);
+  }
+
+  .copy {
+    flex: none;
+    min-height: var(--control-h-sm);
+    padding-inline: var(--space-3);
+    border: 1px solid var(--border);
+    border-radius: var(--hoo-r-badge);
+    background: transparent;
     color: var(--text-3);
+    font-size: var(--text-xs);
+    cursor: pointer;
   }
 
-  .status::before {
-    content: "";
-    display: inline-block;
-    width: 5px;
-    height: 5px;
-    margin-right: 0.5em;
-    border-radius: 50%;
-    background: currentColor;
-    vertical-align: 0.1em;
+  .copy:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
   }
 
-  .status.shipped {
-    color: var(--text-3);
+  .get {
+    margin-top: auto;
+    padding-top: var(--space-2);
+    font-size: var(--text-sm);
   }
 
-  .tag::before {
-    content: "#";
-    opacity: 0.55;
-  }
-
-  .spacer {
-    margin-left: auto;
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    font-size: var(--text-xs);
   }
 
   .out {
-    position: relative;
-    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-h-sm);
     color: var(--text-3);
     text-decoration: underline;
     text-decoration-color: var(--border-strong);
@@ -169,3 +169,18 @@ const { title, tagline, lang, repo, npm, site, status, tags } = project.data;
     color: var(--accent-ink);
   }
 </style>
+
+<script>
+  // Copy buttons ship hidden and appear only where the clipboard API exists,
+  // so nobody is shown a button that cannot work.
+  if (navigator.clipboard) {
+    for (const btn of document.querySelectorAll<HTMLButtonElement>(".card .copy")) {
+      btn.hidden = false;
+      btn.addEventListener("click", async () => {
+        await navigator.clipboard.writeText(btn.dataset.copy ?? "");
+        btn.textContent = "Copied";
+        setTimeout(() => (btn.textContent = "Copy"), 1500);
+      });
+    }
+  }
+</script>

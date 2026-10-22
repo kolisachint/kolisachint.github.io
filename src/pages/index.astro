@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Section from "../components/Section.astro";
 import ProjectCard from "../components/ProjectCard.astro";
-import { site, headlines, email, now } from "../site";
+import { site, headlines, email, career } from "../site";
 
 const projects = (await getCollection("projects"))
   .filter((p) => p.data.featured)
@@ -13,59 +13,31 @@ const projects = (await getCollection("projects"))
    fifth markdown file does not silently change this page's shape. */
 const featured = projects.slice(0, 4);
 
-/* The band under the hero used to be four statistics — years, employers,
-   awards, current engagement. It read as a scoreboard, which is the wrong
-   first impression for a personal site, and three of the four facts described
-   work that is not public.
-
-   What replaces it is a set of directions. A visitor arriving from a README
-   wants the code; one arriving from a search wants to know who wrote it. Each
-   card says where it goes and what is there, so neither has to guess. */
-const signposts = [
-  {
-    label: "The tools",
-    href: "/work",
-    title: "Four things I build in the open",
-    note: "A coding agent, and the Rust it leans on.",
-  },
-  {
-    label: "The docs",
-    href: "/hoocode",
-    title: "HooCode, documented in full",
-    note: "The same pages that ship with the package.",
-  },
-  {
-    label: "The person",
-    href: "/about",
-    title: "How I ended up here",
-    note: "Eighteen years of data, and what changed.",
-  },
-];
+/* Short and scannable, 2026-10-22. A visitor should have it in about ten
+   seconds: face, name, who, what, then the projects. The signpost band, the
+   "Now" paragraph and the section ledes were cut; the masthead already links
+   every page, and the project cards say what each tool is for. */
 ---
 
 <!-- Written out rather than composed: site.role already carries an em dash,
      and two of them in one <title> reads as a mistake. -->
 <BaseLayout
-  title={`${site.name} — solution architect, cloud data platforms`}
+  title={`${site.name} — solution architect, cloud data & AI platforms`}
   suffix={false}
 >
   <section class="hero">
     <div class="shell hero-grid">
       <div class="hero-text" data-hero>
-        <p class="label">{site.role}</p>
+        <p class="hello">Hi, I'm {site.name}.</p>
         <h1>{headlines.home}</h1>
-        <p class="sub">{headlines.homeSub}</p>
-
-        <div class="actions">
-          <a class="btn primary" href="/work">See the tools</a>
-          <a class="btn" href="/about">About me</a>
-        </div>
+        <p class="role mono">{site.role}</p>
+        <p class="meta mono">{career.meta}</p>
       </div>
 
       <div class="hero-portrait">
         <img
           src="/img/sachin-koli.webp"
-          alt={`Illustrated portrait of ${site.name} in sunglasses and a navy blazer, on a yellow background`}
+          alt={`Illustrated portrait of ${site.name} in wire glasses and a navy blazer, on a teal background`}
           width="220"
           height="220"
           loading="eager"
@@ -76,46 +48,8 @@ const signposts = [
     </div>
   </section>
 
-  <!-- Directions, not statistics. See the note in the frontmatter. -->
-  <section class="record">
-    <div class="shell">
-      <h2 class="visually-hidden">Where to start</h2>
-      <nav class="record-grid" aria-label="Where to start">
-        {
-          signposts.map((s, i) => (
-            <a
-              class="fact"
-              href={s.href}
-              data-reveal
-              style={`--reveal-delay:${i * 60}ms`}
-            >
-              <span class="label">{s.label}</span>
-              <span class="fact-value">
-                {s.title}
-                <span class="arrow" aria-hidden="true">→</span>
-              </span>
-              <span class="fact-note mono">{s.note}</span>
-            </a>
-          ))
-        }
-      </nav>
-    </div>
-  </section>
-
-  <Section eyebrow="Now" tight>
-    <p class="now" data-reveal>{now.text}</p>
-    <p class="now-stamp mono" data-reveal>Updated {now.updated}</p>
-  </Section>
-
-  <Section eyebrow="In the open">
-    <div class="sec-head" data-reveal>
-      <h2>Things I build in the open</h2>
-      <p class="lede">
-        Four of them, written in Rust. One terminal coding agent, and three small
-        binaries it leans on. Each does a single thing, all of it is free
-        to read, and none of it needs my permission to use.
-      </p>
-    </div>
+  <Section eyebrow="Projects">
+    <h2 class="sec-title" data-reveal>What I'm building now</h2>
 
     <div class="cards">
       {featured.map((project, i) => (
@@ -126,22 +60,13 @@ const signposts = [
     </div>
 
     <p class="more" data-reveal>
-      <a class="link" href="/work">Why each one exists &rarr;</a>
+      <a class="link" href="/work">More on the work page &rarr;</a>
     </p>
   </Section>
 
   <Section eyebrow="Contact" tight>
-    <div class="sec-head" data-reveal>
-      <h2>Say hello</h2>
-      <p class="lede">
-        Email is the best way to reach me — about the tools, the data work, or
-        something you are stuck on. I read everything.
-      </p>
-    </div>
-
-    <!-- Email only. The same five profile links sat a hundred pixels below
-         this list, in the footer, on every page. -->
     <p class="mail" data-reveal>
+      Questions about any of it are welcome:{" "}
       <a class="link" id="hero-mail" href="#" data-u={email.user} data-d={email.domain}>
         <span class="mono">{email.user}<span aria-hidden="true">&#64;</span>{email.domain}</span>
       </a>
@@ -153,14 +78,13 @@ const signposts = [
   .hero {
     position: relative;
     overflow: clip;
-    padding-block: clamp(var(--space-16), 12vh, var(--space-32))
-      var(--space-16);
+    padding-block: clamp(var(--space-12), 8vh, var(--space-20))
+      var(--space-12);
   }
 
   /* No glow orb here, and no node on the portrait either. Cyan is emphasis,
-     not atmosphere: in a real 1440x900 viewport the portrait node, the primary
-     button and the masthead's current-page dot were all lit at once. The
-     button is the one this viewport keeps. */
+     not atmosphere; the section spine's node below is this page's one cyan
+     moment. */
 
   .hero-grid {
     display: grid;
@@ -169,27 +93,28 @@ const signposts = [
     align-items: center;
   }
 
-  .hero-text > .label {
-    margin-bottom: var(--space-6);
+  .hello {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-lg);
+    color: var(--text-2);
   }
 
   .hero h1 {
     max-width: 18ch;
   }
 
-  .sub {
+  .role {
     margin-top: var(--space-6);
-    font-size: var(--text-lg);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
     color: var(--text-3);
-    max-width: var(--measure-narrow);
   }
 
-  /* Buttons are global now — see .btn in global.css. */
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    margin-top: var(--space-8);
+  .meta {
+    margin-top: var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--text-3);
   }
 
   /* Portrait. Present, not dominant — the work is the headline. */
@@ -200,19 +125,15 @@ const signposts = [
   }
 
   .hero-portrait img {
-    /* 96px at 390 — a portrait, not the orphaned square that used to sit
-       alone between the buttons and the spine. */
-    width: clamp(96px, 22vw, 220px);
-    height: clamp(96px, 22vw, 220px);
+    width: clamp(112px, 22vw, 220px);
+    height: clamp(112px, 22vw, 220px);
     object-fit: cover;
     border-radius: var(--hoo-r-card);
     border: 1px solid var(--border);
   }
 
-  /* The portrait is an illustration now, on flat yellow. It used to be a
-     photograph shown in greyscale until hover; desaturating a painted portrait
-     only turns the yellow a muddy grey, so it shows in colour. It is imagery,
-     not interface colour: cyan is still the only accent. */
+  /* An illustrated portrait on flat teal, shown in colour. It is imagery, not
+     interface colour: cyan is still the only accent. */
 
   /* Below 52rem it leads, as a profile picture does. Above, it sits opposite
      the headline and the DOM order is the reading order again. */
@@ -231,111 +152,8 @@ const signposts = [
     }
   }
 
-  /* -- Record band ------------------------------------------------------ */
-
-  .record .shell {
-    padding-block: var(--space-8);
-    border-block: 1px solid var(--border);
-  }
-
-  /* Subgrid, so a value that wraps to two lines does not push its own note
-     out of line with the other three. Label, value, note are three shared
-     rows, not three independent stacks. */
-  .record-grid {
-    margin: 0;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    gap: var(--space-6) var(--space-8);
-  }
-
-  .fact {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    gap: var(--space-2);
-    transition: color var(--dur) var(--ease);
-  }
-
-  .fact-value {
-    font-size: var(--text-lg);
-    line-height: var(--leading-snug);
-    color: var(--text-2);
-    text-wrap: balance;
-    transition: color var(--dur) var(--ease);
-  }
-
-  .fact-note {
-    font-size: var(--text-xs);
-    color: var(--text-3);
-    align-self: end;
-  }
-
-  /* They are links now, so they have to look clickable without becoming three
-     more boxes on a page already made of boxes. A dim arrow at rest, brighter
-     and nudged on hover. Nothing lights up cyan — the hero button already owns
-     that in this viewport. */
-  .arrow {
-    display: inline-block;
-    margin-left: 0.15em;
-    color: var(--text-3);
-    transition:
-      transform var(--dur) var(--ease),
-      color var(--dur) var(--ease);
-  }
-
-  .fact:hover .fact-value {
-    color: var(--text);
-  }
-
-  .fact:hover .arrow {
-    color: var(--accent-ink);
-    transform: translateX(3px);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .arrow {
-      transition: color var(--dur) var(--ease);
-    }
-
-    .fact:hover .arrow {
-      transform: none;
-    }
-  }
-
-  /* One column, then three. Never two — three items in a two-column row wrap
-     to 2 + 1 and read as a mistake. */
-  @media (min-width: 46rem) {
-    .record-grid {
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto 1fr auto;
-    }
-
-    .fact {
-      grid-row: span 3;
-      grid-template-rows: subgrid;
-    }
-  }
-
-  .now {
-    font-size: var(--text-lg);
-    color: var(--text-2);
-    max-width: var(--measure);
-  }
-
-  .now-stamp {
-    margin-top: var(--space-3);
-    font-size: var(--text-xs);
-    color: var(--text-3);
-  }
-
-  .sec-head {
-    max-width: var(--measure);
+  .sec-title {
     margin-bottom: var(--space-8);
-  }
-
-  .lede {
-    margin-top: var(--space-4);
-    color: var(--text-3);
   }
 
   .mail {
@@ -343,10 +161,18 @@ const signposts = [
     font-size: var(--text-lg);
   }
 
+  /* One column, then two. Never auto-fit: four cards in a three-wide row
+     leave one stranded. */
   .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--card-min)), 1fr));
+    grid-template-columns: 1fr;
     gap: var(--space-4);
+  }
+
+  @media (min-width: 52rem) {
+    .cards {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   .card-wrap {

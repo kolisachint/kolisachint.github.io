@@ -8,20 +8,19 @@
 export const site = {
   name: "Sachin Koli",
   shortName: "sk",
-  role: "Solution architect — cloud data platforms",
+  role: "Solution architect — cloud data & AI platforms",
   description:
-    "Solution architect working on cloud data platforms, and the author of four small open-source tools for coding agents, all written in Rust.",
+    "Solution architect for cloud data & AI platforms, at Tata Consultancy Services, in data since 2008. Also the author of four open-source tools for coding agents, all written in Rust.",
   locale: "en_GB",
 } as const;
 
 /**
- * The four headlines, one slot each. Assigned deliberately — see AGENTS.md.
- * Do not reword or relocate without asking.
+ * The headlines, one slot each. Assigned deliberately — see AGENTS.md.
+ * Do not reword or relocate without asking. The home subhead was retired
+ * 2026-10-22 when the site went short and scannable; site.role does its job.
  */
 export const headlines = {
   home: "Large data systems by day. Small, sharp tools the rest of the time.",
-  homeSub:
-    "I work on data platforms, coding agents, and the space between them.",
   work: "Four tools I built because I needed them, and kept because they worked.",
   about:
     "Eighteen years moving data. Lately, teaching agents to move it for me.",
@@ -45,29 +44,20 @@ export const profiles = [
 ] as const;
 
 /**
- * A short, occasionally-updated status line. Open source only, by choice —
- * see AGENTS.md. Bump `updated` whenever the text changes.
+ * The career, in a few lines. Source: data/career-facts.md and the public bio
+ * in the private life repo, which he approved as the site's source on
+ * 2026-10-22 (see AGENTS.md). Short on purpose: a line each, not a CV.
+ * Clients stay anonymised by their public framing.
  */
-export const now = {
-  updated: "October 2026",
-  text: "Building HooCode, a terminal coding agent, now rewritten in Rust, and the small Rust tools it leans on for search, speech and fetching the web. All of it is open, and questions about any of it are welcome.",
-} as const;
-
-/**
- * The employment record, reduced to a sentence on purpose.
- *
- * The four-row table of employers, years, roles and engagement descriptors was
- * removed 2026-09-18. None of that work is in the public domain, a stranger
- * does not need it to understand what this site is for, and listing it turned
- * the page into a CV nobody asked to read. LinkedIn carries the specifics for
- * anyone who wants them; the sentence below is what the site itself claims.
- *
- * The span is traceable to the verified career record — first working day
- * 7 January 2008. Nothing else here is a fact about an employer or a client.
- */
-export const background = {
-  sentence:
-    "Eighteen years in enterprise data — banking, retail, telecoms. Mostly large organisations, where the systems are old, the rules are strict, and nothing is allowed to stop while you change it.",
+export const career = {
+  /** Shown small under the role line on the home page. */
+  meta: "Tata Consultancy Services · in data since 2008 · Pune, India",
+  employer: "Tata Consultancy Services",
+  current:
+    "a batch and real-time data platform on Google Cloud for a UK tier-1 retail bank, and its move off an on-premise data warehouse",
+  earlier:
+    "Before that: four years on the same bank's cards and payments, and before that Sears, Cognizant and Mahindra Satyam, building data platforms for retail, telecoms and banking.",
+  credential: "Google Cloud Certified Professional Data Engineer",
 } as const;
 
 /**
