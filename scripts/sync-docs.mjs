@@ -12,9 +12,8 @@
  * Until 2026-10-22 this script also vendored the TypeScript build's docs from
  * kolisachint/hoocode-ts. That build is retired and the Rust build has no user
  * docs folder, so the /hoocode pages are now written in this repository
- * (src/content/docs/hoocode/). public/hoocode-ts/ holds the retired TS
- * installers as they were last synced; nothing links to them and nothing
- * refreshes them.
+ * (src/content/docs/hoocode/). The retired TS installers it also copied,
+ * public/hoocode-ts/, were removed the same day.
  */
 import { writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
