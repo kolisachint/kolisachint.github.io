@@ -162,8 +162,15 @@ for (const path of paths) {
     "home";
 
   for (const theme of themes) {
+    // Reduced motion too: the scroll reveal only fires for elements that enter
+    // the viewport, and a full-page capture never scrolls, so everything below
+    // the first screen came out transparent. Under reduced motion the page
+    // shows every [data-reveal] element at once, which is what a shot needs.
     await call("Emulation.setEmulatedMedia", {
-      features: [{ name: "prefers-color-scheme", value: theme }],
+      features: [
+        { name: "prefers-color-scheme", value: theme },
+        { name: "prefers-reduced-motion", value: "reduce" },
+      ],
     });
 
     for (const width of widths) {
