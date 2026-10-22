@@ -127,7 +127,7 @@ npm run verify   check + build + audit — the gate before a commit
 npm run audit    this file, expressed as greps (bin/site audit)
 npm run shots    screenshot every page, dark + light, 1440/820/390 → .shots/
 npm run repos    refresh the committed GitHub repository snapshot
-npm run docs     re-vendor the HooCode documentation
+npm run docs     re-copy the HooCode installer from kolisachint/hoocode
 npm run og       re-render public/brand/og.png from /og-card
 ```
 
@@ -279,11 +279,10 @@ here.
   field to an entry. The `notes` collection is written but commented out —
   registering an empty collection makes every build warn. Uncomment it when
   there is a first note.
-- **`src/content/docs/hoocode/` is generated. Never edit a file in it.** Any
-  correction belongs in the `kolisachint/hoocode` repository, at
-  `packages/coding-agent/docs`. Then run `npm run docs`. An edit made here is
-  silently destroyed by the next sync, and the page still credits upstream for
-  it.
+- **The HooCode pages are written here** (`src/content/docs/hoocode/`), to
+  the rules in "The documentation section" below. `public/hoocode/install.sh`
+  is the one generated file there: never edit it, fix it in
+  `kolisachint/hoocode` and run `npm run docs`.
 - Facts that more than one page states live in `src/site.ts`, not in a page,
   with a comment naming where in my-life each came from.
 - Project entries are **curated prose**, not a description scraped from GitHub.
@@ -329,20 +328,21 @@ src/
                           provenance. `landing` renders /hoocode through it.
   components/            Mark, Section (the spine), ProjectCard, Footer, toggle
   lib/docs.ts            sidebar, ordering, titles and summaries for the docs
-  lib/satteri-hoocode.mjs  Markdown plugins for the vendored docs
-  content/docs/hoocode/  GENERATED — see the rule above
-  data/hoocode-nav.json  GENERATED — sidebar, redirects, source commit
+  lib/satteri-hoocode.mjs  Markdown plugins for the HooCode docs
+  content/docs/hoocode/  the HooCode docs pages, written here
+  data/hoocode-nav.json  sidebar, redirects, the release the pages describe
   pages/
     index.astro          home
     work/index.astro     curated projects + the GitHub tail
     about.astro          short bio, recognition, contact, JSON-LD Person
     hoocode/index.astro  docs landing — hand-written, not upstream's index.md
-    hoocode/[...slug]    one route per vendored page
+    hoocode/[...slug]    one route per docs page
     og-card.astro        render source for og.png — noindex, not in the sitemap
     sitemap.xml.ts       hand-written routes + every docs page, derived
     robots.txt.ts        derives the sitemap URL from `site`
     404.astro
-public/hoocode/images/   GENERATED — images referenced by the docs
+public/hoocode/install.sh  GENERATED — verbatim copy of hoocode's installer
+public/hoocode-ts/       the retired TypeScript installers, frozen
 .github/workflows/       deploy to Pages, and the weekly vendor refresh
 ```
 
@@ -355,31 +355,37 @@ within a month. If a repo should appear, give it a description on GitHub.
 
 ## The documentation section
 
-`/hoocode` renders documentation authored in another repository. Four rules keep
-that honest.
+`/hoocode` documents the Rust build of HooCode. Until 2026-10-22 it vendored the
+TypeScript build's docs from `kolisachint/hoocode-ts`. That build is retired,
+and the Rust repository has no user docs folder to vendor, so the pages are now
+**written here**: short, scannable, and drawn from the Rust build's README,
+`hoocode --help` and CHANGELOG.
 
-**The source of truth is upstream.** `packages/coding-agent/docs` in
-`kolisachint/hoocode`. `npm run docs` copies the markdown, the images and
-`docs.json` into this repo and records the commit it took them from. Every docs
-page shows that commit and links to its own source. Fix things there, sync here.
+**Five pages, not forty.** The landing (`src/pages/hoocode/index.astro`), and
+`install`, `quickstart`, `configuration` and `commands` as markdown in
+`src/content/docs/hoocode/`. The sidebar and the redirects are in
+`src/data/hoocode-nav.json`. Every old TypeScript-era URL redirects to the
+closest page, so outside links keep working. For anything the pages leave out,
+link to the repository; do not copy its docs over.
 
-**The sidebar is generated, not written.** It comes from upstream `docs.json`,
-as do the redirects. Adding a page to the HooCode docs and listing it in
-`docs.json` is the whole procedure for making it appear here. There is no second
-list to keep in step.
+**Only what the Rust build does.** Check a claim against `hoocode --help` (the
+source is `crates/hoocode-code-cli/src/help_text.rs`), the README and the
+CHANGELOG before writing it. Not available: Windows, crates.io, Homebrew. Never
+mention extensions, `-e`, `--export`, `/share`, canvases, `hoocode resources`,
+`~/.hoocode/agent`, `.ts` examples, or a flag `--help` no longer lists.
+`bin/site audit` greps for these.
 
-**Vendored, not fetched at build time.** The site must build with no network,
-which rules out fetching during the build. The cost is drift, so the deploy
-workflow re-syncs weekly and commits whatever changed.
+**Versions.** Say what the current release is (`source.writtenFor` in the nav
+file) and mark anything from the CHANGELOG's Unreleased section as coming in
+the next version. Never describe an unreleased version as out.
 
-**Do not hand-write docs prose here.** The one exception is
-`src/pages/hoocode/index.astro`, the landing page, which is ours: upstream's
-`index.md` is a list of links to the other pages, and the sidebar already is
-that. `index.md` is excluded from routing for this reason.
+**The installer is copied, not written.** `public/hoocode/install.sh` is a
+verbatim copy of `install/install.sh` in `kolisachint/hoocode`. `npm run docs`
+refreshes it, and the deploy workflow runs that weekly and commits any drift.
+Never edit it here. `public/hoocode-ts/` holds the retired TypeScript
+installers as last synced; nothing links to them or refreshes them.
 
-No search yet. Pagefind is the obvious addition when the section justifies it;
-it is a static index and works without a framework, at the cost of the first
-JavaScript on the site.
+No search. Five pages do not need it.
 
 Room is left for `/hoocowork` and `/hooteams` to arrive the same way. Generalise
 `lib/docs.ts` when the second one lands, not before.

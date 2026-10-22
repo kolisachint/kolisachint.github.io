@@ -17,6 +17,6 @@ until you approve it. That gate is the whole design. Four modes (Ask, Plan,
 Build, Debug) keep its reach to what the job needs, and it works with whichever
 model provider you already pay for.
 
-Written in Rust since October 2026; Windows still gets the earlier TypeScript
-build. It was originally derived from Mario Zechner's MIT-licensed `pi-mono`,
-and his credit stays in the repository.
+One native binary for macOS and Linux, written in Rust since October 2026. It
+was originally derived from Mario Zechner's MIT-licensed `pi-mono`, and his
+credit stays in the repository.

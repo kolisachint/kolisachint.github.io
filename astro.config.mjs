@@ -4,15 +4,17 @@ import { hoocodeLinks, hoocodeStructure } from "./src/lib/satteri-hoocode.mjs";
 import hoocodeNav from "./src/data/hoocode-nav.json" with { type: "json" };
 
 /**
- * The HooCode docs carry their own redirect table in docs.json. Mirror it here
- * so renamed pages keep working, rather than maintaining a second list by hand.
- * `session.md → session-format.md` becomes `/hoocode/session → /hoocode/session-format`.
+ * Redirects for the HooCode docs, kept in src/data/hoocode-nav.json. The site
+ * served the TypeScript build's docs until 2026-10-22; their old URLs now land
+ * on the closest page of the short Rust docs, so outside links keep working.
+ * `session.md → quickstart.md` becomes `/hoocode/session → /hoocode/quickstart`,
+ * and `index.md` means `/hoocode` itself.
  */
+const docsPath = (file) =>
+  `/hoocode/${file.replace(/\.md$/, "")}`.replace(/\/index$/, "");
+
 const docsRedirects = Object.fromEntries(
-  (hoocodeNav.redirects ?? []).map(({ from, to }) => [
-    `/hoocode/${from.replace(/\.md$/, "")}`,
-    `/hoocode/${to.replace(/\.md$/, "")}`,
-  ]),
+  (hoocodeNav.redirects ?? []).map(({ from, to }) => [docsPath(from), docsPath(to)]),
 );
 
 // The ONLY place the public origin is written down. Everything else derives

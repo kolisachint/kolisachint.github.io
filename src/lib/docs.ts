@@ -25,8 +25,8 @@ export function hrefFor(id: string): string {
 }
 
 /**
- * The sidebar, straight from the upstream docs.json. Adding a page to the
- * HooCode docs and listing it there is all it takes to appear here.
+ * The sidebar, from src/data/hoocode-nav.json. Adding a page means a markdown
+ * file in src/content/docs/hoocode/ and an entry there.
  */
 export const groups: DocGroup[] = (nav.navigation ?? []).map((group) => ({
   title: group.title,
@@ -42,8 +42,8 @@ export const ordered: DocLink[] = groups.flatMap((g) => g.items);
 const byId = new Map(ordered.map((d) => [d.id, d]));
 
 /**
- * Pages reachable by link but absent from docs.json — the profile examples,
- * for instance. They render, but they are not in the sidebar or the sequence.
+ * Pages reachable by link but absent from the nav. They render, but they are
+ * not in the sidebar or the sequence.
  */
 export function isListed(id: string): boolean {
   return byId.has(id);
@@ -72,7 +72,7 @@ export function neighbours(id: string): {
 /**
  * A meta description, pulled from the page's first real sentence.
  *
- * The upstream files carry no frontmatter, so there is nothing to read. Skip
+ * The pages carry no frontmatter, so there is nothing to read. Skip
  * the H1, any badge or image HTML, and fenced code; take the first line that
  * looks like prose.
  */
@@ -103,7 +103,10 @@ export function summarise(body: string, max = 155): string {
   return "HooCode documentation.";
 }
 
-/** Link back to the page's source, so a reader can fix it at the origin. */
+/** The page's markdown in this site's repository, for corrections. */
 export function sourceUrl(id: string): string {
-  return `https://github.com/${source.repo}/blob/${source.branch}/${source.path}/${id}.md`;
+  return `https://github.com/kolisachint/kolisachint.github.io/blob/main/src/content/docs/hoocode/${id}.md`;
 }
+
+/** The HooCode repository, which has the full detail these pages leave out. */
+export const repoUrl = `https://github.com/${source.repo}`;

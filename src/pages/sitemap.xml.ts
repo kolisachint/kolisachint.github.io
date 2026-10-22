@@ -5,7 +5,7 @@ import { hrefFor } from "../lib/docs";
 /**
  * Hand-rolled rather than @astrojs/sitemap — this is thirty lines and one
  * fewer dependency. Hand-written routes are listed below; documentation pages
- * are derived, so a page added upstream appears here on the next sync.
+ * are derived from the docs collection, so a new page appears here by itself.
  * /og-card is deliberately absent: it is a render source, not a page.
  */
 export const GET: APIRoute = async ({ site }) => {

@@ -53,12 +53,9 @@ const projects = defineCollection({
  */
 
 /**
- * The vendored HooCode documentation. Synced by `npm run docs` from
- * kolisachint/hoocode; never hand-edited here.
- *
- * The source files carry no frontmatter and are kept byte-identical to
- * upstream, so the schema is empty on purpose. Titles come from
- * src/data/hoocode-nav.json, falling back to the page's first H1.
+ * The HooCode documentation: short pages written for this site, from the Rust
+ * build's README, --help and CHANGELOG. No frontmatter, so the schema is empty;
+ * titles come from src/data/hoocode-nav.json, falling back to the first H1.
  */
 const docs = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/docs/hoocode" }),
