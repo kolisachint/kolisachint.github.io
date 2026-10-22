@@ -361,11 +361,14 @@ Room is left for `/hoocowork` and `/hooteams` to arrive the same way. Generalise
 
 - Eighteen-plus years in enterprise data. Currently a solution architect on GCP
   data platforms at a UK tier-1 retail bank, via TCS.
-- Ships open-source agent tooling: `hoocode` (TypeScript, on npm),
+- Ships open-source agent tooling: `hoocode` (Rust since October 2026, replacing
+  the TypeScript build; still installable from npm),
   `embeddingsearchtools`, `voicetools`, `webtools`, `browsertools`, `filetools`
   (Rust), `hooteams`, `hoocowork`.
-- The photograph appears on the homepage. It does not appear anywhere else in
-  public material.
+- The portrait is the illustrated sunglasses avatar from his headshot set
+  (`public/img/sachin-koli.webp`, also the apple-touch-icon). It appears on the
+  homepage hero and on `/about`, in colour, and nowhere else on the site. The
+  studio photographs are not used here. Changed 2026-10-22 at his request.
 - Contact is email, LinkedIn, GitHub. The address is lightly obfuscated against
   scrapers but must remain trivially usable by a human.
 - Medium is an archive. Link it; do not migrate from it; do not treat it as the

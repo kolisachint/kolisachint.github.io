@@ -10,7 +10,7 @@ export const site = {
   shortName: "sk",
   role: "Solution architect — cloud data platforms",
   description:
-    "Solution architect working on cloud data platforms, and the author of four small open-source tools for coding agents, written in Rust and TypeScript.",
+    "Solution architect working on cloud data platforms, and the author of four small open-source tools for coding agents, all written in Rust.",
   locale: "en_GB",
 } as const;
 
@@ -49,8 +49,8 @@ export const profiles = [
  * see AGENTS.md. Bump `updated` whenever the text changes.
  */
 export const now = {
-  updated: "September 2026",
-  text: "Building HooCode, a terminal coding agent, and the small Rust tools it leans on for search, speech and fetching the web. All of it is open, and questions about any of it are welcome.",
+  updated: "October 2026",
+  text: "Building HooCode, a terminal coding agent, now rewritten in Rust, and the small Rust tools it leans on for search, speech and fetching the web. All of it is open, and questions about any of it are welcome.",
 } as const;
 
 /**
