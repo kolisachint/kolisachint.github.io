@@ -4,7 +4,7 @@ import Section from "../components/Section.astro";
 import {
   site,
   headlines,
-  background,
+  career,
   recognition,
   profiles,
   email,
@@ -25,8 +25,9 @@ const personLd = {
   mainEntityOfPage: canonical,
   jobTitle: "Solution Architect",
   description: site.description,
-  /* No `worksFor`. The visible page names no employer, and structured data
-     that says more than the page does is a back door, not a feature. */
+  /* Says no more than the visible page does: structured data that goes
+     further is a back door, not a feature. */
+  worksFor: { "@type": "Organization", name: career.employer },
   knowsAbout: [
     "Google Cloud Platform",
     "BigQuery",
@@ -42,7 +43,7 @@ const personLd = {
 
 <BaseLayout
   title="About"
-  description="Solution architect working on cloud data platforms, and the author of small open-source tools for coding agents. Eighteen years in enterprise data."
+  description="Solution architect for cloud data & AI platforms at Tata Consultancy Services, in data since 2008, and the author of small open-source tools for coding agents."
 >
   <script
     slot="head"
@@ -52,54 +53,48 @@ const personLd = {
   />
 
   <header class="page-head">
-    <div class="shell" data-hero>
-      <p class="label">About</p>
-      <h1>{headlines.about}</h1>
+    <div class="shell head-grid" data-hero>
+      <div>
+        <p class="label">About</p>
+        <h1>{headlines.about}</h1>
+      </div>
+      <img
+        class="portrait"
+        src="/img/sachin-koli.webp"
+        alt={`Illustrated portrait of ${site.name} in wire glasses and a navy blazer, on a teal background`}
+        width="160"
+        height="160"
+        decoding="async"
+      />
     </div>
   </header>
 
+  {/* Short and scannable, 2026-10-22: three short paragraphs and a way to
+      reach me. Who, the day job in two sentences, the open-source work. The
+      full story is on LinkedIn. */}
   <Section eyebrow="In short">
     <div class="prose lede-prose" data-reveal>
       <p>
-        Hello. I'm Sachin — a solution architect, which mostly means I design
-        the layer nobody sees: the pipelines and platforms that decide whether
-        an app shows you the right number.
+        Hello, I'm Sachin, a solution architect in Pune. I design the data
+        platforms nobody sees: the pipelines that decide whether an app shows
+        you the right number.
       </p>
       <p>
-        {background.sentence} The interesting problem is rarely the algorithm.
-        It is almost always the migration — moving something that cannot stop,
-        without stopping it — which is why I'm relaxed about legacy systems and
-        suspicious of rewrites.
+        Right now I'm at {career.employer}, architecting {career.current}.{" "}
+        {career.earlier}
       </p>
       <p>
-        I don't write about that work here. It belongs to the people who paid
-        for it, and the parts I could describe would not tell you much anyway.
-        What I can show you is the code I write in the open, which comes from
-        exactly the same place: every tool on the{" "}
-        <a class="link" href="/work">work page</a> exists because the one I
-        needed was missing, too slow, or too eager to guess. They are small on
-        purpose, and I would rather you read them than take my word for any of
-        it.
-      </p>
-      <p>
-        If you found your way here from a repository or an npm page — welcome,
-        and thank you for being curious. Ask me anything about any of it.
+        The rest of the time I build small open-source tools for coding agents,
+        each because the one I needed was missing, too slow, or too eager to
+        guess. They are on the <a class="link" href="/work">work page</a>. If
+        you came here from one of them, welcome.
       </p>
     </div>
   </Section>
 
   <Section eyebrow="Contact" tight>
-    <div class="prose">
-      <p>
-        Email is the best way to reach me. A question about one of the tools, a
-        bug, a disagreement, or just an introduction — all equally welcome, and
-        none of them need an excuse.
-      </p>
-    </div>
-
-    {/* Email only. The same five profile links sit a hundred pixels below
-        this, in the footer, on every page of the site. */}
     <p class="mail" data-reveal>
+      Questions, bugs or just hello:{" "}
       <a
         class="link"
         id="about-mail"
@@ -134,6 +129,34 @@ const personLd = {
     padding-block: var(--space-16) var(--space-8);
   }
 
+  /* Same portrait as the home hero, smaller. Leads on a phone, as a profile
+     picture does; sits opposite the headline once there is room. */
+  .head-grid {
+    display: grid;
+    gap: var(--space-8);
+    align-items: center;
+  }
+
+  .portrait {
+    order: -1;
+    width: clamp(88px, 18vw, 160px);
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: var(--hoo-r-card);
+    border: 1px solid var(--border);
+  }
+
+  @media (min-width: 52rem) {
+    .head-grid {
+      grid-template-columns: 1fr auto;
+      gap: var(--space-16);
+    }
+    .portrait {
+      order: 0;
+    }
+  }
+
   .page-head .label {
     margin-bottom: var(--space-6);
   }
@@ -158,7 +181,7 @@ const personLd = {
   }
 
   .mail {
-    margin: var(--space-8) 0 0;
+    margin: 0;
     font-size: var(--text-lg);
   }
 </style>

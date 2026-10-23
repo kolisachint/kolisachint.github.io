@@ -8,22 +8,17 @@ import DocsLayout from "../../layouts/DocsLayout.astro";
  * point: what the thing is, how to install it, and what it looks like running.
  */
 /**
- * Three ways in, in the order most people want them.
+ * The ways in, in the order most people want them. The script needs nothing
+ * installed first; npm and pip suit people who already have Node or Python.
+ * Release archives and source builds are on /hoocode/install.
  *
- * The one-liners come first because they need nothing installed first — the npm
- * line, which was the only option here, quietly asks the reader to already have
- * Node, and the people most likely to bounce off this page are exactly the ones
- * who do not.
- *
- * /hoocode/install.sh is the Rust build's installer, copied from install/ in
- * kolisachint/hoocode. Windows has no Rust build, so that line installs the
- * TypeScript build, vendored to public/hoocode-ts by scripts/sync-docs.mjs from
- * install/ in the hoocode-ts repository, so these URLs are stable and the file
- * served is byte-identical to the one reviewed there. The host comes from `site`
- * in astro.config.mjs, so a custom domain does not need an edit here.
+ * /hoocode/install.sh is a verbatim copy of install/install.sh in
+ * kolisachint/hoocode, kept in step by `npm run docs`. The host comes from
+ * `site` in astro.config.mjs, so a custom domain does not need an edit here.
+ * There is no Windows build; the TypeScript build that used to cover Windows
+ * was retired on 2026-10-10.
  */
 const installs = new URL("/hoocode", Astro.site).href;
-const installsTs = new URL("/hoocode-ts", Astro.site).href;
 
 const INSTALLS = [
   {
@@ -32,30 +27,30 @@ const INSTALLS = [
     cmd: `curl -fsSL ${installs}/install.sh | sh`,
   },
   {
-    id: "windows",
-    label: "Windows · TypeScript build",
-    cmd: `irm ${installsTs}/install.ps1 | iex`,
+    id: "npm",
+    label: "npm / bun · Node 18+",
+    cmd: "npm install -g @kolisachint/hoocode",
   },
   {
-    id: "npm",
-    label: "npm / bun",
-    cmd: "npm install -g @kolisachint/hoocode",
+    id: "pip",
+    label: "pip · Python 3.8+",
+    cmd: "pip install hoocode",
   },
 ];
 
 const modes = [
-  { name: "Ask", note: "answer, do not touch the repository" },
-  { name: "Plan", note: "investigate and propose, no edits" },
-  { name: "Build", note: "implement, one step at a time" },
-  { name: "Debug", note: "reproduce, isolate, fix" },
+  { name: "Ask", note: "read and answer, no edits" },
+  { name: "Plan", note: "explore and write a plan" },
+  { name: "Build", note: "implement and verify, one change at a time" },
+  { name: "Debug", note: "find the root cause, no edits" },
 ];
 ---
 
 <DocsLayout
   id="index"
   landing
-  title="HooCode — deterministic terminal coding agent"
-  description="HooCode is a deterministic terminal coding agent — four scoped modes (Ask · Plan · Build · Debug), 25+ providers, hybrid search, and one-click plugins in a single binary."
+  title="HooCode — a terminal coding agent, written in Rust"
+  description="HooCode is a terminal coding agent written in Rust: one native binary for macOS and Linux, any model provider, and nothing applied without your approval."
 >
   <div class="lead">
     {/* Not <picture> with prefers-color-scheme: the toggle sets data-theme,
@@ -66,11 +61,11 @@ const modes = [
       <img class="on-light" src="/brand/hoo/hoocode-light.svg" alt="" aria-hidden="true" width="274" height="80" />
     </div>
 
-    <h1>Deterministic terminal coding agent.</h1>
+    <h1>A terminal coding agent, written in Rust.</h1>
 
     <p class="sub">
-      Four scoped modes, 25+ providers, hybrid search, and one-click plugins in
-      a single binary. Nothing applies without your approval.
+      One native binary, any model provider. Shell, Edit and Write ask before
+      they run, and four modes keep the agent to what the job needs.
     </p>
 
     <div class="install">
@@ -89,7 +84,7 @@ const modes = [
         ))
       }
       <p class="cmd-note mono">
-        no root needed · then run <code>hoocode</code> in a project directory ·
+        no root needed · then run <code>hoocode</code> in a project directory ·{" "}
         <a href="/hoocode/install">all install options</a>
       </p>
       <p class="visually-hidden" role="status" data-copy-status></p>
@@ -116,44 +111,6 @@ const modes = [
     </div>
   </section>
 
-  <section class="block">
-    <h2 class="label">Demo</h2>
-
-    {/* Click-to-play, never autoplay: 9 MB is not a background texture, and
-        preload="none" means it costs the poster until asked for. Capped well
-        under the width of the pane — a recording of a terminal does not get
-        more legible by being stretched, it just stops looking deliberate.
-
-        The poster is frame 0 of the recording itself (`bin/site poster`): an
-        opened session, one empty prompt, nothing else. A frame lifted from the
-        middle looked busy before anyone had pressed play, and it advertised a
-        state the video does not start in. */}
-    <figure class="demo">
-      {/* `controls` ships in the markup so the video is playable with no
-          JavaScript at all. The script below takes them away and puts the
-          overlay up instead — the browser's own grey control bar was the
-          largest object on this page and the only one not in the design
-          system. Controls come back the moment it starts playing. */}
-      <div class="frame">
-        <video
-          src="/hoocode/demo.mp4"
-          poster="/hoocode/demo-poster.webp"
-          controls
-          preload="none"
-          playsinline
-          aria-label="HooCode demo recording"
-          aria-describedby="demo-caption"
-        />
-        <button class="play" type="button" hidden aria-label="Play the HooCode demo">
-          <span class="disc" aria-hidden="true"></span>
-        </button>
-      </div>
-      <figcaption id="demo-caption" class="mono">
-        Ask, then Plan, then Build — one session scaffolds a Bun and Hono
-        service with tests. 102 seconds, no audio.
-      </figcaption>
-    </figure>
-  </section>
 </DocsLayout>
 
 <style>
@@ -361,113 +318,9 @@ const modes = [
     color: var(--text-3);
   }
 
-  /* -- Demo --------------------------------------------------------------- */
-
-  .demo {
-    margin: 0;
-    max-width: 34rem;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    border-radius: var(--hoo-r-card);
-    background: var(--surface);
-    box-shadow: var(--shadow-2);
-  }
-
-  .frame {
-    position: relative;
-  }
-
-  /* The recording's own ratio, so the poster fills the frame with no bars and
-     the space is reserved before it loads. */
-  .demo video {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1598 / 1080;
-  }
-
-  /* The whole poster is the target, which is the largest one available and
-     needs no minimum. Scrim and ink come from the media tokens, not the theme
-     ones: the poster is a light terminal in both themes, so a disc keyed to
-     --bg was near-white on near-white in light. */
-  .play {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    padding: 0;
-    border: 0;
-    background: var(--media-scrim);
-    cursor: pointer;
-    transition: opacity var(--dur) var(--ease);
-  }
-
-  .play:hover {
-    opacity: 0.82;
-  }
-
-  .disc {
-    display: grid;
-    place-items: center;
-    width: 56px;
-    height: 56px;
-    border: 1px solid var(--media-ink);
-    border-radius: 50%;
-    color: var(--media-ink);
-    transition: transform var(--dur) var(--ease);
-  }
-
-  /* Drawn from borders — a font's triangle is never on the optical centre. */
-  .disc::before {
-    content: "";
-    margin-left: 3px;
-    border-left: 12px solid currentColor;
-    border-block: 8px solid transparent;
-  }
-
-  .play:hover .disc {
-    transform: scale(1.06);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .play:hover .disc {
-      transform: none;
-    }
-  }
-
-  .demo figcaption {
-    padding: var(--space-3) var(--space-4);
-    font-size: var(--text-xs);
-    color: var(--text-3);
-    border-top: 1px solid var(--border);
-  }
 </style>
 
 <script>
-  // The demo frame. Browser controls are in the markup and taken out here, so
-  // the no-JavaScript case is a working player rather than a dead poster.
-  const demo = document.querySelector<HTMLVideoElement>(".demo video");
-  const play = document.querySelector<HTMLButtonElement>(".demo .play");
-
-  if (demo && play) {
-    demo.controls = false;
-    play.hidden = false;
-
-    const start = () => {
-      demo.controls = true;
-      play.hidden = true;
-    };
-
-    play.addEventListener("click", () => {
-      start();
-      void demo.play();
-    });
-
-    // Played by any other route — keyboard on the element, autoplay policy,
-    // a restored session — and the overlay still gets out of the way.
-    demo.addEventListener("play", start);
-  }
-
   // Copy-to-clipboard for the install lines. Progressive: the buttons are
   // removed outright where the API is unavailable, rather than left there to
   // fail. One shared status region and one shared timer, so copying a second

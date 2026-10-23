@@ -13,13 +13,20 @@ const projects = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
   schema: z.object({
     title: z.string(),
-    /** One line. Shown in listings. No marketing verbs. */
+    /** One line, plain language: who it helps and what problem it solves.
+     *  Shown on the home page and /work. No marketing verbs. */
     tagline: z.string(),
     /** Primary language, as GitHub reports it. */
     lang: z.enum(["Rust", "TypeScript", "Python", "Shell", "HTML"]),
     repo: z.url(),
     npm: z.url().optional(),
     site: z.url().optional(),
+    /** Site-relative docs path, e.g. /hoocode. */
+    docs: z.string().optional(),
+    /** One copyable install command, when there is one. */
+    install: z.string().optional(),
+    /** Where to download a prebuilt binary, when there is no one-liner. */
+    download: z.url().optional(),
     /** Only claim "shipped" when it is installable by a stranger. */
     status: z.enum(["shipped", "active", "early", "archived"]),
     tags: z.array(z.string()).default([]),
@@ -46,12 +53,9 @@ const projects = defineCollection({
  */
 
 /**
- * The vendored HooCode documentation. Synced by `npm run docs` from
- * kolisachint/hoocode; never hand-edited here.
- *
- * The source files carry no frontmatter and are kept byte-identical to
- * upstream, so the schema is empty on purpose. Titles come from
- * src/data/hoocode-nav.json, falling back to the page's first H1.
+ * The HooCode documentation: short pages written for this site, from the Rust
+ * build's README, --help and CHANGELOG. No frontmatter, so the schema is empty;
+ * titles come from src/data/hoocode-nav.json, falling back to the first H1.
  */
 const docs = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/docs/hoocode" }),

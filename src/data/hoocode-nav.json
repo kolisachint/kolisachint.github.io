@@ -1,14 +1,14 @@
 {
+  "_comment": "Site-owned since 2026-10-22. The Rust build of HooCode has no user docs folder to vendor, so these pages are written here from its README, --help and CHANGELOG. Redirects keep the old TypeScript-era URLs working.",
   "source": {
-    "repo": "kolisachint/hoocode-ts",
-    "path": "packages/coding-agent/docs",
+    "repo": "kolisachint/hoocode",
     "branch": "main",
-    "sha": "a41b72730efbe5c663aa4f5aa99bf38cbab04aef",
-    "syncedAt": "2026-10-19T13:25:16.766Z"
+    "writtenFor": "v0.1.41",
+    "updated": "2026-10-22"
   },
   "navigation": [
     {
-      "title": "Start here",
+      "title": "Guide",
       "items": [
         {
           "title": "Overview",
@@ -23,166 +23,156 @@
           "path": "quickstart.md"
         },
         {
-          "title": "Using HooCode",
-          "path": "usage.md"
+          "title": "Configuration",
+          "path": "configuration.md"
         },
         {
-          "title": "Providers",
-          "path": "providers.md"
-        },
-        {
-          "title": "Settings",
-          "path": "settings.md"
-        },
-        {
-          "title": "Keybindings",
-          "path": "keybindings.md"
-        },
-        {
-          "title": "Sessions",
-          "path": "sessions.md"
-        },
-        {
-          "title": "Compaction",
-          "path": "compaction.md"
-        },
-        {
-          "title": "Modes",
-          "path": "modes.md"
-        }
-      ]
-    },
-    {
-      "title": "Extending hoocode",
-      "items": [
-        {
-          "title": "MCP",
-          "path": "mcp.md"
-        },
-        {
-          "title": "Plugins",
-          "path": "plugins.md"
-        },
-        {
-          "title": "Canvas",
-          "path": "canvas.md"
-        },
-        {
-          "title": "Subagent delegation",
-          "path": "routing.md"
-        }
-      ]
-    },
-    {
-      "title": "Customization",
-      "items": [
-        {
-          "title": "Extensions",
-          "path": "extensions.md"
-        },
-        {
-          "title": "Skills",
-          "path": "skills.md"
-        },
-        {
-          "title": "Prompt Templates",
-          "path": "prompt-templates.md"
-        },
-        {
-          "title": "Themes",
-          "path": "themes.md"
-        },
-        {
-          "title": "HooCode Packages",
-          "path": "packages.md"
-        },
-        {
-          "title": "Custom Models",
-          "path": "models.md"
-        },
-        {
-          "title": "Custom Providers",
-          "path": "custom-provider.md"
-        },
-        {
-          "title": "Project-local Resources",
-          "path": "project-local-resources.md"
-        }
-      ]
-    },
-    {
-      "title": "Reference",
-      "items": [
-        {
-          "title": "Session Format",
-          "path": "session-format.md"
-        }
-      ]
-    },
-    {
-      "title": "Programmatic Usage",
-      "items": [
-        {
-          "title": "SDK",
-          "path": "sdk.md"
-        },
-        {
-          "title": "RPC Mode",
-          "path": "rpc.md"
-        },
-        {
-          "title": "JSON Event Stream Mode",
-          "path": "json.md"
-        },
-        {
-          "title": "TUI Components",
-          "path": "tui.md"
-        }
-      ]
-    },
-    {
-      "title": "Platform Setup",
-      "items": [
-        {
-          "title": "Windows",
-          "path": "windows.md"
-        },
-        {
-          "title": "Termux on Android",
-          "path": "termux.md"
-        },
-        {
-          "title": "tmux",
-          "path": "tmux.md"
-        },
-        {
-          "title": "Terminal Setup",
-          "path": "terminal-setup.md"
-        },
-        {
-          "title": "Shell Aliases",
-          "path": "shell-aliases.md"
-        }
-      ]
-    },
-    {
-      "title": "Development",
-      "items": [
-        {
-          "title": "Development",
-          "path": "development.md"
+          "title": "Commands",
+          "path": "commands.md"
         }
       ]
     }
   ],
   "redirects": [
     {
+      "from": "usage.md",
+      "to": "quickstart.md"
+    },
+    {
+      "from": "modes.md",
+      "to": "quickstart.md"
+    },
+    {
+      "from": "sessions.md",
+      "to": "quickstart.md"
+    },
+    {
       "from": "session.md",
-      "to": "session-format.md"
+      "to": "quickstart.md"
+    },
+    {
+      "from": "compaction.md",
+      "to": "quickstart.md"
+    },
+    {
+      "from": "keybindings.md",
+      "to": "quickstart.md"
+    },
+    {
+      "from": "tui.md",
+      "to": "quickstart.md"
     },
     {
       "from": "tree.md",
-      "to": "sessions.md"
+      "to": "quickstart.md"
+    },
+    {
+      "from": "windows.md",
+      "to": "install.md"
+    },
+    {
+      "from": "termux.md",
+      "to": "install.md"
+    },
+    {
+      "from": "tmux.md",
+      "to": "install.md"
+    },
+    {
+      "from": "terminal-setup.md",
+      "to": "install.md"
+    },
+    {
+      "from": "shell-aliases.md",
+      "to": "install.md"
+    },
+    {
+      "from": "development.md",
+      "to": "install.md"
+    },
+    {
+      "from": "settings.md",
+      "to": "configuration.md"
+    },
+    {
+      "from": "providers.md",
+      "to": "configuration.md"
+    },
+    {
+      "from": "models.md",
+      "to": "configuration.md"
+    },
+    {
+      "from": "custom-provider.md",
+      "to": "configuration.md"
+    },
+    {
+      "from": "project-local-resources.md",
+      "to": "configuration.md"
+    },
+    {
+      "from": "skills.md",
+      "to": "configuration.md"
+    },
+    {
+      "from": "prompt-templates.md",
+      "to": "configuration.md"
+    },
+    {
+      "from": "themes.md",
+      "to": "configuration.md"
+    },
+    {
+      "from": "mcp.md",
+      "to": "configuration.md"
+    },
+    {
+      "from": "plugins.md",
+      "to": "configuration.md"
+    },
+    {
+      "from": "packages.md",
+      "to": "configuration.md"
+    },
+    {
+      "from": "extensions.md",
+      "to": "configuration.md"
+    },
+    {
+      "from": "profiles/data.md",
+      "to": "configuration.md"
+    },
+    {
+      "from": "profiles/default.md",
+      "to": "configuration.md"
+    },
+    {
+      "from": "profiles/devops.md",
+      "to": "configuration.md"
+    },
+    {
+      "from": "sdk.md",
+      "to": "commands.md"
+    },
+    {
+      "from": "rpc.md",
+      "to": "commands.md"
+    },
+    {
+      "from": "json.md",
+      "to": "commands.md"
+    },
+    {
+      "from": "session-format.md",
+      "to": "commands.md"
+    },
+    {
+      "from": "routing.md",
+      "to": "commands.md"
+    },
+    {
+      "from": "canvas.md",
+      "to": "index.md"
     }
   ]
 }

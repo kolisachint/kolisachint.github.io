@@ -1,153 +1,50 @@
 # Quickstart
 
-This page gets you from install to a useful first hoocode session.
+```bash
+export ANTHROPIC_API_KEY=...   # or another provider's key
+cd your-project
+hoocode                        # full-screen session
+```
 
-## Install
+`hoocode --help` lists the provider keys it reads. No API key? Start `hoocode` and run `/login` to sign in with a subscription
+(Anthropic, GitHub Copilot, OpenAI Codex or Google) instead.
 
-One command, on any platform:
+## In a session
+
+Shell, Edit and Write ask before they run: **Yes**, **No**, or **Always**.
+
+| Type | What it does |
+|---|---|
+| `/model` | Pick a model (Ctrl+P cycles through your favourites) |
+| `/mode` | Switch between ask, plan, build and debug |
+| `/resume` | Reopen an earlier session in this folder |
+| `@path/to/file` | Attach a file to your message |
+| `/hotkeys` | Show the keyboard shortcuts |
+| `/settings` | Change settings |
+
+## Modes
+
+| Mode | What the agent may do |
+|---|---|
+| **ask** | Read and answer. No edits, no state-changing commands |
+| **plan** | Explore and write a plan. No other file changes |
+| **build** | Implement and verify, one change at a time |
+| **debug** | Find the root cause. No edits; switch to build to fix |
+
+## Sessions
+
+Sessions are saved as JSONL under `~/.hoocode`. `--continue` picks up the last one,
+`/resume` lists them, and `/fork` and `/tree` branch from an earlier message. Long
+conversations are compacted automatically. `--no-session` keeps a run ephemeral.
+
+## Scripted use
 
 ```bash
-# macOS and Linux
-curl -fsSL https://kolisachint.github.io/hoocode-ts/install.sh | sh
+hoocode -p "Summarise this repo"                  # answer and exit
+hoocode -p --mode json "List the TODOs in src/"   # JSON events
+hoocode --tools Read,CodeSearch -p "Review src/"  # read-only
+hoocode --mode rpc                                # JSON-RPC
 ```
 
-```powershell
-# Windows
-irm https://kolisachint.github.io/hoocode-ts/install.ps1 | iex
-```
-
-Already have Node 20+? `npm install -g @kolisachint/hoocode-agent` works too.
-Either way you get the `hoocode-ts` (and `hoo-ts`) command. Every other route --
-standalone archives, offline machines, containers, source -- is on the
-[Install](install.md) page.
-
-Then start hoocode in the project directory you want it to work on:
-
-```bash
-cd /path/to/project
-hoocode
-```
-
-## Authenticate
-
-HooCode can use subscription providers through `/login`, or API-key providers through environment variables or the auth file.
-
-### Option 1: subscription login
-
-Start hoocode and run:
-
-```text
-/login
-```
-
-Then select a provider. Built-in subscription logins include Claude Pro/Max, ChatGPT Plus/Pro (Codex), and GitHub Copilot.
-
-### Option 2: API key
-
-Set an API key before launching hoocode:
-
-```bash
-export ANTHROPIC_API_KEY=sk-ant-...
-hoocode
-```
-
-You can also run `/login` and select an API-key provider to store the key in `~/.hoocode/auth.json`.
-
-See [Providers](providers.md) for all supported providers, environment variables, and cloud-provider setup.
-
-## First session
-
-Once hoocode starts, type a request and press Enter:
-
-```text
-Summarize this repository and tell me how to run its checks.
-```
-
-By default, hoocode gives the model four tools:
-
-- `read` - read files
-- `write` - create or overwrite files
-- `edit` - patch files
-- `bash` - run shell commands
-
-The built-in read-only `SearchCodebase` tool is available through tool options. HooCode runs in your current working directory and can modify files there. Use git or another checkpointing workflow if you want easy rollback.
-
-## Give hoocode project instructions
-
-HooCode loads context files at startup. Add an `AGENTS.md` file to tell it how to work in a project:
-
-```markdown
-# Project Instructions
-
-- Run `npm run check` after code changes.
-- Do not run production migrations locally.
-- Keep responses concise.
-```
-
-HooCode loads:
-
-- `~/.hoocode/AGENTS.md` for global instructions
-- `AGENTS.md` or `CLAUDE.md` from parent directories and the current directory
-
-Restart hoocode, or run `/reload`, after changing context files.
-
-## Common things to try
-
-### Reference files
-
-Type `@` in the editor to fuzzy-search files, or pass files on the command line:
-
-```bash
-hoocode @README.md "Summarize this"
-hoocode @src/app.ts @src/app.test.ts "Review these together"
-```
-
-Images can be pasted with Ctrl+V (Alt+V on Windows) or dragged into supported terminals.
-
-### Run shell commands
-
-In interactive mode:
-
-```text
-!npm run lint
-```
-
-The command output is sent to the model. Use `!!command` to run a command without adding its output to the model context.
-
-### Switch models
-
-Use `/model` or Ctrl+L to choose a model. Use Shift+Tab to cycle thinking level. Use Ctrl+P / Shift+Ctrl+P to cycle through scoped models.
-
-### Continue later
-
-Sessions are saved automatically:
-
-```bash
-hoocode -c                  # Continue most recent session
-hoocode -r                  # Browse previous sessions
-hoocode --session <path|id> # Open a specific session
-```
-
-Inside hoocode, use `/resume`, `/new`, `/tree`, `/fork`, and `/clone` to manage sessions.
-
-### Non-interactive mode
-
-For one-shot prompts:
-
-```bash
-hoocode -p "Summarize this codebase"
-cat README.md | hoocode -p "Summarize this text"
-hoocode -p @screenshot.png "What's in this image?"
-```
-
-Use `--mode json` for JSON event output or `--mode rpc` for process integration.
-
-## Next steps
-
-- [Using HooCode](usage.md) - interactive mode, slash commands, sessions, context files, and CLI reference.
-- [Providers](providers.md) - authentication and model setup.
-- [Settings](settings.md) - global and project configuration.
-- [Keybindings](keybindings.md) - shortcuts and customization.
-- [HooCode Packages](packages.md) - install shared extensions, skills, prompts, and themes.
-
-Platform notes: [Windows](windows.md), [Termux](termux.md), [tmux](tmux.md), [Terminal setup](terminal-setup.md), [Shell aliases](shell-aliases.md).
+Next: [where configuration lives](/hoocode/configuration), or the
+[commands and flags](/hoocode/commands).

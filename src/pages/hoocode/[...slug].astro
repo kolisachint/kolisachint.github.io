@@ -4,8 +4,8 @@ import DocsLayout from "../../layouts/DocsLayout.astro";
 import { titleFor, isListed, summarise } from "../../lib/docs";
 
 /**
- * Every vendored page except `index`. The overview lives at
- * src/pages/hoocode/index.astro instead — upstream's index.md is a list of
+ * Every docs page except `index`. The overview lives at
+ * src/pages/hoocode/index.astro instead — an index.md would be a list of
  * links to the other pages, which the sidebar already is.
  */
 export async function getStaticPaths() {

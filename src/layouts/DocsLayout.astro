@@ -2,7 +2,7 @@
 import type { MarkdownHeading } from "astro";
 import BaseLayout from "./BaseLayout.astro";
 import "../styles/docs.css";
-import { groups, neighbours, groupFor, sourceUrl, source, DOCS_BASE } from "../lib/docs";
+import { groups, neighbours, groupFor, sourceUrl, source, repoUrl, DOCS_BASE } from "../lib/docs";
 
 interface Props {
   id: string;
@@ -12,7 +12,7 @@ interface Props {
   listed?: boolean;
   /**
    * The section landing page. Same two-pane shell and the same sidebar, but
-   * its own markup instead of vendored prose: no breadcrumb, no prev/next,
+   * its own markup instead of markdown prose: no breadcrumb, no prev/next,
    * and the title is used verbatim.
    */
   landing?: boolean;
@@ -32,7 +32,6 @@ const group = groupFor(id);
 // h1 is the page title and h4+ is too granular for a rail this narrow.
 const toc = landing ? [] : headings.filter((h) => h.depth === 2 || h.depth === 3);
 const hasToc = toc.length > 1;
-const synced = new Date(source.syncedAt).toISOString().slice(0, 10);
 ---
 
 <BaseLayout
@@ -44,7 +43,7 @@ const synced = new Date(source.syncedAt).toISOString().slice(0, 10);
     <aside class="side">
       {/* A disclosure, open by default. On wide screens the summary is hidden
           and this renders as an ordinary sidebar. On narrow ones a few lines of
-          script close it, so the reader is not scrolling past thirty-three
+          script close it, so the reader is not scrolling past every
           links to reach the page they just clicked. With script disabled it
           stays open — long, but never broken. */}
       <details class="disclosure" open>
@@ -54,7 +53,7 @@ const synced = new Date(source.syncedAt).toISOString().slice(0, 10);
         </summary>
 
         <nav aria-label="Documentation">
-        {/* No aria-current here even on the landing: upstream's docs.json
+        {/* No aria-current here even on the landing: the nav file
             lists index.md as "Overview", so the sidebar item below already
             carries the marker and two of them would only compete. */}
         <a class="side-home" href={DOCS_BASE}>
@@ -128,17 +127,10 @@ const synced = new Date(source.syncedAt).toISOString().slice(0, 10);
       }
 
       <footer class="provenance mono">
-        {
-          landing ? (
-            <span>Corrections belong in the source repository.</span>
-          ) : (
-            <a href={sourceUrl(id)}>Edit this page on GitHub</a>
-          )
-        }
-        <span aria-hidden="true">·</span>
-        <span>
-          Synced from {source.repo}@{source.sha.slice(0, 7)} on {synced}
-        </span>
+        {!landing && <a href={sourceUrl(id)}>Edit this page on GitHub</a>}
+        {!landing && <span aria-hidden="true">·</span>}
+        <span>Written for {source.writtenFor}.</span>
+        <a href={repoUrl}>Full detail in the repository</a>
       </footer>
     </div>
 

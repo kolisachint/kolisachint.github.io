@@ -5,7 +5,7 @@ description: Redesign, restyle, or visually review any page of this Astro site �
 
 # Designing this site
 
-`AGENTS.md` is the contract — publish gate, client anonymisation, forbidden
+`AGENTS.md` is the contract — source of facts, client anonymisation, forbidden
 claims, stack limits, assigned headlines. Read it first; this file does not
 repeat it. What follows is the *how*: the loop, the tools, and the specific
 things that have already gone wrong once.
@@ -21,8 +21,8 @@ bin/site design "<query>" --domain ux
 ```
 
 `bin/site audit` is `AGENTS.md` expressed as greps: inflated AI claims, named
-clients, hardcoded domain, raw hex outside `tokens.css`, hand-edited generated
-docs, `var(--token, fallback)` gaps, missing `alt`, emoji, and dependency drift.
+clients, hardcoded domain, raw hex outside `tokens.css`, TypeScript-era terms in
+the HooCode docs, `var(--token, fallback)` gaps, missing `alt`, emoji, and dependency drift.
 Every rule in it traces to a line in that file. A rule with no line there does
 not belong in it.
 
@@ -96,16 +96,18 @@ committed, stroke and fill are set from the stylesheet instead.
 of a recording shows a busy screen before anyone has pressed play and advertises
 a state the video does not open in. `bin/site poster` cuts frame 0 at 1280px
 wide; it is both the honest still and, being mostly empty, the smaller file.
-While you are there, re-read the caption — the HooCode demo's said "Ask mode"
-long after the recording had moved on through Plan into Build.
+Re-read the caption too: the old HooCode demo's said "Ask mode" long after the
+recording had moved on through Plan into Build. (That demo showed the retired
+TypeScript build and was removed on 2026-10-22.)
 
 **Cyan is emphasis, not atmosphere.** A glow orb behind the hero was removed for
 this reason. One cyan moment per viewport: the section node, the portrait node,
 the current role, the primary button. Not all of them at once.
 
-**Generated trees.** `src/content/docs/hoocode/`, `src/data/hoocode-nav.json`
-and `public/hoocode/images/` are written by `npm run docs`. An edit there is
-destroyed by the next sync and the page still credits upstream for it.
+**The generated file.** `public/hoocode/install.sh` is written by
+`npm run docs` from the hoocode repository. An edit there is destroyed by the
+next sync. The HooCode docs pages themselves are written here (since
+2026-10-22); see AGENTS.md § The documentation section.
 
 ## Before saying it is done
 

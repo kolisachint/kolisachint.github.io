@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Section from "../../components/Section.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
 import { headlines } from "../../site";
 import { getRepos, tail } from "../../lib/github";
 
@@ -22,79 +23,30 @@ const more = tail(repos);
 
 <BaseLayout
   title="Work"
-  description="Four open-source tools — a terminal coding agent, an embedding search engine, token-efficient web fetch, and offline speech recognition. Rust and TypeScript."
+  description="Four open-source tools, all in Rust: a terminal coding agent, a local search engine, compact web fetch for agents, and offline speech-to-text."
 >
   <header class="page-head">
     <div class="shell" data-hero>
       <p class="label">Work</p>
       <h1>{headlines.work}</h1>
-
-      <p class="intro">
-        All four are open source and free to use. Each one below says what it
-        does, and — if you want the longer answer — why it exists at all.
-      </p>
     </div>
   </header>
 
+  {/* Short and scannable, 2026-10-22. Each card says who the tool helps and
+      how to get it; the story behind it is folded away for whoever wants it. */}
   <Section eyebrow={`The four · ${projects.length}`}>
     <ol class="projects">
       {
         projects.map(({ entry, Content }) => (
-          <li class="project" id={entry.id} data-reveal>
-            <div class="project-head">
-              <h2>
-                <a class="title-link" href={entry.data.repo}>
-                  {entry.data.title}
-                </a>
-              </h2>
-              <span class="node" aria-hidden="true" />
-            </div>
-
-            <p class="tagline">{entry.data.tagline}</p>
-
-            <p class="meta mono">
-              <span class="lang">{entry.data.lang}</span>
-              <span class="sep" aria-hidden="true">
-                ·
-              </span>
-              <span>{entry.data.status}</span>
-              <span class="sep" aria-hidden="true">
-                ·
-              </span>
-              <a class="out" href={entry.data.repo}>
-                source
-              </a>
-              {entry.data.npm && (
-                <>
-                  <span class="sep" aria-hidden="true">
-                    ·
-                  </span>
-                  <a class="out" href={entry.data.npm}>
-                    npm
-                  </a>
-                </>
-              )}
-              {entry.data.site && (
-                <>
-                  <span class="sep" aria-hidden="true">
-                    ·
-                  </span>
-                  <a class="out" href={entry.data.site}>
-                    site
-                  </a>
-                </>
-              )}
-            </p>
-
-            {/* Title, tagline and facts say what the thing is in four lines.
-                The story behind it is worth reading but nobody should have to
-                scroll past four of them to reach the next name. */}
-            <details class="why">
-              <summary><span class="mono">why it exists</span></summary>
-              <div class="prose body">
-                <Content />
-              </div>
-            </details>
+          <li data-reveal>
+            <ProjectCard project={entry} level={2}>
+              <details class="why">
+                <summary><span class="mono">why it exists</span></summary>
+                <div class="prose body">
+                  <Content />
+                </div>
+              </details>
+            </ProjectCard>
           </li>
         ))
       }
@@ -102,40 +54,31 @@ const more = tail(repos);
   </Section>
 
   <Section eyebrow="Also on GitHub">
-    <div class="tail-head" data-reveal>
-      <h2>Everything else, in one line each</h2>
-      <p class="lede">
-        Other tools, experiments and half-finished ideas — including a few I am
-        fond of. The list builds itself: any repository of mine with a
-        description lands here, and one without a description does not. Have a
-        dig around.
+    <details class="tail-wrap">
+      <summary>
+        <span class="tail-sum">Everything else, one line each</span>
+        <span class="mono tail-count">{more.length} repositories</span>
+      </summary>
+
+      <ul class="tail">
+        {
+          more.map((r) => (
+            <li>
+              <a class="tail-row" href={r.url}>
+                <span class="tail-name mono">{r.name}</span>
+                <span class="tail-desc">{r.description}</span>
+                <span class="tail-lang mono">{r.lang ?? "—"}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="source-note mono">
+        {live ? "Read from the GitHub API at build time" : "From the last snapshot"}.
+        Any repository of mine with a description lands here.
       </p>
-    </div>
-
-    <p class="tail-legend mono" aria-hidden="true">
-      <span>Repository</span>
-      <span>Description</span>
-      <span class="tail-lang">Language</span>
-    </p>
-
-    <ul class="tail">
-      {
-        more.map((r) => (
-          <li>
-            <a class="tail-row" href={r.url}>
-              <span class="tail-name mono">{r.name}</span>
-              <span class="tail-desc">{r.description}</span>
-              <span class="tail-lang mono">{r.lang ?? "—"}</span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-
-    <p class="source-note mono">
-      {more.length} repositories ·{" "}
-      {live ? "read from the GitHub API at build time" : "from the last snapshot"}
-    </p>
+    </details>
   </Section>
 </BaseLayout>
 
@@ -152,77 +95,25 @@ const more = tail(repos);
     max-width: 20ch;
   }
 
-  /* The jump-to-project chips went with the five entries they were built for.
-     Four headings fit on one screen at most sizes; an index of four is
-     furniture. */
-  .page-head .intro {
-    margin-top: var(--space-6);
-    max-width: var(--measure);
-    color: var(--text-3);
-  }
-
   .projects {
     list-style: none;
     padding: 0;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    gap: var(--space-4);
   }
 
-  .project + .project {
-    margin-top: var(--space-8);
-    padding-top: var(--space-8);
-    border-top: 1px solid var(--border);
-  }
-
-  /* Arriving from the jump nav, clear the sticky masthead plus the rule. */
-  .project {
-    scroll-margin-top: calc(var(--masthead-h) + var(--space-12));
-  }
-
-  /* Landing on an entry should say so, then get out of the way. */
-  .project:target .node {
-    background: var(--accent);
-    box-shadow: 0 0 10px var(--accent-glow);
-  }
-
-  .project-head {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-  }
-
-  .project h2 {
-    font-size: var(--text-xl);
-  }
-
-  .title-link:hover {
-    color: var(--accent-ink);
-  }
-
-  .node {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--border-strong);
-    transition: background var(--dur) var(--ease);
-  }
-
-  .project:hover .node {
-    background: var(--accent);
-    box-shadow: 0 0 10px var(--accent-glow);
-  }
-
-  .tagline {
-    margin-top: var(--space-2);
-    color: var(--text-2);
-    max-width: var(--measure);
+  /* A grid item will not shrink below its content by default, and the
+     install line is one long unbreakable string. Without this the card
+     pushed the page sideways at 390px. */
+  .projects > li {
+    min-width: 0;
   }
 
   /* -- The disclosure ----------------------------------------------------
      A bare text toggle, not a bordered panel: a bordered panel inside every
      bordered entry is a page made of boxes. */
   .why {
-    margin-top: var(--space-4);
+    margin-top: calc(-1 * var(--space-2));
   }
 
   .why summary {
@@ -286,49 +177,49 @@ const more = tail(repos);
     color: var(--accent-ink);
   }
 
-  .meta {
+  .tail-wrap summary {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2);
-    margin-top: var(--space-6);
+    align-items: baseline;
+    gap: var(--space-2) var(--space-4);
+    min-height: var(--control-h-sm);
+    cursor: pointer;
+    color: var(--text-2);
+  }
+
+  .tail-wrap summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .tail-wrap summary {
+    list-style: none;
+  }
+
+  .tail-wrap summary::before {
+    content: "";
+    align-self: center;
+    width: 6px;
+    height: 6px;
+    border-right: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    transform: rotate(-45deg);
+  }
+
+  .tail-wrap[open] summary::before {
+    transform: rotate(45deg);
+  }
+
+  .tail-wrap summary:hover {
+    color: var(--text);
+  }
+
+  .tail-count {
     font-size: var(--text-xs);
     color: var(--text-3);
   }
 
-  .lang {
-    color: var(--text-3);
-  }
-
-  .sep {
-    opacity: 0.5;
-  }
-
-  .out {
-    color: var(--text-3);
-    text-decoration: underline;
-    text-decoration-color: var(--text-3);
-    text-underline-offset: 0.25em;
-  }
-
-  .out:hover {
-    color: var(--accent-ink);
-  }
-
-  .tail-head {
-    max-width: var(--measure);
-    margin-bottom: var(--space-8);
-  }
-
-  .lede {
-    margin-top: var(--space-4);
-    color: var(--text-3);
-  }
-
-  /* Three unlabelled columns of repository, sentence and language. The legend
-     is decoration over a list of links, so it is hidden from the accessibility
-     tree — a screen reader gets the link text, which already reads in order. */
-  .tail-legend {
-    display: none;
+  .tail-wrap[open] .tail {
+    margin-top: var(--space-6);
   }
 
   .tail {
@@ -374,18 +265,6 @@ const more = tail(repos);
   }
 
   @media (min-width: 46rem) {
-    .tail-legend {
-      display: grid;
-      grid-template-columns: 13rem 1fr 7rem;
-      gap: var(--space-6);
-      margin: 0 0 var(--space-2);
-      padding-inline: var(--space-3);
-      font-size: var(--text-xs);
-      letter-spacing: var(--tracking-label);
-      text-transform: uppercase;
-      color: var(--text-3);
-    }
-
     .tail-row {
       grid-template-columns: 13rem 1fr 7rem;
       align-items: baseline;

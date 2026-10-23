@@ -23,23 +23,19 @@ they are.
 
 ---
 
-## The publish gate — the only rule that can actually hurt
+## The source of facts, and what never goes up
 
 The private life repo at `~/github/my-life` is the source of truth for career
-facts. You may **read** it freely.
+facts: `data/career-facts.md`, the career documents and their public bio
+(`notes/Goals/Career/Sachin_Koli_Public_Bio.html`, written for this site), and
+the open-source inventory (`notes/Goals/Career/portfolio.md`).
 
-You may **not** move anything from it into this repo without explicit approval
-in the current session.
-
-The gate applies to any fact, sentence, number, date, or file that originates in
-`~/github/my-life` and would land in a committed file here. Before writing it:
-
-- Quote the exact text you intend to publish.
-- Say which file it came from.
-- Wait for a yes.
-
-A yes covers that fact only. It is not a standing licence for the file, the
-directory, or "similar facts".
+**2026-10-22: he approved my-life as the site's source and delegated the
+judgement.** His words: "For the website, you can make best judge out of me. My
+life repo is for that purpose only." An agent may use facts from it without a
+per-fact yes. This replaces the earlier publish gate, which asked for approval
+fact by fact. Judgement still means: public-profile material only, short (see "Short and
+scannable"), and nothing from the list below.
 
 **Never publish, never ask:** compensation of any kind, bank or investment
 balances, budgets, EMIs, loans, retirement arithmetic, dates of birth, home or
@@ -49,8 +45,9 @@ health matters, notice-period terms, credentials, tokens, or anything from
 do not use them.
 
 `data/career-facts.md` in that repo is the single source of truth for any title,
-date, employer, award, or technology this site states. If a fact is not in there,
-it is not verified, and it does not go on the site.
+date, employer, award, or technology this site states. If a fact is not in there
+or in the public bio, it is not verified, and it does not go on the site. The
+public bio mentions his family; that line stays off, under the list above.
 
 ---
 
@@ -130,7 +127,7 @@ npm run verify   check + build + audit — the gate before a commit
 npm run audit    this file, expressed as greps (bin/site audit)
 npm run shots    screenshot every page, dark + light, 1440/820/390 → .shots/
 npm run repos    refresh the committed GitHub repository snapshot
-npm run docs     re-vendor the HooCode documentation
+npm run docs     re-copy the HooCode installer from kolisachint/hoocode
 npm run og       re-render public/brand/og.png from /og-card
 ```
 
@@ -192,6 +189,34 @@ restraint is the point.
 
 ---
 
+## Short and scannable — the 2026-10-22 direction
+
+His words: nobody has time to read a long site. Visitors want to know who he
+is, what he does, and which projects might help them, and they decide in
+seconds. So:
+
+- **Home is the ten-second version.** Photo, name, the headline and subhead
+  (who), the role line and one small employer line (what), then the four
+  projects, then one line with the email. No
+  signpost band, no "Now" paragraph, no section ledes. The masthead already
+  links every page.
+- **Every project gets one plain-language line** saying who it helps and what
+  problem it solves (the `tagline` field), then a way to get it: one copyable
+  install command, or a link to prebuilt binaries. Source, docs and npm links
+  sit under that. `ProjectCard` renders it the same way on home and `/work`.
+- **Long text is folded, not deleted.** On `/work` the story behind each tool
+  sits under "why it exists", and the generated GitHub list sits behind one
+  summary line. Keep each "why it exists" to two short paragraphs.
+- **`/about` is three short paragraphs** (who, the day job, the open-source
+  work), the email, and the awards line.
+- Keep the human voice. Short is not a template: first person, plain words, no
+  marketing verbs.
+
+Before adding a paragraph anywhere, ask whether a visitor in a hurry needs it.
+If not, fold it or leave it out.
+
+---
+
 ## Headlines are assigned — do not rewrite them
 
 Four lines, one slot each. They were chosen together. Do not reword, merge, or
@@ -209,6 +234,11 @@ The first and third were replaced 2026-09-18, with approval. The originals
 data platforms at bank scale — and the tools I wish I'd had.") read as two
 self-awarded titles and a scale claim. They are not coming back.
 
+The home subhead was retired on 2026-10-22 for the short-and-scannable pass and
+restored the same day, with approval: it is the only line on the home page that
+names coding agents, which is what all four projects are. It sits between the
+`<h1>` and the role line (`site.role`).
+
 ---
 
 ## Tone, and the two rules that set it
@@ -216,14 +246,15 @@ self-awarded titles and a scale claim. They are not coming back.
 The site was rewritten 2026-09-18 because it read as a boast. Two rules came
 out of that, and both are load-bearing.
 
-**The site does not describe his employed work.** No employers, no roles, no
-years, no engagement descriptors, no stack lists tied to a client. `/about`
-says *"Eighteen years in enterprise data — banking, retail, telecoms"* and
-stops. That work is not in the public domain and a stranger does not need it to
-understand the site. LinkedIn carries the specifics for anyone who asks. The
-four-row employment table that used to sit on `/about` was deleted, along with
-`track` in `src/site.ts` and `worksFor` in the page's JSON-LD — structured data
-that says more than the visible page is a back door, not a feature.
+**Employed work gets a line, not a CV.** Until 2026-10-22 the site named no
+employer, role or years. That rule is replaced by the decision above: a visitor
+should be able to tell who he is and what he does. So the home page carries the
+role (`site.role`, the positioning from `career-facts.md`) and one small line of
+employer, start year and city (`career.meta`). `/about` gives the current work
+and the earlier employers in two sentences (`career` in `src/site.ts`), and the
+JSON-LD says no more than that. No employment table, no engagement
+descriptions beyond that, no stack lists tied to a client, no numbers from the
+day job. LinkedIn carries the specifics. Clients stay anonymised, as above.
 
 The two awards survive as **one line of small grey type at the foot of
 `/about`**, and nowhere else. Stated once, as a fact. Not a section, not a
@@ -251,15 +282,15 @@ here.
   field to an entry. The `notes` collection is written but commented out —
   registering an empty collection makes every build warn. Uncomment it when
   there is a first note.
-- **`src/content/docs/hoocode/` is generated. Never edit a file in it.** Any
-  correction belongs in the `kolisachint/hoocode` repository, at
-  `packages/coding-agent/docs`. Then run `npm run docs`. An edit made here is
-  silently destroyed by the next sync, and the page still credits upstream for
-  it.
-- Facts that more than one page states live in `src/site.ts`, not in a page.
-  That file is where the publish gate's approvals are recorded.
+- **The HooCode pages are written here** (`src/content/docs/hoocode/`), to
+  the rules in "The documentation section" below. `public/hoocode/install.sh`
+  is the one generated file there: never edit it, fix it in
+  `kolisachint/hoocode` and run `npm run docs`.
+- Facts that more than one page states live in `src/site.ts`, not in a page,
+  with a comment naming where in my-life each came from.
 - Project entries are **curated prose**, not a description scraped from GitHub.
-  Say what the thing does, what was hard about it, and why it exists. The
+  The `tagline` says who it helps and what it solves, in one plain line. The
+  body says what was hard about it and why it exists, in two short paragraphs. The
   long-tail repo list is generated from the GitHub API at build time and is
   deliberately separate from the curated set.
 - One `<h1>` per page. Headings descend without skipping.
@@ -300,20 +331,20 @@ src/
                           provenance. `landing` renders /hoocode through it.
   components/            Mark, Section (the spine), ProjectCard, Footer, toggle
   lib/docs.ts            sidebar, ordering, titles and summaries for the docs
-  lib/satteri-hoocode.mjs  Markdown plugins for the vendored docs
-  content/docs/hoocode/  GENERATED — see the rule above
-  data/hoocode-nav.json  GENERATED — sidebar, redirects, source commit
+  lib/satteri-hoocode.mjs  Markdown plugins for the HooCode docs
+  content/docs/hoocode/  the HooCode docs pages, written here
+  data/hoocode-nav.json  sidebar, redirects, the release the pages describe
   pages/
     index.astro          home
     work/index.astro     curated projects + the GitHub tail
-    about.astro          bio, track, recognition, contact, JSON-LD Person
+    about.astro          short bio, recognition, contact, JSON-LD Person
     hoocode/index.astro  docs landing — hand-written, not upstream's index.md
-    hoocode/[...slug]    one route per vendored page
+    hoocode/[...slug]    one route per docs page
     og-card.astro        render source for og.png — noindex, not in the sitemap
     sitemap.xml.ts       hand-written routes + every docs page, derived
     robots.txt.ts        derives the sitemap URL from `site`
     404.astro
-public/hoocode/images/   GENERATED — images referenced by the docs
+public/hoocode/install.sh  GENERATED — verbatim copy of hoocode's installer
 .github/workflows/       deploy to Pages, and the weekly vendor refresh
 ```
 
@@ -326,31 +357,37 @@ within a month. If a repo should appear, give it a description on GitHub.
 
 ## The documentation section
 
-`/hoocode` renders documentation authored in another repository. Four rules keep
-that honest.
+`/hoocode` documents the Rust build of HooCode. Until 2026-10-22 it vendored the
+TypeScript build's docs from `kolisachint/hoocode-ts`. That build is retired,
+and the Rust repository has no user docs folder to vendor, so the pages are now
+**written here**: short, scannable, and drawn from the Rust build's README,
+`hoocode --help` and CHANGELOG.
 
-**The source of truth is upstream.** `packages/coding-agent/docs` in
-`kolisachint/hoocode`. `npm run docs` copies the markdown, the images and
-`docs.json` into this repo and records the commit it took them from. Every docs
-page shows that commit and links to its own source. Fix things there, sync here.
+**Five pages, not forty.** The landing (`src/pages/hoocode/index.astro`), and
+`install`, `quickstart`, `configuration` and `commands` as markdown in
+`src/content/docs/hoocode/`. The sidebar and the redirects are in
+`src/data/hoocode-nav.json`. Every old TypeScript-era URL redirects to the
+closest page, so outside links keep working. For anything the pages leave out,
+link to the repository; do not copy its docs over.
 
-**The sidebar is generated, not written.** It comes from upstream `docs.json`,
-as do the redirects. Adding a page to the HooCode docs and listing it in
-`docs.json` is the whole procedure for making it appear here. There is no second
-list to keep in step.
+**Only what the Rust build does.** Check a claim against `hoocode --help` (the
+source is `crates/hoocode-code-cli/src/help_text.rs`), the README and the
+CHANGELOG before writing it. Not available: Windows, crates.io, Homebrew. Never
+mention extensions, `-e`, `--export`, `/share`, canvases, `hoocode resources`,
+`~/.hoocode/agent`, `.ts` examples, or a flag `--help` no longer lists.
+`bin/site audit` greps for these.
 
-**Vendored, not fetched at build time.** The site must build with no network,
-which rules out fetching during the build. The cost is drift, so the deploy
-workflow re-syncs weekly and commits whatever changed.
+**Versions.** Say what the current release is (`source.writtenFor` in the nav
+file) and mark anything from the CHANGELOG's Unreleased section as coming in
+the next version. Never describe an unreleased version as out.
 
-**Do not hand-write docs prose here.** The one exception is
-`src/pages/hoocode/index.astro`, the landing page, which is ours: upstream's
-`index.md` is a list of links to the other pages, and the sidebar already is
-that. `index.md` is excluded from routing for this reason.
+**The installer is copied, not written.** `public/hoocode/install.sh` is a
+verbatim copy of `install/install.sh` in `kolisachint/hoocode`. `npm run docs`
+refreshes it, and the deploy workflow runs that weekly and commits any drift.
+Never edit it here. The retired TypeScript installers (`/hoocode-ts/`) were
+removed on 2026-10-22; there is no Windows install.
 
-No search yet. Pagefind is the obvious addition when the section justifies it;
-it is a static index and works without a framework, at the cost of the first
-JavaScript on the site.
+No search. Five pages do not need it.
 
 Room is left for `/hoocowork` and `/hooteams` to arrive the same way. Generalise
 `lib/docs.ts` when the second one lands, not before.
@@ -359,13 +396,20 @@ Room is left for `/hoocowork` and `/hooteams` to arrive the same way. Generalise
 
 ## Standing context
 
-- Eighteen-plus years in enterprise data. Currently a solution architect on GCP
-  data platforms at a UK tier-1 retail bank, via TCS.
-- Ships open-source agent tooling: `hoocode` (TypeScript, on npm),
+- In enterprise data since January 2008. Currently a solution architect at
+  Tata Consultancy Services, on a Google Cloud data platform for a UK tier-1
+  retail bank. Positioning: "Solution Architect — Cloud Data & AI Platforms".
+- Ships open-source agent tooling: `hoocode` (Rust since October 2026, replacing
+  the TypeScript build; still installable from npm),
   `embeddingsearchtools`, `voicetools`, `webtools`, `browsertools`, `filetools`
   (Rust), `hooteams`, `hoocowork`.
-- The photograph appears on the homepage. It does not appear anywhere else in
-  public material.
+- The portrait is the illustrated avatar with wire glasses on flat teal, from
+  his headshot set (`illustrated-glasses-1024.png`, the same picture as his
+  GitHub avatar). It is `public/img/sachin-koli.webp` (480px) and
+  `public/brand/apple-touch-icon.png` (180px). It appears on the homepage hero
+  and on `/about`, in colour, and nowhere else on the site. The studio
+  photographs are not used here. Chosen by him 2026-10-22; it replaced a
+  sunglasses illustration used for a few hours the same day.
 - Contact is email, LinkedIn, GitHub. The address is lightly obfuscated against
   scrapers but must remain trivially usable by a human.
 - Medium is an archive. Link it; do not migrate from it; do not treat it as the

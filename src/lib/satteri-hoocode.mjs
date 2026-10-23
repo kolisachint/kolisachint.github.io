@@ -1,5 +1,5 @@
 /**
- * Markdown pipeline plugins for the vendored HooCode docs.
+ * Markdown pipeline plugins for the HooCode docs.
  *
  * Written against Sätteri, Astro's native Markdown processor, rather than
  * remark/rehype. Sätteri is the default; reaching for the unified pipeline
@@ -13,7 +13,9 @@
  */
 
 const REPO = "https://github.com/kolisachint/hoocode/blob/main";
-const DOCS_DIR = "packages/coding-agent/docs";
+// The pages are written here, so a relative link that is not a sibling page
+// is read as a path from the root of the HooCode repository.
+const DOCS_DIR = ".";
 const SCOPE = "/content/docs/hoocode/";
 
 /** Resolve `rel` against `base`, POSIX-style, without touching the filesystem. */
@@ -33,11 +35,11 @@ function splitHash(url) {
 }
 
 /**
- * The docs are written to be read on GitHub, so their links are paths on disk:
+ * Relative links in the pages are rewritten for the web:
  *
  *   quickstart.md          a sibling page  → /hoocode/quickstart
  *   images/tree-view.png   a local asset   → /hoocode/images/tree-view.png
- *   ../examples/foo.ts     repository code → github.com/…/blob/main/…
+ *   install/install.sh     repository file → github.com/…/blob/main/…
  *
  * Absolute URLs, `mailto:` and bare anchors are left alone.
  */
