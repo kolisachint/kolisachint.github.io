@@ -30,7 +30,8 @@ export default defineConfig({
   devToolbar: {
     enabled: false,
   },
-  redirects: docsRedirects,
+  // /work and /about were folded into the home page on 2026-10-23.
+  redirects: { ...docsRedirects, "/work": "/", "/about": "/" },
   markdown: {
     processor: satteri({
       mdastPlugins: [hoocodeLinks],

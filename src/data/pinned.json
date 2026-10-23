@@ -1,0 +1,69 @@
+{
+  "source": "seed",
+  "fetchedAt": null,
+  "repos": [
+    {
+      "name": "hoocode",
+      "description": "For developers who want an AI coding assistant in the terminal that shows every edit and command first, and waits for a yes.",
+      "url": "https://github.com/kolisachint/hoocode",
+      "homepage": null,
+      "language": "Rust",
+      "stars": 0,
+      "topics": [
+        "agents",
+        "cli",
+        "tui",
+        "llm"
+      ],
+      "pushedAt": null,
+      "readme": "It reads your code, runs your tests and edits your files, but nothing happens until you approve it. That gate is the whole design. Four modes (Ask, Plan, Build, Debug) keep its reach to what the job needs, and it works with whichever model provider you already pay for.\n\nOne native binary for macOS and Linux, written in Rust since October 2026. It was originally derived from Mario Zechner's MIT-licensed pi-mono, and his credit stays in the repository."
+    },
+    {
+      "name": "embeddingsearchtools",
+      "description": "For developers adding search to their own tool. It finds text by meaning and by exact words, on your machine, with no search service to run.",
+      "url": "https://github.com/kolisachint/embeddingsearchtools",
+      "homepage": null,
+      "language": "Rust",
+      "stars": 0,
+      "topics": [
+        "search",
+        "embeddings",
+        "onnx",
+        "hnsw"
+      ],
+      "pushedAt": null,
+      "readme": "Keyword search misses the document that says the same thing in other words; vector search misses the one where the exact word mattered. This does both and fuses the results.\n\nThe HNSW index is written from scratch, because I wanted to understand it rather than call it. Embeddings come from MiniLM through ONNX Runtime at int8. Use it as a Rust library, a CLI, or a stdio daemon."
+    },
+    {
+      "name": "webtools",
+      "description": "For people building AI agents. It fetches pages and search results compactly, so the agent spends fewer tokens on links and can tell when a page failed.",
+      "url": "https://github.com/kolisachint/webtools",
+      "homepage": null,
+      "language": "Rust",
+      "stars": 0,
+      "topics": [
+        "agents",
+        "search",
+        "tokens"
+      ],
+      "pushedAt": null,
+      "readme": "Links are rewritten as [1] markers, about one token each, with the real addresses kept in a block at the end. --max-tokens caps the whole output.\n\nA blocked search, a page that needs JavaScript and a genuinely empty page come back as three different results, so the agent can act on the difference instead of guessing. One binary, no API keys needed."
+    },
+    {
+      "name": "voicetools",
+      "description": "For anyone who would rather talk than type in the terminal. It turns your microphone into text on your own machine, with nothing sent to the cloud.",
+      "url": "https://github.com/kolisachint/voicetools",
+      "homepage": null,
+      "language": "Rust",
+      "stars": 0,
+      "topics": [
+        "asr",
+        "onnx",
+        "offline",
+        "cli"
+      ],
+      "pushedAt": null,
+      "readme": "It notices when you stop talking and prints what you said, in a format simple enough to use as push-to-talk inside another tool. It works offline, on a train too.\n\nRecognition is Parakeet-TDT through ONNX Runtime at int8, with whisper.cpp as a fallback. The models download on first run; no Python needed."
+    }
+  ]
+}

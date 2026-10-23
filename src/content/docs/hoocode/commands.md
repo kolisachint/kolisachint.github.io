@@ -12,8 +12,8 @@ covers the ones most people need.
 | Command | What it does |
 |---|---|
 | `hoocode config` | Turn skills, prompts and other resources on or off |
-| `hoocode update` | Print the command that updates HooCode |
-| `hoocode migrate [--dry-run]` | Merge data from an older HooCode home folder into `~/.hoocode` |
+| `hoocode update` | Print the command that updates hoocode |
+| `hoocode migrate [--dry-run]` | Merge data from an older hoocode home folder into `~/.hoocode` |
 | `hoocode app-server [--listen URL]` | Serve this folder's sessions over the app-server protocol |
 
 New in 0.2.0, for managing plugins without starting a session (until then, use
@@ -40,7 +40,7 @@ New in 0.2.0, for managing plugins without starting a session (until then, use
 | `-t`, `--tools <list>` | Only these tools, e.g. `Read,CodeSearch` for a read-only run |
 | `--thinking <level>` | `off`, `minimal`, `low`, `medium`, `high` or `xhigh` |
 | `--light` | Minimal low-token preset for small or local models |
-| `--list-models [search]` | List the models HooCode knows |
+| `--list-models [search]` | List the models hoocode knows |
 | `--offline` | No startup network calls, such as the version check |
 
 Built-in tools: **Read**, **Shell**, **Edit**, **Write** and **CodeSearch**.
@@ -49,4 +49,4 @@ Built-in tools: **Read**, **Shell**, **Edit**, **Write** and **CodeSearch**.
 
 The [README](https://github.com/kolisachint/hoocode#readme) and the
 [CHANGELOG](https://github.com/kolisachint/hoocode/blob/main/CHANGELOG.md) in the
-repository have the full detail, and `/changelog` shows it inside HooCode.
+repository have the full detail, and `/changelog` shows it inside hoocode.

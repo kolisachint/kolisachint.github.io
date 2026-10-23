@@ -10,7 +10,7 @@ export const site = {
   shortName: "sk",
   role: "Solution architect — cloud data & AI platforms",
   description:
-    "Solution architect for cloud data & AI platforms, at Tata Consultancy Services, in data since 2008. Also the author of four open-source tools for coding agents, all written in Rust.",
+    "Solution architect for cloud data & AI platforms, at Tata Consultancy Services, in data since 2008. Also the author of open-source tools for coding agents, all written in Rust.",
   locale: "en_GB",
 } as const;
 
@@ -24,15 +24,6 @@ export const headlines = {
   home: "Large data systems by day. Small, sharp tools the rest of the time.",
   homeSub:
     "I work on data platforms, coding agents, and the space between them.",
-  work: "Four tools I built because I needed them, and kept because they worked.",
-  about:
-    "Eighteen years moving data. Lately, teaching agents to move it for me.",
-} as const;
-
-/** Split so the literal address never appears in the served HTML. */
-export const email = {
-  user: "kolisachint",
-  domain: "gmail.com",
 } as const;
 
 export const profiles = [
@@ -43,7 +34,7 @@ export const profiles = [
     url: "https://www.linkedin.com/in/kolisachint",
   },
   { name: "npm", handle: "@kolisachint", url: "https://www.npmjs.com/~kolisachint" },
-  { name: "X", handle: "@sachinkoli", url: "https://twitter.com/sachinkoli" },
+  { name: "X", handle: "@sachinkoli", url: "https://x.com/sachinkoli" },
 ] as const;
 
 /**
@@ -73,7 +64,5 @@ export const recognition = [
 ] as const;
 
 export const nav = [
-  { label: "Work", href: "/work" },
-  { label: "HooCode", href: "/hoocode" },
-  { label: "About", href: "/about" },
+  { label: "hoocode", href: "/hoocode" },
 ] as const;

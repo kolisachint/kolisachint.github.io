@@ -1,6 +1,6 @@
 ---
 name: site-design
-description: Redesign, restyle, or visually review any page of this Astro site — home, work, about, 404, the HooCode docs shell, or the OG card. Use when the task touches how the site looks, moves, or responds; when running the ui-ux-pro-max design skill against this repo; or when a change needs screenshotting, auditing against AGENTS.md, or checking at 390/820/1440px in both themes. Covers bin/site, scripts/shot.mjs, the token layer, and the traps that have already cost a pass.
+description: Redesign, restyle, or visually review any page of this Astro site — home, product pages, 404, the HooCode docs shell, or the OG card. Use when the task touches how the site looks, moves, or responds; when running the ui-ux-pro-max design skill against this repo; or when a change needs screenshotting, auditing against AGENTS.md, or checking at 390/820/1440px in both themes. Covers bin/site, scripts/shot.mjs, the token layer, and the traps that have already cost a pass.
 ---
 
 # Designing this site

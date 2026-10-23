@@ -100,7 +100,7 @@ export function summarise(body: string, max = 155): string {
     return text.length > max ? `${text.slice(0, max - 1).trimEnd()}\u2026` : text;
   }
 
-  return "HooCode documentation.";
+  return "hoocode documentation.";
 }
 
 /** The page's markdown in this site's repository, for corrections. */
@@ -108,5 +108,5 @@ export function sourceUrl(id: string): string {
   return `https://github.com/kolisachint/kolisachint.github.io/blob/main/src/content/docs/hoocode/${id}.md`;
 }
 
-/** The HooCode repository, which has the full detail these pages leave out. */
+/** The hoocode repository, which has the full detail these pages leave out. */
 export const repoUrl = `https://github.com/${source.repo}`;

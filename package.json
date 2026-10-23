@@ -11,7 +11,8 @@
     "verify": "bin/site verify",
     "audit": "bin/site audit",
     "shots": "bin/site shots",
-    "repos": "node scripts/refresh-repos.mjs",
+    "pins": "node scripts/refresh-pins.mjs",
+    "repos": "npm run pins",
     "og": "bash scripts/make-og.sh",
     "docs": "node scripts/sync-docs.mjs"
   },

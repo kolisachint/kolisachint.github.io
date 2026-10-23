@@ -1,5 +1,5 @@
 ---
-import { site, profiles, email } from "../site";
+import { site, profiles } from "../site";
 const year = new Date().getFullYear();
 ---
 
@@ -18,11 +18,6 @@ const year = new Date().getFullYear();
             </li>
           ))
         }
-        <li>
-          <a class="link" id="foot-mail" href="#" data-u={email.user} data-d={email.domain}>
-            Email<span class="handle">{email.user}<span aria-hidden="true">&#64;</span>{email.domain}</span>
-          </a>
-        </li>
       </ul>
     </div>
 
@@ -96,12 +91,3 @@ const year = new Date().getFullYear();
     opacity: 0.5;
   }
 </style>
-
-<script>
-  // The address is split across elements in the markup, so it never appears as
-  // a contiguous string for naive scrapers. The mailto: is assembled here.
-  const a = document.getElementById("foot-mail") as HTMLAnchorElement | null;
-  if (a?.dataset.u && a.dataset.d) {
-    a.href = `mailto:${a.dataset.u}@${a.dataset.d}`;
-  }
-</script>

@@ -1,0 +1,99 @@
+---
+/**
+ * One product page per pinned repository, generated from src/data/pinned.json.
+ * hoocode is skipped: /hoocode is the hand-written docs landing, and its
+ * routes (src/pages/hoocode/) would otherwise collide with this one.
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/Section.astro";
+import { pinned, type PinnedRepo } from "../lib/pinned";
+
+export function getStaticPaths() {
+  return pinned
+    .filter((repo) => repo.name !== "hoocode")
+    .map((repo) => ({ params: { repo: repo.name }, props: { repo } }));
+}
+
+const { repo } = Astro.props as { repo: PinnedRepo };
+const paragraphs = repo.readme.split(/\n\s*\n/).filter(Boolean);
+---
+
+<BaseLayout title={repo.name} description={repo.description}>
+  <header class="page-head">
+    <div class="shell" data-hero>
+      <p class="label">Project{repo.language ? ` · ${repo.language}` : ""}</p>
+      <h1>{repo.name}</h1>
+      <p class="sub">{repo.description}</p>
+      <p class="actions">
+        <a class="btn primary" href={repo.url}>GitHub</a>
+        {repo.homepage && <a class="btn" href={repo.homepage}>Homepage</a>}
+      </p>
+    </div>
+  </header>
+
+  <Section eyebrow="Overview">
+    {
+      paragraphs.length > 0 && (
+        <div class="prose" data-reveal>
+          {paragraphs.map((p) => <p>{p}</p>)}
+        </div>
+      )
+    }
+
+    {
+      repo.topics.length > 0 && (
+        <ul class="topics mono" aria-label="Topics" data-reveal>
+          {repo.topics.map((t) => <li>{t}</li>)}
+        </ul>
+      )
+    }
+
+    <p class="back mono" data-reveal><a class="link" href="/">&larr; All projects</a></p>
+  </Section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding-block: var(--space-16) var(--space-8);
+  }
+
+  .page-head .label {
+    margin-bottom: var(--space-6);
+  }
+
+  .sub {
+    margin-top: var(--space-4);
+    font-size: var(--text-lg);
+    color: var(--text-2);
+    max-width: var(--measure);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-8);
+  }
+
+  .topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-8) 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-xs);
+    color: var(--text-3);
+  }
+
+  .topics li {
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--border);
+    border-radius: var(--hoo-r-badge);
+  }
+
+  .back {
+    margin-top: var(--space-8);
+    font-size: var(--text-sm);
+  }
+</style>

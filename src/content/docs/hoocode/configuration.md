@@ -1,6 +1,6 @@
 # Configuration
 
-Everything HooCode keeps lives in **`~/.hoocode`**. Set `HOOCODE_CODING_AGENT_DIR`
+Everything hoocode keeps lives in **`~/.hoocode`**. Set `HOOCODE_CODING_AGENT_DIR`
 to move it.
 
 ## Files
@@ -26,7 +26,7 @@ to move it.
 ## MCP servers
 
 Declared in `~/.agents/mcp.json` (yours) and `.agents/mcp.json` (the project's).
-HooCode asks before it starts servers a project declares. `/mcp` shows each server's
+hoocode asks before it starts servers a project declares. `/mcp` shows each server's
 state, and `/mcp login <server>` signs in to one that needs it.
 
 ## Plugins

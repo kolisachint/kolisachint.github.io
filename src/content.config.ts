@@ -5,38 +5,6 @@ import { glob } from "astro/loaders";
 import { z } from "astro/zod";
 
 /**
- * Curated projects. Hand-written prose — never a description scraped from
- * GitHub. The long-tail repo list is generated separately at build time and is
- * deliberately not part of this collection.
- */
-const projects = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
-  schema: z.object({
-    title: z.string(),
-    /** One line, plain language: who it helps and what problem it solves.
-     *  Shown on the home page and /work. No marketing verbs. */
-    tagline: z.string(),
-    /** Primary language, as GitHub reports it. */
-    lang: z.enum(["Rust", "TypeScript", "Python", "Shell", "HTML"]),
-    repo: z.url(),
-    npm: z.url().optional(),
-    site: z.url().optional(),
-    /** Site-relative docs path, e.g. /hoocode. */
-    docs: z.string().optional(),
-    /** One copyable install command, when there is one. */
-    install: z.string().optional(),
-    /** Where to download a prebuilt binary, when there is no one-liner. */
-    download: z.url().optional(),
-    /** Only claim "shipped" when it is installable by a stranger. */
-    status: z.enum(["shipped", "active", "early", "archived"]),
-    tags: z.array(z.string()).default([]),
-    featured: z.boolean().default(false),
-    /** Lower sorts first within the featured set. */
-    order: z.number().default(99),
-  }),
-});
-
-/**
  * Reserved for v2. Registering an empty collection makes every build warn, so
  * it stays commented until there is a first note to put in it.
  *
@@ -53,7 +21,7 @@ const projects = defineCollection({
  */
 
 /**
- * The HooCode documentation: short pages written for this site, from the Rust
+ * The hoocode documentation: short pages written for this site, from the Rust
  * build's README, --help and CHANGELOG. No frontmatter, so the schema is empty;
  * titles come from src/data/hoocode-nav.json, falling back to the first H1.
  */
@@ -62,4 +30,4 @@ const docs = defineCollection({
   schema: z.object({}),
 });
 
-export const collections = { projects, docs };
+export const collections = { docs };

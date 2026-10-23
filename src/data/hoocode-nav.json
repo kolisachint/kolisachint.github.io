@@ -1,5 +1,5 @@
 {
-  "_comment": "Site-owned since 2026-10-22. The Rust build of HooCode has no user docs folder to vendor, so these pages are written here from its README, --help and CHANGELOG. Redirects keep the old TypeScript-era URLs working.",
+  "_comment": "Site-owned since 2026-10-22. The Rust build of hoocode has no user docs folder to vendor, so these pages are written here from its README, --help and CHANGELOG. Redirects keep the old TypeScript-era URLs working.",
   "source": {
     "repo": "kolisachint/hoocode",
     "branch": "main",
