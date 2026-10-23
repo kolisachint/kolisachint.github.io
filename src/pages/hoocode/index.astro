@@ -29,7 +29,7 @@ const INSTALLS = [
   {
     id: "npm",
     label: "npm / bun · Node 18+",
-    cmd: "npm install -g @kolisachint/hoocode",
+    cmd: "npm install -g hoocode",
   },
   {
     id: "pip",
@@ -49,15 +49,15 @@ const modes = [
 <DocsLayout
   id="index"
   landing
-  title="HooCode — a terminal coding agent, written in Rust"
-  description="HooCode is a terminal coding agent written in Rust: one native binary for macOS and Linux, any model provider, and nothing applied without your approval."
+  title="hoocode — a terminal coding agent, written in Rust"
+  description="hoocode is a terminal coding agent written in Rust: one native binary for macOS and Linux, any model provider, and nothing applied without your approval."
 >
   <div class="lead">
     {/* Not <picture> with prefers-color-scheme: the toggle sets data-theme,
         so the media query would disagree with it the moment anyone switches
         against their OS. Both marks ship; CSS picks. They are ~4 KB each. */}
     <div class="lockup">
-      <img class="on-dark" src="/brand/hoo/hoocode.svg" alt="HooCode" width="274" height="80" />
+      <img class="on-dark" src="/brand/hoo/hoocode.svg" alt="hoocode" width="274" height="80" />
       <img class="on-light" src="/brand/hoo/hoocode-light.svg" alt="" aria-hidden="true" width="274" height="80" />
     </div>
 
@@ -93,7 +93,7 @@ const modes = [
     <div class="actions">
       <a class="btn primary" href="/hoocode/quickstart">Quickstart</a>
       <a class="btn" href="https://github.com/kolisachint/hoocode">GitHub</a>
-      <a class="btn" href="https://www.npmjs.com/package/@kolisachint/hoocode">npm</a>
+      <a class="btn" href="https://www.npmjs.com/package/hoocode">npm</a>
     </div>
   </div>
 
@@ -305,7 +305,7 @@ const modes = [
     font-weight: 500;
   }
 
-  /* The cursor from the HooCode lockup, used as the mode's tick. */
+  /* The cursor from the hoocode lockup, used as the mode's tick. */
   .mode-name::after {
     content: "_";
     color: var(--accent);

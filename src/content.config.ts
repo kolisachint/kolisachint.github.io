@@ -21,7 +21,7 @@ import { z } from "astro/zod";
  */
 
 /**
- * The HooCode documentation: short pages written for this site, from the Rust
+ * The hoocode documentation: short pages written for this site, from the Rust
  * build's README, --help and CHANGELOG. No frontmatter, so the schema is empty;
  * titles come from src/data/hoocode-nav.json, falling back to the first H1.
  */

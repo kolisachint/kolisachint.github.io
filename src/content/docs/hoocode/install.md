@@ -1,8 +1,8 @@
 # Install
 
-HooCode runs on **macOS and Linux, on x64 and arm64**. The Linux builds are static
+hoocode runs on **macOS and Linux, on x64 and arm64**. The Linux builds are static
 (musl), so one binary runs on any distribution. There is no Windows build yet, and
-HooCode is not on crates.io or Homebrew.
+hoocode is not on crates.io or Homebrew.
 
 ## Install script
 
@@ -38,7 +38,7 @@ in the repository, and the copy served here is identical.
 Node 18 or newer. The package pulls in only the native binary for your platform.
 
 ```bash
-npm install -g @kolisachint/hoocode     # or: bun add -g @kolisachint/hoocode
+npm install -g hoocode     # or: bun add -g hoocode
 ```
 
 ## pip

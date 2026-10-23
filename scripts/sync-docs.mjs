@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Keeps the HooCode installer served by this site in step with its source.
+ * Keeps the hoocode installer served by this site in step with its source.
  *
  *   npm run docs
  *

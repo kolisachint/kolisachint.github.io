@@ -8,7 +8,7 @@ something here conflicts with a general habit you have, this file wins.
 ## What this is
 
 The public personal site of Sachin Koli, and the eventual landing zone for the
-`hoo*` product docs (HooCode, HooCowork, HooTeams).
+`hoo*` product docs (hoocode, HooCowork, HooTeams).
 
 Two audiences, in this order:
 
@@ -129,7 +129,7 @@ npm run verify   check + build + audit — the gate before a commit
 npm run audit    this file, expressed as greps (bin/site audit)
 npm run shots    screenshot every page, dark + light, 1440/820/390 → .shots/
 npm run pins     refresh the committed pinned-repo snapshot (needs GITHUB_TOKEN)
-npm run docs     re-copy the HooCode installer from kolisachint/hoocode
+npm run docs     re-copy the hoocode installer from kolisachint/hoocode
 npm run og       re-render public/brand/og.png from /og-card
 ```
 
@@ -277,7 +277,7 @@ here.
   excerpt is stored. Never edit the file by hand; `"source": "seed"` marks the
   initial hand-made snapshot. Without a token, or on failure, the script keeps
   the existing snapshot and warns. `src/lib/pinned.ts` reads it.
-- **The HooCode pages are written here** (`src/content/docs/hoocode/`), to
+- **The hoocode pages are written here** (`src/content/docs/hoocode/`), to
   the rules in "The documentation section" below. `public/hoocode/install.sh`
   is the one generated file there: never edit it, fix it in
   `kolisachint/hoocode` and run `npm run docs`.
@@ -320,8 +320,8 @@ src/
                           provenance. `landing` renders /hoocode through it.
   components/            Mark, Section (the spine), PinCard, Footer, toggle
   lib/docs.ts            sidebar, ordering, titles and summaries for the docs
-  lib/satteri-hoocode.mjs  Markdown plugins for the HooCode docs
-  content/docs/hoocode/  the HooCode docs pages, written here
+  lib/satteri-hoocode.mjs  Markdown plugins for the hoocode docs
+  content/docs/hoocode/  the hoocode docs pages, written here
   data/hoocode-nav.json  sidebar, redirects, the release the pages describe
   pages/
     index.astro          home: hero, short bio, pinned-repo cards, contact, JSON-LD Person
@@ -343,7 +343,7 @@ reserved: `[repo].astro` skips that name so it cannot collide with the docs.
 
 ## The documentation section
 
-`/hoocode` documents the Rust build of HooCode. Until 2026-10-22 it vendored the
+`/hoocode` documents the Rust build of hoocode. Until 2026-10-22 it vendored the
 TypeScript build's docs from `kolisachint/hoocode-ts`. That build is retired,
 and the Rust repository has no user docs folder to vendor, so the pages are now
 **written here**: short, scannable, and drawn from the Rust build's README,

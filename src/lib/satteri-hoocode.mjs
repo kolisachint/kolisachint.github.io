@@ -1,5 +1,5 @@
 /**
- * Markdown pipeline plugins for the HooCode docs.
+ * Markdown pipeline plugins for the hoocode docs.
  *
  * Written against Sätteri, Astro's native Markdown processor, rather than
  * remark/rehype. Sätteri is the default; reaching for the unified pipeline
@@ -14,7 +14,7 @@
 
 const REPO = "https://github.com/kolisachint/hoocode/blob/main";
 // The pages are written here, so a relative link that is not a sibling page
-// is read as a path from the root of the HooCode repository.
+// is read as a path from the root of the hoocode repository.
 const DOCS_DIR = ".";
 const SCOPE = "/content/docs/hoocode/";
 

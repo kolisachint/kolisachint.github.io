@@ -35,7 +35,7 @@ const hasToc = toc.length > 1;
 ---
 
 <BaseLayout
-  title={landing ? title : `${title} · HooCode docs`}
+  title={landing ? title : `${title} · hoocode docs`}
   description={description}
   suffix={false}
 >
@@ -88,7 +88,7 @@ const hasToc = toc.length > 1;
       {
         !landing && (
           <p class="crumbs label">
-            <a href={DOCS_BASE}>HooCode</a>
+            <a href={DOCS_BASE}>hoocode</a>
             {group && <><span aria-hidden="true">/</span><span>{group}</span></>}
             {!listed && <><span aria-hidden="true">/</span><span>Reference</span></>}
           </p>
