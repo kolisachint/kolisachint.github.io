@@ -1,22 +1,37 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Section from "../components/Section.astro";
-import ProjectCard from "../components/ProjectCard.astro";
-import { site, headlines, email, career } from "../site";
+import PinCard from "../components/PinCard.astro";
+import { site, headlines, career, recognition, profiles } from "../site";
+import { pinned } from "../lib/pinned";
 
-const projects = (await getCollection("projects"))
-  .filter((p) => p.data.featured)
-  .sort((a, b) => a.data.order - b.data.order);
+const x = profiles.find((p) => p.name === "X")!;
 
-/* Four entries, and four is the whole set. The slice stays so that adding a
-   fifth markdown file does not silently change this page's shape. */
-const featured = projects.slice(0, 4);
+/* Structured data is how a recruiter's tooling reads the page. It says no more
+   than the visible page does. Moved here from /about, which no longer exists. */
+const personLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  url: new URL("/", Astro.site).href,
+  jobTitle: "Solution Architect",
+  description: site.description,
+  worksFor: { "@type": "Organization", name: career.employer },
+  knowsAbout: [
+    "Google Cloud Platform",
+    "BigQuery",
+    "Data platform architecture",
+    "Data warehouse migration",
+    "Rust",
+    "TypeScript",
+    "Coding agent tooling",
+  ],
+  sameAs: profiles.map((p) => p.url),
+};
 
-/* Short and scannable, 2026-10-22. A visitor should have it in about ten
-   seconds: face, name, who, what, then the projects. The signpost band, the
-   "Now" paragraph and the section ledes were cut; the masthead already links
-   every page, and the project cards say what each tool is for. */
+/* Short and scannable: face, name, who, what, a short bio, then the projects.
+   The projects are the GitHub pinned repos, fetched at build time into
+   src/data/pinned.json, so nothing here is edited when the pins change. */
 ---
 
 <!-- Written out rather than composed: site.role already carries an em dash,
@@ -25,6 +40,13 @@ const featured = projects.slice(0, 4);
   title={`${site.name} — solution architect, cloud data & AI platforms`}
   suffix={false}
 >
+  <script
+    slot="head"
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(personLd)}
+  />
+
   <section class="hero">
     <div class="shell hero-grid">
       <div class="hero-text" data-hero>
@@ -49,28 +71,51 @@ const featured = projects.slice(0, 4);
     </div>
   </section>
 
+  <Section eyebrow="About">
+    <div class="prose bio" data-reveal>
+      <p>
+        I'm a solution architect in Pune. I design the data platforms nobody
+        sees: the pipelines that decide whether an app shows you the right
+        number. Right now that is {career.current}, at {career.employer}.
+      </p>
+      <p>
+        The rest of the time I build small open-source tools for coding agents,
+        each because the one I needed was missing, too slow, or too eager to
+        guess. If you came here from one of them, welcome.
+      </p>
+    </div>
+  </Section>
+
   <Section eyebrow="Projects">
     <h2 class="sec-title" data-reveal>What I'm building now</h2>
 
     <div class="cards">
-      {featured.map((project, i) => (
+      {pinned.map((repo, i) => (
         <div class="card-wrap" data-reveal style={`--reveal-delay:${i * 60}ms`}>
-          <ProjectCard project={project} />
+          <PinCard repo={repo} />
         </div>
       ))}
     </div>
-
-    <p class="more" data-reveal>
-      <a class="link" href="/work">More on the work page &rarr;</a>
-    </p>
   </Section>
 
   <Section eyebrow="Contact" tight>
     <p class="mail" data-reveal>
       Questions about any of it are welcome:{" "}
-      <a class="link" id="hero-mail" href="#" data-u={email.user} data-d={email.domain}>
-        <span class="mono">{email.user}<span aria-hidden="true">&#64;</span>{email.domain}</span>
+      <a class="link" href={x.url} rel="me">
+        <span class="mono">X {x.handle}</span>
       </a>
+    </p>
+
+    {/* One line, small and grey. The awards are public record, stated once. */}
+    <p class="recognition mono" data-reveal>
+      Work I architected was recognised at the {
+        recognition.map((r, i) => (
+          <>
+            {i > 0 && (i === recognition.length - 1 ? " and the " : ", ")}
+            {r.award} {r.year}
+          </>
+        ))
+      }.
     </p>
   </Section>
 </BaseLayout>
@@ -169,6 +214,18 @@ const featured = projects.slice(0, 4);
     font-size: var(--text-lg);
   }
 
+  .bio {
+    color: var(--text-2);
+    font-size: var(--text-lg);
+  }
+
+  .recognition {
+    max-width: var(--measure);
+    margin-top: var(--space-10);
+    font-size: var(--text-xs);
+    color: var(--text-3);
+  }
+
   /* One column, then two. Never auto-fit: four cards in a three-wide row
      leave one stranded. */
   .cards {
@@ -191,16 +248,5 @@ const featured = projects.slice(0, 4);
     height: 100%;
   }
 
-  .more {
-    margin-top: var(--space-8);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-  }
 </style>
 
-<script>
-  const a = document.getElementById("hero-mail") as HTMLAnchorElement | null;
-  if (a?.dataset.u && a.dataset.d) {
-    a.href = `mailto:${a.dataset.u}@${a.dataset.d}`;
-  }
-</script>

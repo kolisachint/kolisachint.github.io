@@ -30,7 +30,7 @@ CHROME="${CHROME:-$HOME/Library/Caches/ms-playwright/chromium-1228/chrome-mac-ar
 
 # The pages worth looking at after any visual change. Ordered by how much a
 # regression on them would cost.
-DEFAULT_PATHS=(/ /work/ /about/ /hoocode/ /hoocode/quickstart/ /404.html)
+DEFAULT_PATHS=(/ /embeddingsearchtools/ /hoocode/ /hoocode/quickstart/ /404.html)
 
 # ---------------------------------------------------------------------------
 # audit — AGENTS.md, expressed as things that must not appear in the tree.

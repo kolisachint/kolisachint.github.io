@@ -12,7 +12,7 @@
  * assumed a Chromium binary for the OG card.
  *
  *   node scripts/shot.mjs --base http://127.0.0.1:4399 --out .shots \
- *     --widths 1440,820,390 --themes dark,light -- / /work/ /about/
+ *     --widths 1440,820,390 --themes dark,light -- / /webtools/
  */
 import { spawn } from "node:child_process";
 import { mkdir, rm, writeFile } from "node:fs/promises";
