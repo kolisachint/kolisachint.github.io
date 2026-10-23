@@ -117,7 +117,9 @@ The full dependency list, and why each one is there:
 | `@astrojs/check`, `typescript`, `@types/node` | dev only — type checking |
 
 Deployment is GitHub Actions to GitHub Pages. The site must build with
-`npm run build` and nothing else — no network, no token, no prior step.
+`npm run build` and nothing else — no network, no token, no prior step. The
+pinned-repo snapshot is committed for that reason; the deploy workflow refreshes
+it before every build.
 
 ```
 npm run dev      local server
@@ -126,7 +128,7 @@ npm run check    astro check — must be 0 errors before a commit
 npm run verify   check + build + audit — the gate before a commit
 npm run audit    this file, expressed as greps (bin/site audit)
 npm run shots    screenshot every page, dark + light, 1440/820/390 → .shots/
-npm run repos    refresh the committed GitHub repository snapshot
+npm run pins     refresh the committed pinned-repo snapshot (needs GITHUB_TOKEN)
 npm run docs     re-copy the HooCode installer from kolisachint/hoocode
 npm run og       re-render public/brand/og.png from /og-card
 ```
@@ -189,54 +191,47 @@ restraint is the point.
 
 ---
 
-## Short and scannable — the 2026-10-22 direction
+## Short and scannable — the 2026-10-22 direction, revised 2026-10-23
 
 His words: nobody has time to read a long site. Visitors want to know who he
 is, what he does, and which projects might help them, and they decide in
 seconds. So:
 
+- **Two kinds of page: Home and product pages.** `/work` and `/about` were
+  deleted on 2026-10-23 and redirect to `/`. Do not add a page without asking.
 - **Home is the ten-second version.** Photo, name, the headline and subhead
-  (who), the role line and one small employer line (what), then the four
-  projects, then one line with the email. No
-  signpost band, no "Now" paragraph, no section ledes. The masthead already
-  links every page.
-- **Every project gets one plain-language line** saying who it helps and what
-  problem it solves (the `tagline` field), then a way to get it: one copyable
-  install command, or a link to prebuilt binaries. Source, docs and npm links
-  sit under that. `ProjectCard` renders it the same way on home and `/work`.
-- **Long text is folded, not deleted.** On `/work` the story behind each tool
-  sits under "why it exists", and the generated GitHub list sits behind one
-  summary line. Keep each "why it exists" to two short paragraphs.
-- **`/about` is three short paragraphs** (who, the day job, the open-source
-  work), the email, and the awards line.
+  (who), the role line and one small employer line (what), a short bio of two
+  paragraphs, then a card per pinned repo, then one contact line (X) and the
+  awards line.
+- **A product page** (`/<repo>/`) shows the name, the GitHub description,
+  topics, language, a short README excerpt and buttons for GitHub and the
+  homepage. Nothing on it is written by hand.
 - Keep the human voice. Short is not a template: first person, plain words, no
   marketing verbs.
 
 Before adding a paragraph anywhere, ask whether a visitor in a hurry needs it.
-If not, fold it or leave it out.
+If not, leave it out.
 
 ---
 
 ## Headlines are assigned — do not rewrite them
 
-Four lines, one slot each. They were chosen together. Do not reword, merge, or
+Three lines, one slot each. They were chosen together. Do not reword, merge, or
 relocate them without asking.
 
 | Slot | Line |
 |---|---|
 | Home `<h1>` | Large data systems by day. Small, sharp tools the rest of the time. |
 | Home subhead | I work on data platforms, coding agents, and the space between them. |
-| `/work` lead | Four tools I built because I needed them, and kept because they worked. |
-| `/about` opener | Eighteen years moving data. Lately, teaching agents to move it for me. |
 
-The first and third were replaced 2026-09-18, with approval. The originals
-("Architect of large data systems. Author of small sharp tools." and "I build
-data platforms at bank scale — and the tools I wish I'd had.") read as two
-self-awarded titles and a scale claim. They are not coming back.
+The home `<h1>` was replaced 2026-09-18, with approval. The original
+("Architect of large data systems. Author of small sharp tools.") read as a
+self-awarded title. It is not coming back. The `/work` lead and `/about` opener
+were retired with those pages on 2026-10-23.
 
 The home subhead was retired on 2026-10-22 for the short-and-scannable pass and
 restored the same day, with approval: it is the only line on the home page that
-names coding agents, which is what all four projects are. It sits between the
+names coding agents, which is what the pinned projects are. It sits between the
 `<h1>` and the role line (`site.role`).
 
 ---
@@ -250,23 +245,22 @@ out of that, and both are load-bearing.
 employer, role or years. That rule is replaced by the decision above: a visitor
 should be able to tell who he is and what he does. So the home page carries the
 role (`site.role`, the positioning from `career-facts.md`) and one small line of
-employer, start year and city (`career.meta`). `/about` gives the current work
+employer, start year and city (`career.meta`). The home bio gives the current work
 and the earlier employers in two sentences (`career` in `src/site.ts`), and the
 JSON-LD says no more than that. No employment table, no engagement
 descriptions beyond that, no stack lists tied to a client, no numbers from the
 day job. LinkedIn carries the specifics. Clients stay anonymised, as above.
 
 The two awards survive as **one line of small grey type at the foot of
-`/about`**, and nowhere else. Stated once, as a fact. Not a section, not a
+the home page**, and nowhere else. Stated once, as a fact. Not a section, not a
 home-page tile, never "award-winning".
 
-**Four curated projects. Not five.** hoocode, embeddingsearchtools, webtools,
-voicetools — the four the career record calls "the four that carry the story".
-Everything else that used to have a write-up (hoocowork, hooteams, browsertools,
-filetools, screencut) now gets a single row in the generated tail on `/work`,
-which is where a fifth one goes too. Adding a fifth file to
-`src/content/projects/` is a decision to raise, not a detail to slip into a
-commit — and it means removing one of the four.
+**Projects = the GitHub pinned repos, fetched at build.** (Decided 2026-10-23,
+replacing "exactly four curated projects".) Name, description, topics,
+homepage, language and stars all come from GitHub, so the site is never edited
+when pins or descriptions change. There is no hardcoded project list and no
+"all repos" tail. To change what appears, change the pins or the repo's
+description on GitHub.
 
 The voice is a welcome, not a pitch. A visitor arriving from a README is a
 guest. Sentences that begin "Most X do Y. I do Z." are a pitch. Instructions to
@@ -277,22 +271,18 @@ here.
 
 ## Content conventions
 
-- Projects live in `src/content/projects/` as a typed collection. The schema in
-  `src/content.config.ts` is the contract; extend the schema before adding a
-  field to an entry. The `notes` collection is written but commented out —
-  registering an empty collection makes every build warn. Uncomment it when
-  there is a first note.
+- Projects come from `src/data/pinned.json`, written by
+  `scripts/refresh-pins.mjs` (`npm run pins`): GraphQL `pinnedItems` for the
+  pins (needs a token), REST for each README, from which a short plain-text
+  excerpt is stored. Never edit the file by hand; `"source": "seed"` marks the
+  initial hand-made snapshot. Without a token, or on failure, the script keeps
+  the existing snapshot and warns. `src/lib/pinned.ts` reads it.
 - **The HooCode pages are written here** (`src/content/docs/hoocode/`), to
   the rules in "The documentation section" below. `public/hoocode/install.sh`
   is the one generated file there: never edit it, fix it in
   `kolisachint/hoocode` and run `npm run docs`.
 - Facts that more than one page states live in `src/site.ts`, not in a page,
   with a comment naming where in my-life each came from.
-- Project entries are **curated prose**, not a description scraped from GitHub.
-  The `tagline` says who it helps and what it solves, in one plain line. The
-  body says what was hard about it and why it exists, in two short paragraphs. The
-  long-tail repo list is generated from the GitHub API at build time and is
-  deliberately separate from the curated set.
 - One `<h1>` per page. Headings descend without skipping.
 - Every image has real alt text. Every external link to a hoo\* product points at
   the canonical repo or docs page, never a fork.
@@ -309,7 +299,7 @@ bin/site                 verify · audit · shots · design — the repo's tool 
 .hoocode/skills/         project-local agent skills
   site-design/SKILL.md   the design loop, and every trap already paid for
 scripts/
-  refresh-repos.mjs      GitHub snapshot refresher (npm run repos)
+  refresh-pins.mjs       pinned repos + README excerpts → pinned.json (npm run pins)
   make-og.sh             renders /og-card → public/brand/og.png (npm run og)
   shot.mjs               CDP screenshots — real viewports, both themes
 public/
@@ -319,39 +309,35 @@ public/
   img/                   photography
 src/
   site.ts                name, headlines, profiles, the one-sentence background
-  content.config.ts      collection schemas
-  content/projects/      curated project entries, one markdown file each
-  data/repos.json        committed GitHub snapshot — build fallback
-  lib/github.ts          live fetch + snapshot fallback + the tail filter
+  content.config.ts      collection schemas (docs only)
+  data/pinned.json       committed snapshot of the GitHub pinned repos
+  lib/pinned.ts          typed access to pinned.json
   styles/tokens.css      raw brand palette → semantic tokens, both themes
   styles/global.css      reset, base elements, layout primitives
   styles/docs.css        documentation prose — plain CSS, namespaced under .doc
   layouts/BaseLayout      head, masthead, theme boot script, footer
   layouts/DocsLayout      the two-pane docs shell — sidebar, TOC, prev/next,
                           provenance. `landing` renders /hoocode through it.
-  components/            Mark, Section (the spine), ProjectCard, Footer, toggle
+  components/            Mark, Section (the spine), PinCard, Footer, toggle
   lib/docs.ts            sidebar, ordering, titles and summaries for the docs
   lib/satteri-hoocode.mjs  Markdown plugins for the HooCode docs
   content/docs/hoocode/  the HooCode docs pages, written here
   data/hoocode-nav.json  sidebar, redirects, the release the pages describe
   pages/
-    index.astro          home
-    work/index.astro     curated projects + the GitHub tail
-    about.astro          short bio, recognition, contact, JSON-LD Person
+    index.astro          home: hero, short bio, pinned-repo cards, contact, JSON-LD Person
+    [repo].astro         one product page per pinned repo (skips hoocode)
     hoocode/index.astro  docs landing — hand-written, not upstream's index.md
     hoocode/[...slug]    one route per docs page
     og-card.astro        render source for og.png — noindex, not in the sitemap
-    sitemap.xml.ts       hand-written routes + every docs page, derived
+    sitemap.xml.ts       home + pinned repos + every docs page, derived
     robots.txt.ts        derives the sitemap URL from `site`
     404.astro
 public/hoocode/install.sh  GENERATED — verbatim copy of hoocode's installer
-.github/workflows/       deploy to Pages, and the weekly vendor refresh
+.github/workflows/       deploy to Pages; refreshes the pins on every run
 ```
 
-**The work page's long tail is filtered by rule, not by hand**: a repository
-appears only if it is not a fork, was pushed since 2024, has a description, and
-that description does not say "placeholder". Curating the list by hand would rot
-within a month. If a repo should appear, give it a description on GitHub.
+`/work` and `/about` redirect to `/` (`astro.config.mjs`). `/hoocode` is
+reserved: `[repo].astro` skips that name so it cannot collide with the docs.
 
 ---
 
@@ -383,7 +369,7 @@ the next version. Never describe an unreleased version as out.
 
 **The installer is copied, not written.** `public/hoocode/install.sh` is a
 verbatim copy of `install/install.sh` in `kolisachint/hoocode`. `npm run docs`
-refreshes it, and the deploy workflow runs that weekly and commits any drift.
+refreshes it, and the deploy workflow runs that daily and commits any drift.
 Never edit it here. The retired TypeScript installers (`/hoocode-ts/`) were
 removed on 2026-10-22; there is no Windows install.
 
@@ -407,11 +393,12 @@ Room is left for `/hoocowork` and `/hooteams` to arrive the same way. Generalise
   his headshot set (`illustrated-glasses-1024.png`, the same picture as his
   GitHub avatar). It is `public/img/sachin-koli.webp` (480px) and
   `public/brand/apple-touch-icon.png` (180px). It appears on the homepage hero
-  and on `/about`, in colour, and nowhere else on the site. The studio
+  in colour, and nowhere else on the site. The studio
   photographs are not used here. Chosen by him 2026-10-22; it replaced a
   sunglasses illustration used for a few hours the same day.
-- Contact is email, LinkedIn, GitHub. The address is lightly obfuscated against
-  scrapers but must remain trivially usable by a human.
+- Contact is X only: https://x.com/sachinkoli (@sachinkoli). There is no email
+  address, `mailto:` link or `email` field anywhere on the site (decided
+  2026-10-23). The profiles list may also carry GitHub, LinkedIn and npm.
 - Medium is an archive. Link it; do not migrate from it; do not treat it as the
   writing home.
 
