@@ -101,7 +101,7 @@ cmd_audit() {
     ok "colour only from tokens"
   fi
 
-  # "The HooCode pages describe only what the Rust build does." Features of the
+  # "The hoocode pages describe only what the Rust build does." Features of the
   # retired TypeScript build, and flags `hoocode --help` no longer lists, must
   # not come back through a copy-paste.
   local ts_terms='extension|~/\.hoocode/agent|/share\b|--export|--theme|--no-themes|--verbose|--platform|--agent\b|--enable-webtools|--enable-todowrite|--enable-semantic-index|--print-token-surface|canvas|hoocode resources|hoocode-ts|\.ts\b'
@@ -112,7 +112,7 @@ cmd_audit() {
     printf '%s\n' "$stale" | sed 's/^/       /'
     bad "HooCode page names something the Rust build does not have (AGENTS.md § The documentation section)"
   else
-    ok "HooCode pages match the Rust build"
+    ok "hoocode pages match the Rust build"
   fi
 
   # Token gaps hidden behind inline fallbacks. var(--space-4, 1rem) means the
