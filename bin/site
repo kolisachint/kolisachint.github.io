@@ -53,22 +53,22 @@ cmd_audit() {
     ok "no inflated AI claims"
   fi
 
-  # "Client anonymisation — never name a client." The names are deliberately
-  # not in this file: bin/site is committed to a public repo, and a list of
-  # them here would be the very mapping the framings exist to prevent. Keep
-  # them one per line in .audit-clients (gitignored), or point SITE_CLIENTS at
-  # a file outside the repo.
+  # "No employer, no client, no location." The banned words are deliberately
+  # not in this file: bin/site is committed to a public repo, and listing them
+  # here would publish the very facts the rule keeps off the site. Keep them
+  # one per line in .audit-clients (gitignored), or point SITE_CLIENTS at a
+  # file outside the repo.
   local clients_file="${SITE_CLIENTS:-.audit-clients}"
   local clients=''
   [ -r "$clients_file" ] && clients=$(sed -e 's/#.*//' -e 's/[[:space:]]*$//' \
     "$clients_file" | grep -v '^$' | paste -sd'|' -)
   if [ -z "$clients" ]; then
-    warn "client check skipped — no names in ${clients_file} (AGENTS.md § Client anonymisation)"
+    warn "client check skipped — no names in ${clients_file} (AGENTS.md § No employer, no client, no location)"
   elif grep -rniE "$clients" src/ public/ --include='*.astro' --include='*.ts' \
        --include='*.md' --include='*.json' --exclude-dir=docs -n 2>/dev/null | grep -q .; then
     grep -rniE "$clients" src/ public/ --include='*.astro' --include='*.ts' \
       --include='*.md' --include='*.json' --exclude-dir=docs -n | sed 's/^/       /'
-    bad "named client (AGENTS.md § Client anonymisation)"
+    bad "named client (AGENTS.md § No employer, no client, no location)"
   else
     ok "no client named"
   fi

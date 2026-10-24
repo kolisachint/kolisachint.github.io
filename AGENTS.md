@@ -51,32 +51,20 @@ public bio mentions his family; that line stays off, under the list above.
 
 ---
 
-## Client anonymisation — never name a client
+## No employer, no client, no location (decided 2026-10-24)
 
-Employers may be named: Tata Consultancy Services, Sears IT & Management
-Services India, Cognizant, Mahindra Satyam.
+The site does not name his current or past employers, does not mention any
+client or engagement in any form (not even an anonymised framing — no sector,
+no country, no cloud vendor tied to a client), does not state his city or
+country, and does not list industry awards. Individually each of these is
+harmless; together they let a reader identify the client. LinkedIn carries the
+specifics for anyone who needs them.
 
-Clients may not — not the name, not a detail that identifies one. Every
-engagement is referred to only by its agreed public framing. These five are the
-whole permitted vocabulary:
-
-- UK tier-1 retail bank
-- US Fortune-500 retailer
-- Gulf national telecom operator
-- UK tier-1 bank (emerging markets)
-- Australian national telecom operator
-
-Which real client each framing stands for is recorded in the private life repo,
-and only there. **This file is committed to a public repository** — a
-name-to-framing table written here would hand a reader the key to every framing
-on the site, which is the one thing the framings exist to prevent. If you need
-the mapping to check a draft, read it in the private repo and leave it there.
-
-The two industry awards are public record and may be named in full — Banking
-Tech Awards 2024 and Card & Payments Awards 2025. That a reader can connect a
-public award to a public employer is their inference, not our disclosure. Do not
-help the inference along by pairing the award with a client name in the same
-sentence.
+The work is described generically: cloud data platforms, batch and real-time
+pipelines. **This file is committed to a public repository**, so the same rule
+applies here: do not write employer, client, location or award detail into
+it. If a draft needs those facts checked, read them in the private repo and
+leave them there.
 
 ---
 
@@ -200,9 +188,9 @@ seconds. So:
 - **Two kinds of page: Home and product pages.** `/work` and `/about` were
   deleted on 2026-10-23 and redirect to `/`. Do not add a page without asking.
 - **Home is the ten-second version.** Photo, name, the headline and subhead
-  (who), the role line and one small employer line (what), a short bio of two
-  paragraphs, then a card per pinned repo, then one contact line (X) and the
-  awards line.
+  (who), the role line and one small "in data since 2008" line (what), a
+  short bio of two paragraphs, then a card per pinned repo, then one contact
+  line (X).
 - **A product page** (`/<repo>/`) shows the name, the GitHub description,
   topics, language, a short README excerpt and buttons for GitHub and the
   homepage. Nothing on it is written by hand.
@@ -241,19 +229,12 @@ names coding agents, which is what the pinned projects are. It sits between the
 The site was rewritten 2026-09-18 because it read as a boast. Two rules came
 out of that, and both are load-bearing.
 
-**Employed work gets a line, not a CV.** Until 2026-10-22 the site named no
-employer, role or years. That rule is replaced by the decision above: a visitor
-should be able to tell who he is and what he does. So the home page carries the
-role (`site.role`, the positioning from `career-facts.md`) and one small line of
-employer, start year and city (`career.meta`). The home bio gives the current work
-and the earlier employers in two sentences (`career` in `src/site.ts`), and the
-JSON-LD says no more than that. No employment table, no engagement
-descriptions beyond that, no stack lists tied to a client, no numbers from the
-day job. LinkedIn carries the specifics. Clients stay anonymised, as above.
-
-The two awards survive as **one line of small grey type at the foot of
-the home page**, and nowhere else. Stated once, as a fact. Not a section, not a
-home-page tile, never "award-winning".
+**Employed work gets a line, not a CV.** The home page carries the role
+(`site.role`, the positioning from `career-facts.md`) and the start year
+(`career.meta`). The bio says what kind of work it is, generically. No
+employer, client, city, awards or `worksFor` in the JSON-LD — see "No
+employer, no client, no location" above. No numbers from the day job.
+LinkedIn carries the specifics.
 
 **Projects = the GitHub pinned repos, fetched at build.** (Decided 2026-10-23,
 replacing "exactly four curated projects".) Name, description, topics,
@@ -382,9 +363,8 @@ Room is left for `/hoocowork` and `/hooteams` to arrive the same way. Generalise
 
 ## Standing context
 
-- In enterprise data since January 2008. Currently a solution architect at
-  Tata Consultancy Services, on a Google Cloud data platform for a UK tier-1
-  retail bank. Positioning: "Solution Architect — Cloud Data & AI Platforms".
+- In enterprise data since January 2008. Positioning: "Solution Architect —
+  Cloud Data & AI Platforms".
 - Ships open-source agent tooling: `hoocode` (Rust since October 2026, replacing
   the TypeScript build; still installable from npm),
   `embeddingsearchtools`, `voicetools`, `webtools`, `browsertools`, `filetools`
@@ -398,7 +378,8 @@ Room is left for `/hoocowork` and `/hooteams` to arrive the same way. Generalise
   sunglasses illustration used for a few hours the same day.
 - Contact is X only: https://x.com/sachinkoli (@sachinkoli). There is no email
   address, `mailto:` link or `email` field anywhere on the site (decided
-  2026-10-23). The profiles list may also carry GitHub, LinkedIn and npm.
+  2026-10-23). The profiles list is GitHub, LinkedIn and X, nothing else
+  (npm removed 2026-10-24).
 - Medium is an archive. Link it; do not migrate from it; do not treat it as the
   writing home.
 

@@ -5,7 +5,7 @@ description: Redesign, restyle, or visually review any page of this Astro site �
 
 # Designing this site
 
-`AGENTS.md` is the contract — source of facts, client anonymisation, forbidden
+`AGENTS.md` is the contract — source of facts, no employer/client/location, forbidden
 claims, stack limits, assigned headlines. Read it first; this file does not
 repeat it. What follows is the *how*: the loop, the tools, and the specific
 things that have already gone wrong once.

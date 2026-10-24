@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Section from "../components/Section.astro";
 import PinCard from "../components/PinCard.astro";
-import { site, headlines, career, recognition, profiles } from "../site";
+import { site, headlines, career, profiles } from "../site";
 import { pinned } from "../lib/pinned";
 
 const x = profiles.find((p) => p.name === "X")!;
@@ -16,12 +16,9 @@ const personLd = {
   url: new URL("/", Astro.site).href,
   jobTitle: "Solution Architect",
   description: site.description,
-  worksFor: { "@type": "Organization", name: career.employer },
   knowsAbout: [
-    "Google Cloud Platform",
-    "BigQuery",
-    "Data platform architecture",
-    "Data warehouse migration",
+    "Cloud data platforms",
+    "Data architecture",
     "Rust",
     "TypeScript",
     "Coding agent tooling",
@@ -74,9 +71,9 @@ const personLd = {
   <Section eyebrow="About">
     <div class="prose bio" data-reveal>
       <p>
-        I'm a solution architect in Pune. I design the data platforms nobody
-        sees: the pipelines that decide whether an app shows you the right
-        number. Right now that is {career.current}, at {career.employer}.
+        I'm a solution architect. I design the data platforms nobody sees:
+        the pipelines that decide whether an app shows you the right number.
+        These days that means batch and real-time platforms in the cloud.
       </p>
       <p>
         The rest of the time I build small open-source tools for coding agents,
@@ -104,18 +101,6 @@ const personLd = {
       <a class="link" href={x.url} rel="me">
         <span class="mono">X {x.handle}</span>
       </a>
-    </p>
-
-    {/* One line, small and grey. The awards are public record, stated once. */}
-    <p class="recognition mono" data-reveal>
-      Work I architected was recognised at the {
-        recognition.map((r, i) => (
-          <>
-            {i > 0 && (i === recognition.length - 1 ? " and the " : ", ")}
-            {r.award} {r.year}
-          </>
-        ))
-      }.
     </p>
   </Section>
 </BaseLayout>
@@ -217,13 +202,6 @@ const personLd = {
   .bio {
     color: var(--text-2);
     font-size: var(--text-lg);
-  }
-
-  .recognition {
-    max-width: var(--measure);
-    margin-top: var(--space-10);
-    font-size: var(--text-xs);
-    color: var(--text-3);
   }
 
   /* One column, then two. Never auto-fit: four cards in a three-wide row

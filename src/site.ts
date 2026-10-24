@@ -10,7 +10,7 @@ export const site = {
   shortName: "sk",
   role: "Solution architect — cloud data & AI platforms",
   description:
-    "Solution architect for cloud data & AI platforms, at Tata Consultancy Services, in data since 2008. Also the author of open-source tools for coding agents, all written in Rust.",
+    "Solution architect for cloud data & AI platforms, in data since 2008. Also the author of open-source tools for coding agents, all written in Rust.",
   locale: "en_GB",
 } as const;
 
@@ -33,35 +33,18 @@ export const profiles = [
     handle: "in/kolisachint",
     url: "https://www.linkedin.com/in/kolisachint",
   },
-  { name: "npm", handle: "@kolisachint", url: "https://www.npmjs.com/~kolisachint" },
   { name: "X", handle: "@sachinkoli", url: "https://x.com/sachinkoli" },
 ] as const;
 
 /**
- * The career, in a few lines. Source: data/career-facts.md and the public bio
- * in the private life repo, which he approved as the site's source on
- * 2026-10-22 (see AGENTS.md). Short on purpose: a line each, not a CV.
- * Clients stay anonymised by their public framing. The Google Cloud
- * certification is deliberately left off, at his request (2026-10-22).
+ * The career, in a line. Source: data/career-facts.md in the private life
+ * repo. No employer, client, client location, city or awards (decided
+ * 2026-10-24): together they let a reader identify the client. See AGENTS.md.
  */
 export const career = {
   /** Shown small under the role line on the home page. */
-  meta: "Tata Consultancy Services · in data since 2008 · Pune, India",
-  employer: "Tata Consultancy Services",
-  current:
-    "a batch and real-time data platform on Google Cloud for a UK tier-1 retail bank, and its move off an on-premise data warehouse",
-  earlier:
-    "Before that: four years on the same bank's cards and payments, and before that Sears, Cognizant and Mahindra Satyam, building data platforms for retail, telecoms and banking.",
+  meta: "In data since 2008",
 } as const;
-
-/**
- * Approved phrasing, 2026-09-15. Credits the work, not the person. Do not
- * upgrade this to "award-winning" — that is a different and unapproved claim.
- */
-export const recognition = [
-  { award: "Banking Tech Awards", year: 2024, subject: "self-serve fraud journey" },
-  { award: "Card & Payments Awards", year: 2025, subject: "self-serve fraud journey" },
-] as const;
 
 export const nav = [
   { label: "hoocode", href: "/hoocode" },
