@@ -30,8 +30,8 @@ Pass flags through `sh -s --`:
 curl -fsSL https://kolisachint.github.io/hoocode/install.sh | sh -s -- --no-modify-path
 ```
 
-The script is [`install/install.sh`](https://github.com/kolisachint/hoocode/blob/main/install/install.sh)
-in the repository, and the copy served here is identical.
+The script is [`install/install.sh`](../../install/install.sh) in the
+repository, and the copy served at that URL is identical.
 
 ## npm or bun
 

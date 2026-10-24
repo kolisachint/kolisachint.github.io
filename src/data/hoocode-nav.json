@@ -1,10 +1,10 @@
 {
-  "_comment": "Site-owned since 2026-10-22. The Rust build of hoocode has no user docs folder to vendor, so these pages are written here from its README, --help and CHANGELOG. Redirects keep the old TypeScript-era URLs working.",
+  "_comment": "Sidebar and redirects for /hoocode. The pages themselves are written in kolisachint/hoocode (docs/user/) and copied from its latest release tag by npm run docs, which also sets source.writtenFor.",
   "source": {
     "repo": "kolisachint/hoocode",
     "branch": "main",
-    "writtenFor": "v0.1.41",
-    "updated": "2026-10-22"
+    "writtenFor": "v0.2.3",
+    "updated": "2026-10-24"
   },
   "navigation": [
     {

@@ -46,5 +46,5 @@ hoocode --tools Read,CodeSearch -p "Review src/"  # read-only
 hoocode --mode rpc                                # JSON-RPC
 ```
 
-Next: [where configuration lives](/hoocode/configuration), or the
-[commands and flags](/hoocode/commands).
+Next: [where configuration lives](configuration.md), or the
+[commands and flags](commands.md).

@@ -4,11 +4,12 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-  # Weekly refresh of the two vendored datasets: the HooCode documentation and
-  # the GitHub repository snapshot. Both are committed, so the site keeps
-  # building offline while the live copy stays current.
+  # Daily refresh of the two vendored datasets: the hoocode pages (from its
+  # latest release tag, see scripts/sync-docs.mjs) and the pinned-repo
+  # snapshot. Both are committed, so the site keeps building offline while the
+  # live copy stays current. A new hoocode release reaches the site within a day.
   schedule:
-    - cron: "17 6 * * 1"
+    - cron: "17 6 * * *"
 
 permissions:
   contents: write
@@ -45,6 +46,11 @@ jobs:
       # Committed in the same run rather than in a job of its own. A push made
       # with GITHUB_TOKEN does not trigger workflows, so a separate sync job
       # would update the repository and never deploy the result.
+      #
+      # The refreshed pages pass the full gate (check, build, audit) before
+      # anything is committed. If the upstream docs break a rule in AGENTS.md,
+      # the run fails, nothing is committed or deployed, and GitHub emails the
+      # failure; the live site stays as it was.
       - name: Commit drift
         if: github.event_name != 'push'
         run: |
@@ -52,6 +58,7 @@ jobs:
             echo "No drift."
             exit 0
           fi
+          npm run verify
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A

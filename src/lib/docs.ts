@@ -103,9 +103,12 @@ export function summarise(body: string, max = 155): string {
   return "hoocode documentation.";
 }
 
-/** The page's markdown in this site's repository, for corrections. */
+/**
+ * The page's markdown in the hoocode repository, for corrections. The pages
+ * are written there (docs/user/) and copied here by `npm run docs`.
+ */
 export function sourceUrl(id: string): string {
-  return `https://github.com/kolisachint/kolisachint.github.io/blob/main/src/content/docs/hoocode/${id}.md`;
+  return `https://github.com/${source.repo}/blob/${source.branch}/docs/user/${id}.md`;
 }
 
 /** The hoocode repository, which has the full detail these pages leave out. */

@@ -16,8 +16,7 @@ covers the ones most people need.
 | `hoocode migrate [--dry-run]` | Merge data from an older hoocode home folder into `~/.hoocode` |
 | `hoocode app-server [--listen URL]` | Serve this folder's sessions over the app-server protocol |
 
-New in 0.2.0, for managing plugins without starting a session (until then, use
-`/plugin` inside one):
+For managing plugins without starting a session:
 
 | Command | What it does |
 |---|---|
@@ -25,6 +24,9 @@ New in 0.2.0, for managing plugins without starting a session (until then, use
 | `hoocode remove <name>` | Remove a plugin (alias: `uninstall`) |
 | `hoocode list` | List marketplaces and installed plugins |
 | `hoocode plugin <command>` | Every `/plugin` command: `marketplace add`, `update`, `trust` and the rest |
+
+`hoocode <command> --help` shows the options for `install`, `remove`, `list`,
+`plugin` and `app-server`.
 
 ## Common flags
 
@@ -47,6 +49,6 @@ Built-in tools: **Read**, **Shell**, **Edit**, **Write** and **CodeSearch**.
 
 ## More
 
-The [README](https://github.com/kolisachint/hoocode#readme) and the
-[CHANGELOG](https://github.com/kolisachint/hoocode/blob/main/CHANGELOG.md) in the
+The [README](../../README.md) and the
+[CHANGELOG](../../CHANGELOG.md) in the
 repository have the full detail, and `/changelog` shows it inside hoocode.

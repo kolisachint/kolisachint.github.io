@@ -13,9 +13,10 @@
  */
 
 const REPO = "https://github.com/kolisachint/hoocode/blob/main";
-// The pages are written here, so a relative link that is not a sibling page
-// is read as a path from the root of the hoocode repository.
-const DOCS_DIR = ".";
+// The pages are copied from docs/user/ in the hoocode repository (npm run
+// docs), so a relative link that is not a sibling page resolves from there:
+// ../../install/install.sh is the installer at the repository root.
+const DOCS_DIR = "docs/user";
 const SCOPE = "/content/docs/hoocode/";
 
 /** Resolve `rel` against `base`, POSIX-style, without touching the filesystem. */

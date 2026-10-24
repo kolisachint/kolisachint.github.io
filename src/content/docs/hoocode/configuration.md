@@ -40,8 +40,9 @@ session: add a marketplace, then install from it.
 /plugin install <plugin>@<marketplace>
 ```
 
-The same commands are coming to the shell in 0.2.0 (`hoocode install`,
-`hoocode plugin ...`); see [Commands](/hoocode/commands).
+The same commands work from the shell, without a session: `hoocode install`,
+`hoocode remove`, `hoocode list` and `hoocode plugin ...`. See
+[Commands](commands.md).
 
 `hoocode config` opens a list for turning skills, prompts and other resources on
 or off.
