@@ -1,90 +1,25 @@
 {
   "source": "graphql",
-  "fetchedAt": "2026-10-24T10:35:47.635Z",
+  "fetchedAt": "2026-10-24T11:38:25.636Z",
   "repos": [
     {
-      "name": "hoocode-ts",
-      "description": "Deterministic terminal coding agent with four scoped modes (Ask, Plan, Build, Debug), 25+ providers, hybrid search, and one-click plugins in a single binary. Published to npm as @kolisachint/hoocode-agent.",
-      "url": "https://github.com/kolisachint/hoocode-ts",
-      "homepage": "https://kolisachint.github.io",
-      "language": "TypeScript",
+      "name": "hoocode",
+      "description": "A terminal coding agent, written in Rust. One static binary, any model provider, nothing applied without your say-so.",
+      "url": "https://github.com/kolisachint/hoocode",
+      "homepage": null,
+      "language": "Rust",
       "stars": 1,
       "topics": [
         "ai-agent",
-        "anthropic",
-        "cli",
         "coding-agent",
-        "developer-tools",
+        "crates",
         "llm",
-        "mcp",
-        "openai",
+        "rust",
         "tui",
-        "typescript"
+        "workspace"
       ],
-      "pushedAt": "2026-10-19T13:20:25Z",
-      "readme": "HooCode is a deterministic terminal coding agent — four scoped modes (Ask · Plan · Build · Debug), 25+ providers, hybrid search, and one-click plugins in a single binary. Nothing applies without your approval.\n\nThe one-click installers need no root, install into ~/.hoocode, and pre-seed the optional Rust helpers (fd, rg, embsearch, webtools, voicetools) so your first session is fast even offline. Full details, including the standalone archives and container setups, are in…"
-    },
-    {
-      "name": "embeddingsearchtools",
-      "description": "Semantic search in Rust. MiniLM through ONNX Runtime with int8 weights bundled in-binary, HNSW approximate nearest neighbour written from scratch, BM25 fusion for hybrid retrieval, mmap-backed store. Library, CLI and daemon.",
-      "url": "https://github.com/kolisachint/embeddingsearchtools",
-      "homepage": "https://kolisachint.github.io",
-      "language": "Rust",
-      "stars": 0,
-      "topics": [
-        "bm25",
-        "embeddings",
-        "hnsw",
-        "hybrid-search",
-        "information-retrieval",
-        "onnxruntime",
-        "rag",
-        "rust",
-        "semantic-search",
-        "vector-search"
-      ],
-      "pushedAt": "2026-09-18T16:52:22Z",
-      "readme": "Semantic search in Rust, built from the primitives rather than assembled out of services: HNSW written from scratch, BM25 fused on top of the vectors, and an int8 MiniLM bundled inside the binary through ONNX Runtime. No Python, no vector database, no network call — an mmap-backed store behind a library API, a CLI, and a long-lived stdio daemon.\n\nDesign · Performance · CLI · Daemon protocol"
-    },
-    {
-      "name": "voicetools",
-      "description": "Offline speech recognition in Rust. Microphone to VAD to Parakeet-TDT on ONNX Runtime, 25 languages, whisper.cpp fallback. No audio leaves the machine.",
-      "url": "https://github.com/kolisachint/voicetools",
-      "homepage": "https://kolisachint.github.io",
-      "language": "Rust",
-      "stars": 0,
-      "topics": [
-        "asr",
-        "offline",
-        "onnxruntime",
-        "parakeet",
-        "rust",
-        "speech-recognition",
-        "vad",
-        "voice",
-        "whisper"
-      ],
-      "pushedAt": "2026-09-18T16:52:30Z",
-      "readme": "Local, offline voice-to-text for the terminal. A small Rust binary that captures your microphone, stops automatically when you go quiet, and streams recognized text on stdout using a simple line protocol — designed to drop into a TUI (e.g. hoocode) as a push-to-talk input. No audio ever leaves the machine.\n\nInstall · Output protocol · Architecture · Status"
-    },
-    {
-      "name": "webtools",
-      "description": "Token-efficient web fetch and search for LLM agents. Preserves reference-style URLs as single-token markers so a page fits inside a context budget.",
-      "url": "https://github.com/kolisachint/webtools",
-      "homepage": "https://kolisachint.github.io",
-      "language": "Rust",
-      "stars": 0,
-      "topics": [
-        "agent-tools",
-        "cli",
-        "llm",
-        "markdown",
-        "rust",
-        "tokenization",
-        "web-scraping"
-      ],
-      "pushedAt": "2026-09-18T16:52:34Z",
-      "readme": "A unified, token-efficient web fetch + search CLI for LLM agents, built around reference-style URL preservation. One small, fast binary that works with no API keys and no backend — and takes them when you want better search.\n\nLinks become inline [N] markers with the full URLs collected into a trailing reference block — the agent sees [1] (≈1 token) but can still recover the exact URL. --max-tokens caps the whole output, references included."
+      "pushedAt": "2026-10-24T11:32:45Z",
+      "readme": "hoocode reads your code, runs commands, edits files and talks to the model of your choice, from a full-screen terminal UI or as a one-shot command. It is a single native binary: no Node, no Python, no runtime to install.\n\nhoocode runs on macOS and Linux, on x64 and arm64. The Linux builds are static (musl), so one binary runs on any distro. There is no Windows build yet."
     }
   ]
 }
