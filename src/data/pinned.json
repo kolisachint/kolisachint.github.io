@@ -1,69 +1,90 @@
 {
-  "source": "seed",
-  "fetchedAt": null,
+  "source": "graphql",
+  "fetchedAt": "2026-10-24T10:35:47.635Z",
   "repos": [
     {
-      "name": "hoocode",
-      "description": "For developers who want an AI coding assistant in the terminal that shows every edit and command first, and waits for a yes.",
-      "url": "https://github.com/kolisachint/hoocode",
-      "homepage": null,
-      "language": "Rust",
-      "stars": 0,
+      "name": "hoocode-ts",
+      "description": "Deterministic terminal coding agent with four scoped modes (Ask, Plan, Build, Debug), 25+ providers, hybrid search, and one-click plugins in a single binary. Published to npm as @kolisachint/hoocode-agent.",
+      "url": "https://github.com/kolisachint/hoocode-ts",
+      "homepage": "https://kolisachint.github.io",
+      "language": "TypeScript",
+      "stars": 1,
       "topics": [
-        "agents",
+        "ai-agent",
+        "anthropic",
         "cli",
+        "coding-agent",
+        "developer-tools",
+        "llm",
+        "mcp",
+        "openai",
         "tui",
-        "llm"
+        "typescript"
       ],
-      "pushedAt": null,
-      "readme": "It reads your code, runs your tests and edits your files, but nothing happens until you approve it. That gate is the whole design. Four modes (Ask, Plan, Build, Debug) keep its reach to what the job needs, and it works with whichever model provider you already pay for.\n\nOne native binary for macOS and Linux, written in Rust since October 2026. It was originally derived from Mario Zechner's MIT-licensed pi-mono, and his credit stays in the repository."
+      "pushedAt": "2026-10-19T13:20:25Z",
+      "readme": "HooCode is a deterministic terminal coding agent — four scoped modes (Ask · Plan · Build · Debug), 25+ providers, hybrid search, and one-click plugins in a single binary. Nothing applies without your approval.\n\nThe one-click installers need no root, install into ~/.hoocode, and pre-seed the optional Rust helpers (fd, rg, embsearch, webtools, voicetools) so your first session is fast even offline. Full details, including the standalone archives and container setups, are in…"
     },
     {
       "name": "embeddingsearchtools",
-      "description": "For developers adding search to their own tool. It finds text by meaning and by exact words, on your machine, with no search service to run.",
+      "description": "Semantic search in Rust. MiniLM through ONNX Runtime with int8 weights bundled in-binary, HNSW approximate nearest neighbour written from scratch, BM25 fusion for hybrid retrieval, mmap-backed store. Library, CLI and daemon.",
       "url": "https://github.com/kolisachint/embeddingsearchtools",
-      "homepage": null,
+      "homepage": "https://kolisachint.github.io",
       "language": "Rust",
       "stars": 0,
       "topics": [
-        "search",
+        "bm25",
         "embeddings",
-        "onnx",
-        "hnsw"
+        "hnsw",
+        "hybrid-search",
+        "information-retrieval",
+        "onnxruntime",
+        "rag",
+        "rust",
+        "semantic-search",
+        "vector-search"
       ],
-      "pushedAt": null,
-      "readme": "Keyword search misses the document that says the same thing in other words; vector search misses the one where the exact word mattered. This does both and fuses the results.\n\nThe HNSW index is written from scratch, because I wanted to understand it rather than call it. Embeddings come from MiniLM through ONNX Runtime at int8. Use it as a Rust library, a CLI, or a stdio daemon."
-    },
-    {
-      "name": "webtools",
-      "description": "For people building AI agents. It fetches pages and search results compactly, so the agent spends fewer tokens on links and can tell when a page failed.",
-      "url": "https://github.com/kolisachint/webtools",
-      "homepage": null,
-      "language": "Rust",
-      "stars": 0,
-      "topics": [
-        "agents",
-        "search",
-        "tokens"
-      ],
-      "pushedAt": null,
-      "readme": "Links are rewritten as [1] markers, about one token each, with the real addresses kept in a block at the end. --max-tokens caps the whole output.\n\nA blocked search, a page that needs JavaScript and a genuinely empty page come back as three different results, so the agent can act on the difference instead of guessing. One binary, no API keys needed."
+      "pushedAt": "2026-09-18T16:52:22Z",
+      "readme": "Semantic search in Rust, built from the primitives rather than assembled out of services: HNSW written from scratch, BM25 fused on top of the vectors, and an int8 MiniLM bundled inside the binary through ONNX Runtime. No Python, no vector database, no network call — an mmap-backed store behind a library API, a CLI, and a long-lived stdio daemon.\n\nDesign · Performance · CLI · Daemon protocol"
     },
     {
       "name": "voicetools",
-      "description": "For anyone who would rather talk than type in the terminal. It turns your microphone into text on your own machine, with nothing sent to the cloud.",
+      "description": "Offline speech recognition in Rust. Microphone to VAD to Parakeet-TDT on ONNX Runtime, 25 languages, whisper.cpp fallback. No audio leaves the machine.",
       "url": "https://github.com/kolisachint/voicetools",
-      "homepage": null,
+      "homepage": "https://kolisachint.github.io",
       "language": "Rust",
       "stars": 0,
       "topics": [
         "asr",
-        "onnx",
         "offline",
-        "cli"
+        "onnxruntime",
+        "parakeet",
+        "rust",
+        "speech-recognition",
+        "vad",
+        "voice",
+        "whisper"
       ],
-      "pushedAt": null,
-      "readme": "It notices when you stop talking and prints what you said, in a format simple enough to use as push-to-talk inside another tool. It works offline, on a train too.\n\nRecognition is Parakeet-TDT through ONNX Runtime at int8, with whisper.cpp as a fallback. The models download on first run; no Python needed."
+      "pushedAt": "2026-09-18T16:52:30Z",
+      "readme": "Local, offline voice-to-text for the terminal. A small Rust binary that captures your microphone, stops automatically when you go quiet, and streams recognized text on stdout using a simple line protocol — designed to drop into a TUI (e.g. hoocode) as a push-to-talk input. No audio ever leaves the machine.\n\nInstall · Output protocol · Architecture · Status"
+    },
+    {
+      "name": "webtools",
+      "description": "Token-efficient web fetch and search for LLM agents. Preserves reference-style URLs as single-token markers so a page fits inside a context budget.",
+      "url": "https://github.com/kolisachint/webtools",
+      "homepage": "https://kolisachint.github.io",
+      "language": "Rust",
+      "stars": 0,
+      "topics": [
+        "agent-tools",
+        "cli",
+        "llm",
+        "markdown",
+        "rust",
+        "tokenization",
+        "web-scraping"
+      ],
+      "pushedAt": "2026-09-18T16:52:34Z",
+      "readme": "A unified, token-efficient web fetch + search CLI for LLM agents, built around reference-style URL preservation. One small, fast binary that works with no API keys and no backend — and takes them when you want better search.\n\nLinks become inline [N] markers with the full URLs collected into a trailing reference block — the agent sees [1] (≈1 token) but can still recover the exact URL. --max-tokens caps the whole output, references included."
     }
   ]
 }
