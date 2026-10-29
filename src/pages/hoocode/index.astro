@@ -52,21 +52,25 @@ const modes = [
   title="hoocode — a terminal coding agent, written in Rust"
   description="hoocode is a terminal coding agent written in Rust: one native binary for macOS and Linux, any model provider, and nothing applied without your approval."
 >
-  <div class="lead">
-    {/* Not <picture> with prefers-color-scheme: the toggle sets data-theme,
-        so the media query would disagree with it the moment anyone switches
-        against their OS. Both marks ship; CSS picks. They are ~4 KB each. */}
-    <div class="lockup">
-      <img class="on-dark" src="/brand/hoo/hoocode.svg" alt="hoocode" width="274" height="80" />
-      <img class="on-light" src="/brand/hoo/hoocode-light.svg" alt="" aria-hidden="true" width="274" height="80" />
+  <div slot="hero" class="lead">
+    <div class="hero-text">
+      {/* Not <picture> with prefers-color-scheme: the toggle sets data-theme,
+          so the media query would disagree with it the moment anyone switches
+          against their OS. Both marks ship; CSS picks. They are ~4 KB each. */}
+      <div class="lockup">
+        <img class="on-dark" src="/brand/hoo/hoocode.svg" alt="hoocode" width="274" height="80" />
+        <img class="on-light" src="/brand/hoo/hoocode-light.svg" alt="" aria-hidden="true" width="274" height="80" />
+      </div>
+
+      <h1>A terminal coding agent, written in Rust.</h1>
+
+      <p class="sub">
+        One native binary, any model provider. Shell, Edit and Write ask before
+        they run, and four modes keep the agent to what the job needs.
+      </p>
     </div>
 
-    <h1>A terminal coding agent, written in Rust.</h1>
-
-    <p class="sub">
-      One native binary, any model provider. Shell, Edit and Write ask before
-      they run, and four modes keep the agent to what the job needs.
-    </p>
+    <video class="trailer" controls preload="none" playsinline poster="/hoocode/hoocode-trailer-60s.jpg" width="1920" height="1080"><source src="/hoocode/hoocode-trailer-60s.mp4" type="video/mp4"></video>
 
     <div class="install">
       <p class="label" id="install-label">Install</p>
@@ -95,8 +99,6 @@ const modes = [
       <a class="btn" href="https://github.com/kolisachint/hoocode">GitHub</a>
       <a class="btn" href="https://www.npmjs.com/package/hoocode">npm</a>
     </div>
-
-    <video class="trailer" controls preload="none" playsinline poster="/hoocode/hoocode-trailer-60s.jpg" width="1920" height="1080"><source src="/hoocode/hoocode-trailer-60s.mp4" type="video/mp4"></video>
   </div>
 
   <section class="block">
@@ -117,6 +119,27 @@ const modes = [
 
 <style>
   /* -- Lead --------------------------------------------------------------- */
+
+  /* One grid for the hero. Stacked by default: text, then the install block,
+     then the CTAs, then the trailer full width. Split (below): text and trailer
+     side by side, with the install block across the full width underneath so
+     each command keeps its Copy button on the same row. */
+  .lead {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "text"
+      "install"
+      "actions"
+      "video";
+    gap: var(--space-8) var(--space-10);
+    align-items: start;
+  }
+
+  .hero-text {
+    grid-area: text;
+    min-width: 0;
+  }
 
   .lockup {
     display: grid;
@@ -148,9 +171,14 @@ const modes = [
 
   /* -- Install ------------------------------------------------------------ */
 
+  /* Measured on the block, not the viewport. A command and its Copy button
+     share a row while the block is at least 40rem wide (the curl line needs
+     about 570px with its button). Narrower, the button drops under the command
+     and the command wraps, rather than hiding its tail behind a scroll. */
   .install {
-    margin-top: var(--space-8);
-    max-width: 34rem;
+    grid-area: install;
+    min-width: 0;
+    container: install / inline-size;
   }
 
   .install .label {
@@ -193,8 +221,8 @@ const modes = [
 
   .copy {
     flex: none;
-    min-width: 5.5rem;
-    padding-inline: var(--space-4);
+    min-width: 4.5rem;
+    padding-inline: var(--space-3);
     border: 1px solid var(--border);
     border-radius: var(--hoo-r-badge);
     background: transparent;
@@ -223,9 +251,7 @@ const modes = [
     display: none;
   }
 
-  /* Narrow screens: stack, and let the command wrap rather than hide its own
-     tail behind a scroll nobody discovers. */
-  @media (max-width: 30rem) {
+  @container install (max-width: 40rem) {
     .cmd-row {
       flex-direction: column;
       align-items: stretch;
@@ -253,22 +279,35 @@ const modes = [
   }
 
   .actions {
+    grid-area: actions;
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3);
-    margin-top: var(--space-8);
   }
 
   /* Sixty-second trailer. Not autoplay: it loads only when played. The radius
      and hairline match the modes grid below, so the two read as one system. */
   .trailer {
+    grid-area: video;
     width: 100%;
     height: auto;
     aspect-ratio: 16 / 9;
-    margin-top: var(--space-12);
     border: 1px solid var(--border);
     border-radius: var(--hoo-r-card);
     background: var(--surface);
+  }
+
+  /* Split at 60rem. The hero spans the full shell here (about 860px and up),
+     so the trailer takes the larger share: 1.6 parts to the text's 1, top-aligned
+     so the video starts level with the lockup. */
+  @media (min-width: 60rem) {
+    .lead {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+      grid-template-areas:
+        "text video"
+        "install install"
+        "actions actions";
+    }
   }
 
   /* -- Blocks ------------------------------------------------------------- */
