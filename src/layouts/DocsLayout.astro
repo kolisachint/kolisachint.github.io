@@ -39,6 +39,16 @@ const hasToc = toc.length > 1;
   description={description}
   suffix={false}
 >
+  {
+    /* Full-width band above the two-pane shell, for a page that asks for one
+       (the /hoocode landing). Pages that pass no `hero` slot get no markup. */
+    Astro.slots.has("hero") && (
+      <div class="shell hero-band">
+        <slot name="hero" />
+      </div>
+    )
+  }
+
   <div class:list={["docs", "shell", !hasToc && "two"]}>
     <aside class="side">
       {/* A disclosure, open by default. On wide screens the summary is hidden
@@ -158,6 +168,10 @@ const hasToc = toc.length > 1;
     gap: var(--space-8);
     align-items: start;
     padding-block: var(--space-8) var(--space-24);
+  }
+
+  .hero-band {
+    padding-top: var(--space-8);
   }
 
   /* -- Sidebar ------------------------------------------------------------ */
