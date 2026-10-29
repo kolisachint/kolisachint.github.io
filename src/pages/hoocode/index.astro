@@ -95,6 +95,8 @@ const modes = [
       <a class="btn" href="https://github.com/kolisachint/hoocode">GitHub</a>
       <a class="btn" href="https://www.npmjs.com/package/hoocode">npm</a>
     </div>
+
+    <video class="trailer" controls preload="none" playsinline poster="/hoocode/hoocode-trailer-60s.jpg" width="1920" height="1080"><source src="/hoocode/hoocode-trailer-60s.mp4" type="video/mp4"></video>
   </div>
 
   <section class="block">
@@ -255,6 +257,18 @@ const modes = [
     flex-wrap: wrap;
     gap: var(--space-3);
     margin-top: var(--space-8);
+  }
+
+  /* Sixty-second trailer. Not autoplay: it loads only when played. The radius
+     and hairline match the modes grid below, so the two read as one system. */
+  .trailer {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    margin-top: var(--space-12);
+    border: 1px solid var(--border);
+    border-radius: var(--hoo-r-card);
+    background: var(--surface);
   }
 
   /* -- Blocks ------------------------------------------------------------- */
