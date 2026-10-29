@@ -1,6 +1,6 @@
 {
   "source": "graphql",
-  "fetchedAt": "2026-10-26T13:13:41.506Z",
+  "fetchedAt": "2026-10-29T13:12:53.943Z",
   "repos": [
     {
       "name": "hoocode",
@@ -18,7 +18,7 @@
         "tui",
         "workspace"
       ],
-      "pushedAt": "2026-10-26T12:26:25Z",
+      "pushedAt": "2026-10-29T12:05:00Z",
       "readme": "hoocode reads your code, runs commands, edits files and talks to the model of your choice, from a full-screen terminal UI or as a one-shot command. It is a single native binary: no Node, no Python, no runtime to install.\n\nhoocode runs on macOS and Linux, on x64 and arm64. The Linux builds are static (musl), so one binary runs on any distro. There is no Windows build yet."
     }
   ]
