@@ -8,11 +8,12 @@ to move it.
 | File or folder | What it holds |
 |---|---|
 | `~/.hoocode/settings.json` | Global settings (`/settings` edits it) |
-| `~/.hoocode/auth.json` | Logins and keys saved by `/login` |
+| `~/.hoocode/auth.json` | Logins and keys saved by `/login`. See [sign-in](login.md) |
 | `~/.hoocode/models.json` | Your own providers and models, for example a local OpenAI-compatible server |
 | `~/.hoocode/hoo-config.json` | Agent modes and tool approval rules, written on first run ([below](#modes-and-approvals)) |
 | `~/.hoocode/skills/` | Skills |
-| `~/.hoocode/themes/` | Custom themes |
+| `~/.hoocode/themes/` | Custom themes, one JSON file each. `/theme` lists `auto`, the built-in themes `dark`, `dusk`, `high-contrast` (white text on black, for low vision), `light` and `paper`, and your files here (by file name, with the path shown). A theme may set `"inherits": "<name>"` to take the colors it leaves out from a built-in theme or another file here. The `theme` setting also accepts `auto` (follows the terminal background). A file that does not load, or a name that is not a theme, shows a warning under theme diagnostics: a switch keeps the theme on screen, and at startup the built-in `dark` stands in until the setting is fixed. |
+| `~/.hoocode/themes/defaults/` | Reference copies of the built-in themes (`dark.json`, `dusk.json`, `high-contrast.json`, `light.json`, `paper.json`) and `theme-schema.json`. hoocode writes them again after each upgrade, so they match the version you run; a copy you edit is replaced at the next upgrade. The folder is not a theme list: `/theme` never shows it. To start a custom theme, copy one up a level to `~/.hoocode/themes/`, rename it, and change what you need. A shorter theme can instead set `"inherits": "dark"` (or `"light"`, or another file in `~/.hoocode/themes/`) and keep only its own colors. For editor completion, set a custom theme's `"$schema"` to the local `theme-schema.json` path. |
 | `~/.hoocode/sessions/` | Saved sessions |
 
 ## Per project
@@ -22,6 +23,24 @@ to move it.
 | `.hoocode/settings.json` | Project settings, merged over the global ones |
 | `.hoocode/skills/` | Project skills |
 | `AGENTS.md` or `CLAUDE.md` | Project instructions, read from the working folder and its parents |
+
+## Environment variables
+
+Each one is also listed by `hoocode --help`. Provider API keys (such as
+`ANTHROPIC_API_KEY`) are not listed here. The variables for Google sign-in are in
+[sign-in](login.md).
+
+| Variable | What it does |
+|---|---|
+| `HOOCODE_OFFLINE` | Disable startup network operations when set to `1`, `true` or `yes`. |
+| `HOOCODE_FULLSCREEN` | Set to `0` to run the interactive screen inline instead of full-screen. |
+| `HOOCODE_USER_AGENTS_DIR` | Folder for user plugins and `mcp.json` (default: `~/.agents`). |
+| `HOOCODE_PACKAGE_DIR` | Folder of hoocode's bundled files such as `CHANGELOG.md` (for Nix/Guix store paths). |
+| `HOOCODE_CODING_AGENT_SESSION_DIR` | Session storage directory (overridden by `--session-dir`). |
+| `HOOCODE_CA_CERT` | Path to an extra PEM CA bundle to trust for hoocode's own TLS traffic (additive; verification stays on). Precedence: `--ca-cert` > this > `NODE_EXTRA_CA_CERTS`. |
+| `HOOCODE_USE_SYSTEM_CA` | Also trust the OS/system CA store when set to `1`, `true` or `yes` (same as `--use-system-ca`). |
+| `NODE_EXTRA_CA_CERTS` | Path to an extra PEM CA bundle (the lowest-precedence CA source). |
+| `HOOCODE_TELEMETRY` | Set to `1`, `true` or `yes`, or `0`, `false` or `no`, to override the `enableInstallTelemetry` setting (OpenRouter app attribution headers). |
 
 ## MCP servers
 
@@ -44,8 +63,8 @@ The same commands work from the shell, without a session: `hoocode install`,
 `hoocode remove`, `hoocode list` and `hoocode plugin ...`. See
 [Commands](commands.md).
 
-`hoocode config` opens a list for turning skills, prompts and other resources on
-or off.
+`hoocode config` opens a list for turning skills, prompts and other resources on or
+off. Themes are not in it: pick one with `/theme`.
 
 ## Herdr
 
@@ -69,6 +88,35 @@ To show the hoocode icon in Herdr desktop, save an icon (an SVG) as
                  "tint": false, "tile": "#09090B", "color": "#ffffff",
                  "match": ["hoo"], "run": ["hoocode"] } } }
 ```
+
+## Screen
+
+The screen has the transcript, one prompt row (` › `) and a status line under it that
+holds the session, model, context use, cost and what hoocode is doing now. There
+is no header, logo or frame; dialogs open as panes in the prompt's place.
+
+- **Transcript**: one row per tool call, collapsed (`● Edit src/config.rs  +2 −2`).
+  Click a header, or focus it and press `enter`, to show the full output; again to hide.
+  A running Shell shows one dim tail line until it settles; a failed call stays collapsed.
+- **Pinned transcript keys**: `ctrl+x u` focuses the newest block from the prompt, and `ctrl+x o` opens or closes all tool blocks.
+  With a block focused and the prompt empty, `{` and `}` move between blocks,
+  `enter` opens the focused block, `y` copies its raw output, and `esc` clears the
+  focus. `End` goes back to live. Letters always type at the prompt. See
+  [Keybindings](keybindings.md).
+- **Themes**: `dark`, `dusk`, `high-contrast`, `light` and `paper`, and `auto` follows the terminal background and
+  re-checks when it changes. Pick one with `/theme`, which also lists your own themes.
+  A pick is saved to your global settings. If this repo's `.hoocode/settings.json` sets
+  `theme`, that wins over the pick, and the picker says so.
+  The older names (`daylight`, `deep-space`, `colorsafe-*`, `high-contrast-*` (the built-in is `high-contrast`), `warm-*`,
+  `solarized-*`) are gone; a saved value that no longer exists shows a warning under
+  theme diagnostics and the built-in `dark` stands in until you pick another theme.
+- **No colour**: with `NO_COLOR` set, `TERM=dumb` or fewer than 256 colours, panes get
+  light borders and the selected row keeps its ` › ` marker.
+- **Removed**: the `/chrome` and `/color` commands and the `alt+z` key. Notices no longer
+  pop up as a toast: a short one takes the status line's left side for a few seconds,
+  a longer one sits as dim rows above the prompt.
+- **First run**: with no working provider the Log in pane opens by itself. Esc closes it
+  and the status line shows `not signed in  /login` until a provider works.
 
 ## Modes and approvals
 
@@ -101,8 +149,16 @@ To show the hoocode icon in Herdr desktop, save an icon (an SVG) as
   `allowed_write_paths` limits Edit and Write to matching paths, `auto_allow` runs
   tools without asking, and `allowed_bash_commands` / `denied_bash_commands` take regexes.
   A key you leave out takes the shipped value above; set it (even to `[]`) to override.
-- **Always** on an approval card: for Shell it lasts for the session and covers that
-  program; for other tools it adds the tool to the mode's `auto_allow` in this file.
+- **Approval card** (`Allow Shell?`): press `1` to allow once, `2` to always allow
+  (when offered), `3` to refuse and tell the agent why. `e` edits the command first, and
+  any other letter starts typing a reply that `enter` sends as the reason. `enter`
+  takes the highlighted option and `esc` refuses. An `access:` line appears only when
+  the call writes, uses the network or pipes.
+- **Always** on an approval card (`2`): for Shell it lasts for the session and covers
+  that program; for other tools it adds the tool to the mode's `auto_allow` in this file.
+- **Questions**: when the agent asks a question, `1`-`9` pick an answer, `tab` moves to
+  the next question and `esc` skips it. The agent is told it was skipped and states the
+  default it will use.
 - A project can add rules in `.hoocode/hoo-config.json`: its `denied_tools` and
   `denied_bash_commands` add to yours. It cannot make anything run without asking:
   `auto_allow`, `safe_shell` and `skip_permissions` come from your file only, and so

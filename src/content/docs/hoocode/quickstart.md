@@ -7,18 +7,18 @@ hoocode                        # full-screen session
 ```
 
 `hoocode --help` lists the provider keys it reads. No API key? Start `hoocode` and run `/login` to sign in with a subscription
-(Anthropic, GitHub Copilot, OpenAI Codex or Google) instead.
+(Anthropic, GitHub Copilot, OpenAI Codex or Google) instead. See [subscription sign-in](login.md).
 
 ## In a session
 
-Shell, Edit and Write ask before they run: **Yes**, **No**, or **Always**. Read-only
+Shell, Edit and Write ask before they run: pick **1** yes, **2** always (for that program, this session) or **3** no, and say why. Read-only
 commands such as `ls`, `cat`, `rg` and `git status`/`diff`/`log` run without asking.
 To run every tool without asking, start with `hoocode --skip-permissions` (the header
 then shows **SKIP PERMISSIONS**).
 
 | Type | What it does |
 |---|---|
-| `/model` | Pick a model (Ctrl+P cycles through your favourites) |
+| `/model` | Pick a model (Ctrl+X, then m, cycles through your favourites) |
 | `/mode` | Switch between ask, plan, build and debug (or press Shift+Tab) |
 | `/resume` | Reopen an earlier session in this folder |
 | `@path/to/file` | Attach a file to your message |

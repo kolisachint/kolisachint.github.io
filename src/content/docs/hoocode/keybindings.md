@@ -1,0 +1,225 @@
+# Keybindings
+
+Keys are set in **`~/.hoocode/keybindings.json`** (or in the folder set by
+`HOOCODE_CODING_AGENT_DIR`). The file is optional. Without it you get the
+defaults. Edit the file, then run `/reload` to apply it.
+
+Run `hoocode keybindings --defaults` to print the defaults in the same form the
+file uses. hoocode also writes that text to `~/.hoocode/keybindings.defaults.json`
+after each upgrade. Treat that copy as a reference. hoocode never reads it as
+your file.
+
+## Two forms
+
+The flat form maps an action to a key, or to a list of keys:
+
+```json
+{"app.model.cycleForward": "ctrl+x m", "app.hotkeys.open": ["ctrl+x ?", "ctrl+x k"]}
+```
+
+The grouped form lists keys by context. Single keys and leader sequences both
+work in it. A `null` or `"none"` unbinds a key in that context:
+
+```json
+{
+  "leader": "ctrl+x",
+  "leaderTimeoutMs": 1500,
+  "bindings": [
+    {"context": "Prompt", "bindings": {"ctrl+x m": "app.model.cycleForward", "ctrl+x g": null}}
+  ]
+}
+```
+
+Contexts are `Global`, `Prompt`, `Leader`, `Scroll`, `Picker`, `Subagent`, `Panel`,
+`Dialog`, `Tree` and `Models`. `Subagent` holds the keys of an interrupted run's
+choice in the session picker, so `r` can be rename in `Picker` and resume here. A key is written as `"shift+enter"`, and a space means a
+sequence, as in `"ctrl+x m"`. A single capital letter is Shift plus that letter:
+`"G"` is the same key as `"shift+g"`, the one that types a capital G.
+
+A binding applies where its action runs. `"u": "app.scroll.lineDown"` is a
+`Scroll` binding, and it is skipped with a message if you write it under
+`Prompt`. Each action's context is the one `hoocode keybindings --defaults`
+groups it under. `Global` applies everywhere. In a context, a key bound to an
+action takes that key from the other actions of the same context, so
+`{"context": "Dialog", "bindings": {"y": "app.dialog.no"}}` makes `y` answer no
+and not yes. A `null` takes the key away from every action of its context: the
+`Scroll` `j` above no longer scrolls, and the picker's `j` still moves down.
+
+`Global` applies everywhere, with one difference. A `Global` binding to an action
+takes the key only from the other `Global` actions (today, only `app.interrupt`).
+So `{"context": "Global", "bindings": {"escape": "app.interrupt"}}` keeps Esc in the
+pickers, the pinned view and the task panel. A `Global` `null` still removes the
+key in every context.
+
+## Which binding wins
+
+- The flat form sets an action's keys. Its list replaces the action's defaults.
+  A flat key has no context, so it works in every context the action runs in.
+- The grouped form is applied after the flat form. In a context, a grouped key
+  wins over a flat key for the same key: it moves the key to its action and takes
+  it from the other actions of that context. A grouped `null` removes it there.
+- A flat key that another app action uses by default, in the same context (or in
+  `Global`), is kept by both, and hoocode warns and names both. To give the key to
+  one action only, bind it in the grouped form, or set the other action's keys in
+  the flat form.
+
+## The leader
+
+Leader keys start with the leader (`ctrl+x` by default), then one key. Set another
+leader with `"leader"`. Its timeout is `"leaderTimeoutMs"`. In the `Leader`
+context, write the key after the leader alone: `{"context": "Leader", "bindings": {"m": "..."}}`.
+
+The leader is one key. A sequence, or Esc, Enter, Tab or Backspace, is refused and
+`ctrl+x` is used instead. A leader that is also the default key of an action
+starts the leader first, so that key can no longer reach the action, and hoocode warns. The key after
+the leader is checked against the reserved keys too: `ctrl+x ctrl+c` is refused.
+A flat binding of the leader key by itself is skipped with a message: bind a
+sequence after the leader instead, such as `"ctrl+x m"`.
+
+## Keys hoocode keeps
+
+These keys cannot be rebound. A binding to one is skipped with an error:
+`ctrl+c`, `ctrl+d`, `ctrl+z`, `ctrl+m`, `ctrl+i`, `ctrl+[`, `ctrl+h`.
+
+These keys are often taken by the terminal or the shell (flow control, or the
+NUL that Ctrl+Space sends). They can be bound, with a caution that they may never
+reach hoocode: `ctrl+s`, `ctrl+q`, `ctrl+b`, `ctrl+space`.
+
+## Problems
+
+hoocode checks the file at startup and on `/reload`. It never stops because of
+it: a bad part is skipped, and the rest applies. The problems it reports:
+
+- a file that is not JSON, or a value that is not a key or an action;
+- an action id that does not exist;
+- a key name hoocode does not know, such as `"ctrl+foo"` or `"shfit+enter"`
+  (a misspelled modifier is not read as the plain key). In a flat list, the other
+  keys still apply, and when every key of an action is refused, its default keys stay;
+- a binding whose action runs in another context (see above);
+- a key that is bound twice in the same context with different actions (the first is skipped);
+- a key that is listed for two actions in the flat form (both are kept, and the first id in sorted order runs);
+- a flat key that another app action uses by default, in the same context (both keep it);
+- a leader that is refused, or that is also a default key;
+- a reserved key, as above, also after the leader.
+
+`/hotkeys` lists the problems under the key groups. Startup and `/reload` show a
+one-line count.
+
+## While a turn runs
+
+Keys at the prompt while the agent works, with the defaults:
+
+- **Enter** sends the message as a steer: it reaches the running agent now.
+- **Ctrl+X f** (`app.message.followUp`) queues the message as a follow-up: it is
+  sent after the turn ends.
+- **Up** on an empty prompt, or **Ctrl+X d** (`app.message.dequeue`), takes the
+  last queued message back into the prompt. This works for a steer and for a
+  follow-up. Both are shown above the prompt until they run.
+
+How each kind is delivered follows its mode in `/settings` (`steering-mode`,
+`follow-up-mode`: one at a time, or all at once).
+
+## Pinned transcript blocks
+
+Each tool call is one row, and so is each thinking trace, summary, `!` command, skill
+block, background-run notice and the startup resource listing: a block that can open
+ends its header in a dim `▸` (closed) or `▾` (open). PgUp (or the mouse wheel) pins
+the view, and a click anywhere on a header row toggles it open. At the prompt a
+letter types, even when the view is pinned.
+**Ctrl+X u** focuses the newest block and pins the view. Only with a block focused
+and the prompt empty do letters act as transcript keys:
+
+- **Enter** opens the focused block, or closes it again.
+- **`{`** and **`}`** move the focus to the previous or next block.
+- **y** copies the focused block's raw output, never the rendered rows.
+- **j** and **k** scroll a line; **`[`** and **`]`** jump to your previous or next
+  message; **`/`** searches the transcript.
+- **q** clears the focus and goes back to live.
+- **Esc** clears the focus only. It never stops a turn.
+- **Home** jumps to the start of the transcript; **End** goes back to live and
+  clears the focus.
+
+Any other letter clears the focus, goes back to live and types. A click on a header
+row toggles its block (press and release on the same row; a press on one row and a
+release on another does nothing, and neither does a click on a body row). A click on
+a row that cannot open says so in the status line. If a block is already focused, the click also moves the focus to it, so
+**Enter** and **y** act on it next. With no block focused, a click leaves the
+keyboard alone.
+
+Keys can be rebound in `keybindings.json`.
+
+**Ctrl+X o** (`app.scroll.toggleAll`) opens every block that can open, or closes
+them all when one is open. It works from the prompt and does not move the focus.
+A block with nothing to open is left alone. The focus is not saved, so a resumed
+session opens collapsed.
+
+## The approval card
+
+When a tool asks for permission, the card at the prompt answers to these keys
+while the reply field is empty:
+
+- **y** answers yes and **n** answers no, at once.
+- **a** highlights the always row (where one is offered). **Enter** confirms it.
+  Pressing `a` alone does not answer. Where no always row is offered, `a` types
+  into the reply.
+- **1**, **2** and **3** pick a row (`app.permission.pick1` to `app.permission.pick3`),
+  and **e** edits the command first (`app.permission.edit`). **Up** and **Down**
+  move the highlight, and **Enter** picks it. **Esc** refuses.
+
+Once the reply has text, letters type into it, and Enter sends it as the reason
+for the refusal. `y`, `n` and `a` are the dialog keys `app.dialog.yes`,
+`app.dialog.no` and `app.dialog.always`.
+
+## Other picker keys
+
+These can be rebound like any other key:
+
+- **v** and **r** on an interrupted subagent run in the session picker
+  (`app.subagent.view`, `app.subagent.resume`, context `Subagent`). **r** is still
+  rename everywhere else.
+- **Space** toggles the picked row in settings (`app.settings.toggle`). With a non-empty search, Space types into the search instead.
+- **c** cycles the category of the selected model in the scoped models picker
+  (`app.models.category`). The hint row shows its key.
+
+## Terminals
+
+Some keys depend on the terminal. These are the usual cases.
+
+- **Shift+Enter** (the newline key, `tui.input.newLine`) reaches hoocode only in a
+  terminal that uses the kitty keyboard protocol or xterm's modifyOtherKeys. In any
+  other terminal Shift+Enter sends the same bytes as Enter, which sends the message.
+  `ctrl+x enter` is a newline everywhere.
+- **tmux** passes Shift+Enter and other modified keys only with `set -g extended-keys on`
+  in `~/.tmux.conf`. Reload the file with `tmux source-file ~/.tmux.conf`.
+- **macOS Terminal.app** does not send Shift+Enter. Use `ctrl+x enter` for a newline.
+- **VS Code's terminal** may take Ctrl+X for its own commands, so the leader does
+  nothing there. Set another leader, for example `{"leader": "ctrl+g"}`.
+- **Option as Meta** (Terminal.app's and iTerm2's setting that makes Option send
+  Alt): hoocode's defaults no longer use Alt keys, so Alt word motions are gone.
+  Word motions are Ctrl+Left and Ctrl+Right, delete a word backward with Ctrl+W, and
+  forward with Ctrl+Delete. To get the Alt keys back, add them to the flat form. An
+  action keeps its defaults and gains the Alt keys:
+
+```json
+{
+  "tui.editor.cursorWordLeft": ["ctrl+left", "alt+b"],
+  "tui.editor.cursorWordRight": ["ctrl+right", "alt+f"],
+  "tui.editor.deleteWordBackward": ["ctrl+w", "alt+backspace"]
+}
+```
+
+## Commands
+
+- `hoocode keybindings --defaults` prints the defaults.
+- `hoocode keybindings check` reads your file and prints each error and caution.
+  It exits with 1 when there is an error, so you can use it in a script.
+- `hoocode keybindings --read` puts the terminal in raw mode and prints the bytes
+  each key press sends, with the key id they parse to. Press `q`, or Ctrl+C twice,
+  to exit. Keys are read as a legacy terminal sends them. Shift+Enter, for example,
+  shows only where the terminal sends it without the kitty protocol.
+
+## Alt keys
+
+Earlier builds used Alt keys as defaults. Alt keys in your file still work. The
+defaults no longer use them. The first start of each version shows one notice that
+names the Alt keys your file binds. hoocode does not rewrite your file.

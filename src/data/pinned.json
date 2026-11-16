@@ -1,6 +1,6 @@
 {
   "source": "graphql",
-  "fetchedAt": "2026-11-04T14:40:37.274Z",
+  "fetchedAt": "2026-11-16T14:57:55.706Z",
   "repos": [
     {
       "name": "hoocode",
@@ -21,8 +21,19 @@
         "cli",
         "developer-tools"
       ],
-      "pushedAt": "2026-11-04T11:35:12Z",
+      "pushedAt": "2026-11-16T14:41:58Z",
       "readme": "hoocode reads your code, runs commands, edits files and talks to the model of your choice, from a full-screen terminal UI or as a one-shot command. It is a single native binary: no Node, no Python, no runtime to install.\n\nhoocode runs on macOS and Linux, on x64 and arm64. The Linux builds are static (musl), so one binary runs on any distro. There is no Windows build yet."
+    },
+    {
+      "name": "inkuno",
+      "description": "A fast, minimal note-taking app. Plain Markdown files, styled as you type. Written in Rust with GPUI.",
+      "url": "https://github.com/kolisachint/inkuno",
+      "homepage": null,
+      "language": "Rust",
+      "stars": 0,
+      "topics": [],
+      "pushedAt": "2026-11-16T14:36:17Z",
+      "readme": "A fast, minimal note-taking app. Notes are plain Markdown files in a folder you choose, styled as you type. Written in Rust with GPUI, a GPU-accelerated UI framework.\n\nInkuno continues Bref by Andrea Larboullet Marin under a new name; its home is now github.com/kolisachint/inkuno."
     }
   ]
 }
